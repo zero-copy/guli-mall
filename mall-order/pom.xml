@@ -14,6 +14,7 @@
 
     <modules>
         <module>order-api</module>
+        <module>order-server</module>
     </modules>
 
     <properties>
