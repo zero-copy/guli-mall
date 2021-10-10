@@ -2,10 +2,9 @@ package com.study.mall.product.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.LocalDate;
-    import lombok.Data;
 
 /**
  * 
@@ -44,7 +43,7 @@ public class UndoLogEntity implements Serializable {
     /**
     * 
     */
-    private Longblob rollbackInfo;
+    private Long rollbackInfo;
 
     /**
     * 
