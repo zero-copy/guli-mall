@@ -1,0 +1,62 @@
+package com.study.mall.coupon.entity;
+
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
+import lombok.Data;
+        import java.math.BigDecimal;
+    
+/**
+ * 商品spu积分设置
+ *
+ * @author Harlan
+ * @email isharlan.hu@gmali.com
+ * @date 2021-10-10 14:06:24
+ */
+@Data
+@TableName("sms_spu_bounds")
+public class SpuBoundsEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+    * id
+    */
+    @TableId
+    private Long id;
+
+    /**
+    * 
+    */
+    private Long spuId;
+
+    /**
+    * 成长积分
+    */
+    private BigDecimal growBounds;
+
+    /**
+    * 购物积分
+    */
+    private BigDecimal buyBounds;
+
+    /**
+    * 优惠生效情况[1111（四个状态位，从右到左）;0 - 无优惠，成长积分是否赠送;1 - 无优惠，购物积分是否赠送;2 - 有优惠，成长积分是否赠送;3 - 有优惠，购物积分是否赠送【状态位0：不赠送，1：赠送】]
+    */
+    private Integer work;
+
+    
+    private static final String ID = "id";
+
+    private static final String SPU_ID = "spu_id";
+
+    private static final String GROW_BOUNDS = "grow_bounds";
+
+    private static final String BUY_BOUNDS = "buy_bounds";
+
+    private static final String WORK = "work";
+
+    
+}
