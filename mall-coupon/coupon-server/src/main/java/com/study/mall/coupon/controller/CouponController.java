@@ -5,10 +5,8 @@ import com.study.common.utils.R;
 import com.study.mall.coupon.entity.CouponEntity;
 import com.study.mall.coupon.service.ICouponService;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 
 

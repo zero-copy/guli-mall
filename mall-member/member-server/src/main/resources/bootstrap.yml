@@ -10,3 +10,8 @@ spring:
     nacos:
       discovery:
         server-addr: nacos-server:8848
+      config:
+        server-addr: nacos-server:8848
+        namespace: 9574957b-0a50-4adb-aa6f-2635b4252454
+        group: DEFAULT_GROUP
+        file-extension: yml

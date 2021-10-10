@@ -13,3 +13,6 @@ mybatis-plus:
       id-type: auto
   configuration:
     log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+
+config:
+  version: v0.1
