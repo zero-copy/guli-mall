@@ -48,10 +48,21 @@ public class R extends HashMap<String, Object> {
         return r;
     }
 
+    public static R ok(Object data) {
+        return ok().put("data", data);
+    }
+
     public static R ok(Map<String, Object> map) {
         R r = new R();
         r.putAll(map);
         return r;
+    }
+
+    public static R ok(String msg, Object data) {
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("msg", msg);
+        map.put("data", data);
+        return ok(map);
     }
 
     public static R ok() {

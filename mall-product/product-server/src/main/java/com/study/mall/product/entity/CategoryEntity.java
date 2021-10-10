@@ -1,11 +1,12 @@
 package com.study.mall.product.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
-    import lombok.Data;
+import java.util.List;
 
 /**
  * 商品三级分类
@@ -66,6 +67,11 @@ public class CategoryEntity implements Serializable {
     */
     private Integer productCount;
 
+    /**
+     * 子分类
+     */
+    @TableField(exist = false)
+    private List<CategoryEntity> children;
         
     private static final String CAT_ID = "cat_id";
 

@@ -3,6 +3,8 @@ package com.study.mall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.study.common.utils.PageUtils;
 import com.study.mall.product.entity.CategoryEntity;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,5 +17,11 @@ import java.util.Map;
 public interface ICategoryService extends IService<CategoryEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 查出所有分类以及子分类
+     * @return 分类
+     */
+    List<CategoryEntity> listTree();
 }
 
