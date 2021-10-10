@@ -1,5 +1,12 @@
 server:
-  port: 15000
+  port: 12030
+
 spring:
   profiles:
     active: dev
+  application:
+    name: mall-product
+  cloud:
+    nacos:
+      discovery:
+        server-addr: nacos-server:8848

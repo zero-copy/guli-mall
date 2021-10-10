@@ -1,4 +1,4 @@
-package com.study.mall.product;
+package com.study.mall.ware;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -6,13 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author Harlan
- * @date 2021 10 10 12:00
+ * @date 2021 10 10 16:36
  */
 @SpringBootApplication
-@MapperScan(basePackages = "com.study.mall.product.mapper")
-public class ProductServerApplication {
+@MapperScan(basePackages = "com.study.mall.ware.mapper")
+public class MallWareServerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ProductServerApplication.class, args);
+        SpringApplication.run(MallWareServerApplication.class, args);
     }
 }

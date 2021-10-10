@@ -22,7 +22,6 @@
     </modules>
 
     <properties>
-        <project.version>0.0.1-SNAPSHOT</project.version>
         <java.version>1.8</java.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -43,6 +42,37 @@
             <dependency>
                 <groupId>com.study.mall</groupId>
                 <artifactId>mall-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- feign api -->
+            <dependency>
+                <groupId>com.study.mall</groupId>
+                <artifactId>coupon-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.study.mall</groupId>
+                <artifactId>member-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.study.mall</groupId>
+                <artifactId>order-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.study.mall</groupId>
+                <artifactId>product-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.study.mall</groupId>
+                <artifactId>ware-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
