@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: icu_route
+          uri: https://996.icu
+          predicates:
+            - Query=url,icu
+
+config:
+  version: v0.1
