@@ -23,5 +23,12 @@ public interface ICategoryService extends IService<CategoryEntity> {
      * @return 分类
      */
     List<CategoryEntity> listTree();
+
+    /**
+     * 检查删除 判断是否被引用
+     * @param catIds ids
+     * @return 是否成功
+     */
+    boolean checkAmdRemoveByIds(List<Long> catIds);
 }
 

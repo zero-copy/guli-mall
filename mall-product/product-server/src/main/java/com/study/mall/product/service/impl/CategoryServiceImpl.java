@@ -8,8 +8,9 @@ import com.study.common.utils.Query;
 import com.study.mall.product.entity.CategoryEntity;
 import com.study.mall.product.mapper.CategoryMapper;
 import com.study.mall.product.service.ICategoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,9 @@ import java.util.stream.Collectors;
  * @email isharlan.hu@gmali.com
  * @date 2021-10-10 02:17:56
  */
+@Slf4j
 @Service("categoryService")
+@Transactional(rollbackFor = Exception.class)
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEntity> implements ICategoryService {
 
     @Override
@@ -46,6 +49,12 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
                 })
                 .sorted(Comparator.comparingLong(item -> (Objects.isNull(item.getSort()) ? 0L : item.getSort())))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean checkAmdRemoveByIds(List<Long> catIds) {
+        //TODO 检查菜单是否被引用
+        return removeByIds(catIds);
     }
 
     /**

@@ -51,7 +51,7 @@ public class CategoryController {
     @RequestMapping("/save")
     //product:category:save
     public R save(@RequestBody CategoryEntity category) {
-            categoryService.save(category);
+        categoryService.save(category);
         return R.ok();
     }
 
@@ -61,17 +61,18 @@ public class CategoryController {
     @RequestMapping("/update")
     //product:category:update
     public R update(@RequestBody CategoryEntity category) {
-            categoryService.updateById(category);
+        categoryService.updateById(category);
         return R.ok();
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     //@RequiresPermissions("product:category:delete")
     public R delete(@RequestBody Long[] catIds) {
-            categoryService.removeByIds(Arrays.asList(catIds));
+        //检查当前菜单是否被其他引用
+        categoryService.checkAmdRemoveByIds(Arrays.asList(catIds));
         return R.ok();
     }
 
