@@ -4,6 +4,7 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
+import com.study.common.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,8 +38,8 @@ public class OssController {
     private OSSClient ossClient;
 
     @RequestMapping("/policy")
-    public Map<String, String> policy() {
-        String dirPrefix = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyM-MM-dd"));
+    public R policy() {
+        String dirPrefix = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyM-MM-dd")) + "/";
         Map<String, String> respMap = null;
         try {
             long expireTime = 30;
@@ -64,6 +65,6 @@ public class OssController {
         } finally {
             ossClient.shutdown();
         }
-        return respMap;
+        return R.ok(respMap);
     }
 }
