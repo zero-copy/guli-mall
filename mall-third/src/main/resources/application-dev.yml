@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    alicloud:
+      access-key: LTAI5t8tZ9i3P57uZrMs5DYB
+      secret-key: bl9BwA57C1CAAkU7ydDTk55Dug73Mn
+      oss:
+        endpoint: oss-cn-chengdu.aliyuncs.com
+        bucket: mall-zero-copy
+        host: https://${spring.cloud.alicloud.oss.bucket}.${spring.cloud.alicloud.oss.endpoint}

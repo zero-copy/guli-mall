@@ -16,6 +16,7 @@
         <module>mall-order</module>
         <module>mall-product</module>
         <module>mall-ware</module>
+        <module>mall-third</module>
         <module>mall-common</module>
         <module>mall-gateway</module>
         <module>renren-fast</module>
@@ -38,6 +39,7 @@
         <commons-io.version>1.3.2</commons-io.version>
         <commons-lang.version>2.6</commons-lang.version>
         <hutool.version>5.7.10</hutool.version>
+        <aliyun-oss.version>2.2.0.RELEASE</aliyun-oss.version>
         <lombok.version>1.18.22</lombok.version>
     </properties>
 
@@ -165,6 +167,13 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+
+            <!-- ali-yun -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alicloud-oss</artifactId>
+                <version>${aliyun-oss.version}</version>
             </dependency>
 
             <!-- lombok -->

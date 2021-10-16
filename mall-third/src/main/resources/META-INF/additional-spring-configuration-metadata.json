@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "spring.cloud.alicloud.oss.bucket",
+      "type": "java.lang.String",
+      "description": "Description for spring.cloud.alicloud.oss.bucket."
+    },
+    {
+      "name": "spring.cloud.alicloud.oss.host",
+      "type": "java.lang.String",
+      "description": "Description for spring.cloud.alicloud.oss.host."
+    }
+  ] }

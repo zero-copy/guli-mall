@@ -1,0 +1,17 @@
+server:
+  port: 12050
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: mall-third
+  cloud:
+    nacos:
+      discovery:
+        server-addr: nacos-server:8848
+      config:
+        server-addr: nacos-server:8848
+        namespace: 0dde9df2-cf21-4821-9805-49691e5b96ba
+        group: DEFAULT_GROUP
+        file-extension: yml
