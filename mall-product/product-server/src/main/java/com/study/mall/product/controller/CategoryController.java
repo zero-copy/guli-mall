@@ -38,17 +38,17 @@ public class CategoryController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{catId}")
+    @GetMapping("/info/{catId}")
     //product:category:info
     public R info(@PathVariable("catId") Long catId) {
-            CategoryEntity category = categoryService.getById(catId);
-        return R.ok().put("category", category);
+        CategoryEntity category = categoryService.getById(catId);
+        return R.ok(category);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     //product:category:save
     public R save(@RequestBody CategoryEntity category) {
         categoryService.save(category);
@@ -58,10 +58,20 @@ public class CategoryController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     //product:category:update
     public R update(@RequestBody CategoryEntity category) {
         categoryService.updateById(category);
+        return R.ok();
+    }
+
+    /**
+     * 批量修改
+     */
+    @PostMapping("/update/sort")
+    //product:category:update
+    public R updateSort(@RequestBody CategoryEntity[] categories) {
+        categoryService.updateBatchById(Arrays.asList(categories));
         return R.ok();
     }
 
