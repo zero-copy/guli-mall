@@ -6,7 +6,7 @@
  * 版权所有，侵权必究！
  */
 
-package com.study.common.xss;
+package com.study.mall.common.xss;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;

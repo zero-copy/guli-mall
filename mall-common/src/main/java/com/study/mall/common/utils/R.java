@@ -6,7 +6,7 @@
  * 版权所有，侵权必究！
  */
 
-package com.study.common.utils;
+package com.study.mall.common.utils;
 
 import org.apache.http.HttpStatus;
 
@@ -40,6 +40,14 @@ public class R extends HashMap<String, Object> {
         r.put("code", code);
         r.put("msg", msg);
         return r;
+    }
+
+    public static R error(int code, String msg, Map<String, String> resultMap) {
+        R r = new R();
+        r.put("code", code);
+        r.put("msg", msg);
+        r.put("data", resultMap);
+        return  r;
     }
 
     public static R ok(String msg) {

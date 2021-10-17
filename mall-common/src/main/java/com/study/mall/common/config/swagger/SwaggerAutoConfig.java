@@ -1,4 +1,4 @@
-package com.study.common.config.swagger;
+package com.study.mall.common.config.swagger;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Configuration
 @EnableSwagger2
-@EnableConfigurationProperties(com.study.common.config.swagger.SwaggerProperties.class)
+@EnableConfigurationProperties(SwaggerProperties.class)
 public class SwaggerAutoConfig {
 
     private static final String AUTH = "Authorization";

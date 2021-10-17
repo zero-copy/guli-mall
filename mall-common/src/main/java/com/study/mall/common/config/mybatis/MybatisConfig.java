@@ -1,4 +1,4 @@
-package com.study.common.config.mybatis;
+package com.study.mall.common.config.mybatis;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;

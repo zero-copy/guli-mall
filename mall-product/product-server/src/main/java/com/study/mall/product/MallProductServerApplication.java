@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Harlan
  * @date 2021 10 10 12:00
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.study.mall"})
 @MapperScan(basePackages = "com.study.mall.product.mapper")
 public class MallProductServerApplication {
 

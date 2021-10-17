@@ -1,7 +1,7 @@
 package com.study.mall.coupon.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.study.common.utils.PageUtils;
+import com.study.mall.common.utils.PageUtils;
 import com.study.mall.coupon.entity.SeckillPromotionEntity;
 import java.util.Map;
 

@@ -2,10 +2,11 @@ package com.study.mall.product.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import org.hibernate.validator.constraints.URL;
+
+import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
-    import lombok.Data;
 
 /**
  * 品牌
@@ -29,31 +30,41 @@ public class BrandEntity implements Serializable {
     /**
     * 品牌名
     */
+    @NotBlank(message = "品牌名不能为空")
     private String name;
 
     /**
     * 品牌logo地址
     */
+    @NotBlank(message = "logo地址不能为空")
+    @URL(message = "logo必须为合法URL地址")
     private String logo;
 
     /**
     * 介绍
     */
+    @NotBlank(message = "介绍不能为空")
     private String descript;
 
     /**
     * 显示状态[0-不显示；1-显示]
     */
+    @NotNull
+    @Min(value = 0)
+    @Max(value = 1)
     private Integer showStatus;
 
     /**
     * 检索首字母
     */
+    @NotBlank(message = "检索首字母不能为空")
+    @Pattern(regexp = "[a-zA-Z]", message = "必须为字母")
     private String firstLetter;
 
     /**
     * 排序
     */
+    @Min(value = 0, message = "必须大于等于0")
     private Integer sort;
 
         

@@ -1,7 +1,7 @@
 package com.study.mall.member.controller;
 
-import com.study.common.utils.PageUtils;
-import com.study.common.utils.R;
+import com.study.mall.common.utils.PageUtils;
+import com.study.mall.common.utils.R;
 import com.study.mall.member.entity.MemberEntity;
 import com.study.mall.member.service.IMemberService;
 import org.springframework.web.bind.annotation.*;

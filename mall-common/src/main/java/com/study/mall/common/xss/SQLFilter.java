@@ -6,9 +6,9 @@
  * 版权所有，侵权必究！
  */
 
-package com.study.common.xss;
+package com.study.mall.common.xss;
 
-import com.study.common.exception.RRException;
+import com.study.mall.common.exception.MallException;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -41,7 +41,7 @@ public class SQLFilter {
         //判断是否包含非法字符
         for(String keyword : keywords){
             if(str.indexOf(keyword) != -1){
-                throw new RRException("包含非法字符");
+                throw new MallException("包含非法字符");
             }
         }
 

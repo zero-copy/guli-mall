@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.study.mall.ware.entity.PurchaseDetailEntity;
 import com.study.mall.ware.service.IPurchaseDetailService;
-import com.study.common.utils.PageUtils;
-import com.study.common.utils.R;
+import com.study.mall.common.utils.PageUtils;
+import com.study.mall.common.utils.R;
 
 
 /**

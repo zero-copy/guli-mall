@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.study.mall.order.entity.OrderOperateHistoryEntity;
 import com.study.mall.order.service.IOrderOperateHistoryService;
-import com.study.common.utils.PageUtils;
-import com.study.common.utils.R;
+import com.study.mall.common.utils.PageUtils;
+import com.study.mall.common.utils.R;
 
 
 /**

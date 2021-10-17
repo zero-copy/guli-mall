@@ -1,13 +1,14 @@
 package com.study.mall.product.controller;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.study.common.utils.PageUtils;
-import com.study.common.utils.R;
-import com.study.mall.product.dto.BrandStatusDto;
+import com.study.mall.common.utils.PageUtils;
+import com.study.mall.common.utils.R;
+import com.study.mall.product.form.BrandStatusForm;
 import com.study.mall.product.entity.BrandEntity;
 import com.study.mall.product.service.IBrandService;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -52,7 +53,7 @@ public class BrandController {
      */
     @PostMapping("/save")
     //product:brand:save
-    public R save(@RequestBody BrandEntity brand) {
+    public R save(@RequestBody @Valid BrandEntity brand) {
         brandService.save(brand);
         return R.ok();
     }
@@ -68,7 +69,7 @@ public class BrandController {
     }
 
     @PostMapping("/update/status")
-    public R updateStatus(@RequestBody BrandStatusDto brandStatus) {
+    public R updateStatus(@RequestBody BrandStatusForm brandStatus) {
         BrandEntity brand = new BrandEntity();
         BeanUtil.copyProperties(brandStatus, brand);
         brandService.updateById(brand);

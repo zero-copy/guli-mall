@@ -6,12 +6,12 @@
  * 版权所有，侵权必究！
  */
 
-package com.study.common.utils;
+package com.study.mall.common.utils;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.study.common.xss.SQLFilter;
+import com.study.mall.common.xss.SQLFilter;
 import org.apache.commons.lang.StringUtils;
 import java.util.Map;
 

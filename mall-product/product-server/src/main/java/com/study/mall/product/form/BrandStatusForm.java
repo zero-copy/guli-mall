@@ -1,7 +1,6 @@
-package com.study.mall.product.dto;
+package com.study.mall.product.form;
 
 import lombok.Data;
-
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -10,7 +9,7 @@ import java.io.Serializable;
  * @date 2021 10 16 18:36
  */
 @Data
-public class BrandStatusDto implements Serializable {
+public class BrandStatusForm implements Serializable {
 
     /**
      * 品牌id

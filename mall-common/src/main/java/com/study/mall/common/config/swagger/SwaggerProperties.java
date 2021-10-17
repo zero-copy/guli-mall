@@ -1,4 +1,4 @@
-package com.study.common.config.swagger;
+package com.study.mall.common.config.swagger;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

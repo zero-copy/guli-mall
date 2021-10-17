@@ -1,7 +1,7 @@
 package com.study.mall.coupon.controller;
 
-import com.study.common.utils.PageUtils;
-import com.study.common.utils.R;
+import com.study.mall.common.utils.PageUtils;
+import com.study.mall.common.utils.R;
 import com.study.mall.coupon.entity.CouponEntity;
 import com.study.mall.coupon.service.ICouponService;
 import org.springframework.web.bind.annotation.*;
