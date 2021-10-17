@@ -9,7 +9,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @date 2021 10 16 22:28
  */
 @EnableDiscoveryClient
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.study.mall"})
 public class MallThirdApplication {
 
     public static void main(String[] args) {

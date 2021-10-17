@@ -9,7 +9,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @author Harlan
  * @date 2021 10 10 14:44
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.study.mall"})
 @EnableDiscoveryClient
 @MapperScan(basePackages = "com.study.mall.order.mapper")
 public class MallOrderServerApplication {

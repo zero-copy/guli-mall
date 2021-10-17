@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @author Harlan
  * @date 2021 10 10 14:17
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.study.mall"})
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = "com.study.mall.feign")
 @MapperScan(basePackages = "com.study.mall.member.mapper")
