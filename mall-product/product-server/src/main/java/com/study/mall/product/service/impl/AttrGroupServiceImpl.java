@@ -1,15 +1,16 @@
 package com.study.mall.product.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
-import com.study.mall.product.mapper.AttrGroupMapper;
 import com.study.mall.product.entity.AttrGroupEntity;
+import com.study.mall.product.mapper.AttrGroupMapper;
 import com.study.mall.product.service.IAttrGroupService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+import java.util.Map;
 
 /**
  * 属性分组
@@ -25,8 +26,26 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<AttrGroupEntity> page = this.page(
                 new Query<AttrGroupEntity>().getPage(params),
-                new QueryWrapper<AttrGroupEntity>()
+                new QueryWrapper<>()
         );
+        return new PageUtils(page);
+    }
+
+    @Override
+    public PageUtils queryPageByCatelogId(Map<String, Object> params, Long catelogId) {
+        IPage<AttrGroupEntity> page;
+        if (catelogId == 0) {
+            page = page(new Query<AttrGroupEntity>().getPage(params), new QueryWrapper<>());
+        } else {
+            String key = (String) params.get("key");
+            QueryWrapper<AttrGroupEntity> wrapper = new QueryWrapper<AttrGroupEntity>().eq(AttrGroupEntity.CATELOG_ID, catelogId);
+            if (StringUtils.isNotBlank(key)) {
+                wrapper.and(content ->
+                    content.eq(AttrGroupEntity.ATTR_GROUP_ID, key).or().like(AttrGroupEntity.ATTR_GROUP_NAME, key)
+                );
+            }
+            page = page(new Query<AttrGroupEntity>().getPage(params), wrapper);
+        }
         return new PageUtils(page);
     }
 

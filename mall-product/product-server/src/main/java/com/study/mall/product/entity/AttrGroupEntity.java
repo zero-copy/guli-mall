@@ -52,17 +52,17 @@ public class AttrGroupEntity implements Serializable {
     private Long catelogId;
 
         
-    private static final String ATTR_GROUP_ID = "attr_group_id";
+    public static final String ATTR_GROUP_ID = "attr_group_id";
 
-    private static final String ATTR_GROUP_NAME = "attr_group_name";
+    public static final String ATTR_GROUP_NAME = "attr_group_name";
 
-    private static final String SORT = "sort";
+    public static final String SORT = "sort";
 
-    private static final String DESCRIPT = "descript";
+    public static final String DESCRIPT = "descript";
 
-    private static final String ICON = "icon";
+    public static final String ICON = "icon";
 
-    private static final String CATELOG_ID = "catelog_id";
+    public static final String CATELOG_ID = "catelog_id";
 
     
 }
