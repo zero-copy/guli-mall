@@ -11,10 +11,8 @@ import com.study.mall.product.service.ICategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -33,7 +31,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<CategoryEntity> page = this.page(
                 new Query<CategoryEntity>().getPage(params),
-                new QueryWrapper<CategoryEntity>()
+                new QueryWrapper<>()
         );
         return new PageUtils(page);
     }
@@ -57,6 +55,14 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
         return removeByIds(catIds);
     }
 
+    @Override
+    public List<Long> findCatelogPath(Long catelogId) {
+        List<Long> path = new ArrayList<>();
+        List<Long> parentPath = findParentPath(catelogId, path);
+        Collections.reverse(parentPath);
+        return parentPath;
+    }
+
     /**
      * 递归查询子菜单
      * @param parent 当前菜单
@@ -72,5 +78,14 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
                 })
                 .sorted(Comparator.comparingLong(item -> (Objects.isNull(item.getSort()) ? 0L : item.getSort())))
                 .collect(Collectors.toList());
+    }
+
+    private List<Long> findParentPath(Long catelogId, List<Long> path) {
+        CategoryEntity category = getById(catelogId);
+        path.add(catelogId);
+        if (category.getParentCid() != 0) {
+            findParentPath(category.getParentCid(), path);
+        }
+        return path;
     }
 }

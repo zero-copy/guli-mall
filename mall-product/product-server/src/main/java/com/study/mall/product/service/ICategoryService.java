@@ -30,5 +30,12 @@ public interface ICategoryService extends IService<CategoryEntity> {
      * @return 是否成功
      */
     boolean checkAmdRemoveByIds(List<Long> catIds);
+
+    /**
+     * 通过分类Id查询完整分类路径
+     * @param catelogId 分类id
+     * @return 完整路径id
+     */
+    List<Long> findCatelogPath(Long catelogId);
 }
 

@@ -16,6 +16,12 @@ public interface IAttrGroupService extends IService<AttrGroupEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
+    /**
+     * 通过分类查询属性分组
+     * @param params 分页参数
+     * @param catelogId 分类ID
+     * @return 分页数据
+     */
     PageUtils queryPageByCatelogId(Map<String, Object> params, Long catelogId);
 }
 

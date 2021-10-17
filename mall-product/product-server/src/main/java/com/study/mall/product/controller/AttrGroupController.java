@@ -4,9 +4,12 @@ import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.R;
 import com.study.mall.product.entity.AttrGroupEntity;
 import com.study.mall.product.service.IAttrGroupService;
+import com.study.mall.product.service.ICategoryService;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -24,6 +27,9 @@ public class AttrGroupController {
     @Resource
     private IAttrGroupService attrGroupService;
 
+    @Resource
+    private ICategoryService categoryService;
+
     /**
      * 列表
      */
@@ -38,10 +44,12 @@ public class AttrGroupController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{attrGroupId}")
+    @GetMapping("/info/{attrGroupId}")
     //product:attrgroup:info
     public R info(@PathVariable("attrGroupId") Long attrGroupId) {
         AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
+        List<Long> catelogPath = categoryService.findCatelogPath(attrGroup.getCatelogId());
+        attrGroup.setCatelogPath(catelogPath.toArray(new Long[0]));
         return R.ok().put("attrGroup", attrGroup);
     }
 
