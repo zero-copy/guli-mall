@@ -3,7 +3,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://rm-2vcaj0j5594373803ko.mysql.cn-chengdu.rds.aliyuncs.com/mall-admin?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+      url: jdbc:mysql://scorpio-study.mysql.cn-chengdu.rds.aliyuncs.com/mall-admin?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
       username: dbadmin
       password: lb82ndLF
       initial-size: 10

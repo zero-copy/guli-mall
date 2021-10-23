@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://rm-2vcaj0j5594373803ko.mysql.cn-chengdu.rds.aliyuncs.com/mall-wms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://scorpio-study.mysql.cn-chengdu.rds.aliyuncs.com/mall-wms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: dbadmin
     password: lb82ndLF
 
