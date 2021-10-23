@@ -34,18 +34,17 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
     @Override
     public PageUtils queryPageByCatelogId(Map<String, Object> params, Long catelogId) {
         IPage<AttrGroupEntity> page;
-        if (catelogId == 0) {
-            page = page(new Query<AttrGroupEntity>().getPage(params), new QueryWrapper<>());
-        } else {
-            String key = (String) params.get("key");
-            QueryWrapper<AttrGroupEntity> wrapper = new QueryWrapper<AttrGroupEntity>().eq(AttrGroupEntity.CATELOG_ID, catelogId);
-            if (StringUtils.isNotBlank(key)) {
-                wrapper.and(content ->
+        String key = (String) params.get("key");
+        QueryWrapper<AttrGroupEntity> wrapper = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(key)) {
+            wrapper.and(content ->
                     content.eq(AttrGroupEntity.ATTR_GROUP_ID, key).or().like(AttrGroupEntity.ATTR_GROUP_NAME, key)
-                );
-            }
-            page = page(new Query<AttrGroupEntity>().getPage(params), wrapper);
+            );
         }
+        if (catelogId != 0) {
+            wrapper.eq(AttrGroupEntity.CATELOG_ID, catelogId);
+        }
+        page = page(new Query<AttrGroupEntity>().getPage(params), wrapper);
         return new PageUtils(page);
     }
 
