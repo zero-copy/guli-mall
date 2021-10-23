@@ -15,5 +15,12 @@ import java.util.Map;
 public interface ICategoryBrandRelationService extends IService<CategoryBrandRelationEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 保持品牌与分类关系
+     * @param categoryBrandRelation 关系
+     * @return 是否成功
+     */
+    boolean saveDetail(CategoryBrandRelationEntity categoryBrandRelation);
 }
 

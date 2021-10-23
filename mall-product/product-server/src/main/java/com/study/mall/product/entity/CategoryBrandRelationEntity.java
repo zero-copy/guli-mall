@@ -2,10 +2,10 @@ package com.study.mall.product.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
-    import lombok.Data;
 
 /**
  * 品牌分类关联
@@ -29,11 +29,13 @@ public class CategoryBrandRelationEntity implements Serializable {
     /**
     * 品牌id
     */
+    @NotNull
     private Long brandId;
 
     /**
     * 分类id
     */
+    @NotNull
     private Long catelogId;
 
     /**
@@ -47,15 +49,15 @@ public class CategoryBrandRelationEntity implements Serializable {
     private String catelogName;
 
         
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String BRAND_ID = "brand_id";
+    public static final String BRAND_ID = "brand_id";
 
-    private static final String CATELOG_ID = "catelog_id";
+    public static final String CATELOG_ID = "catelog_id";
 
-    private static final String BRAND_NAME = "brand_name";
+    public static final String BRAND_NAME = "brand_name";
 
-    private static final String CATELOG_NAME = "catelog_name";
+    public static final String CATELOG_NAME = "catelog_name";
 
     
 }
