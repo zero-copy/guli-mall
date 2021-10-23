@@ -61,7 +61,7 @@ public class CategoryController {
     @PostMapping("/update")
     //product:category:update
     public R update(@RequestBody CategoryEntity category) {
-        categoryService.updateById(category);
+        categoryService.updateCased(category);
         return R.ok();
     }
 

@@ -37,5 +37,11 @@ public interface ICategoryService extends IService<CategoryEntity> {
      * @return 完整路径id
      */
     List<Long> findCatelogPath(Long catelogId);
+
+    /**
+     * 级联更新
+     * @param category 分类信息
+     */
+    boolean updateCased(CategoryEntity category);
 }
 

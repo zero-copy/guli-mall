@@ -46,10 +46,10 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, BrandEntity> impl
     public boolean updateDetail(BrandEntity brand) {
         boolean isSuccess = updateById(brand);
         //同步更新关联表
-        if (StringUtils.isNotEmpty(brand.getName())) {
-            isSuccess = isSuccess && categoryBrandRelationService.updateBrand(brand.getBrandId(), brand.getName());
+        if (isSuccess && StringUtils.isNotEmpty(brand.getName())) {
+            return categoryBrandRelationService.updateBrand(brand.getBrandId(), brand.getName());
         }
-        return isSuccess;
+        return false;
     }
 
 }

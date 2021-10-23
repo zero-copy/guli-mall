@@ -7,11 +7,14 @@ import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
 import com.study.mall.product.entity.CategoryEntity;
 import com.study.mall.product.mapper.CategoryMapper;
+import com.study.mall.product.service.ICategoryBrandRelationService;
 import com.study.mall.product.service.ICategoryService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,6 +29,9 @@ import java.util.stream.Collectors;
 @Service("categoryService")
 @Transactional(rollbackFor = Exception.class)
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEntity> implements ICategoryService {
+
+    @Resource
+    private ICategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -61,6 +67,15 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
         List<Long> parentPath = findParentPath(catelogId, path);
         Collections.reverse(parentPath);
         return parentPath;
+    }
+
+    @Override
+    public boolean updateCased(CategoryEntity category) {
+        boolean isSuccess = updateById(category);
+        if (isSuccess && StringUtils.isNotEmpty(category.getName())) {
+            return categoryBrandRelationService.updateCategory(category.getCatId(), category.getName());
+        }
+        return false;
     }
 
     /**

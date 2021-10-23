@@ -30,5 +30,13 @@ public interface ICategoryBrandRelationService extends IService<CategoryBrandRel
      * @return 是否成功
      */
     boolean updateBrand(Long brandId, String brandName);
+
+    /**
+     * 更新分类名
+     * @param categoryId 分类ID
+     * @param categoryName 分类名
+     * @return 是否成功
+     */
+    boolean updateCategory(Long categoryId, String categoryName);
 }
 

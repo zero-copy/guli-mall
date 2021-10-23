@@ -69,7 +69,17 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
         CategoryBrandRelationEntity relationEntity = new CategoryBrandRelationEntity();
         relationEntity.setBrandId(brandId);
         relationEntity.setBrandName(brandName);
-        return update(relationEntity, new UpdateWrapper<CategoryBrandRelationEntity>().eq(CategoryBrandRelationEntity.BRAND_ID, brandId));
+        return update(relationEntity, new UpdateWrapper<CategoryBrandRelationEntity>()
+                .eq(CategoryBrandRelationEntity.BRAND_ID, brandId));
+    }
+
+    @Override
+    public boolean updateCategory(Long categoryId, String categoryName) {
+        CategoryBrandRelationEntity relationEntity = new CategoryBrandRelationEntity();
+        relationEntity.setCatelogId(categoryId);
+        relationEntity.setCatelogName(categoryName);
+        return update(relationEntity, new UpdateWrapper<CategoryBrandRelationEntity>()
+                .eq(CategoryBrandRelationEntity.CATELOG_ID, categoryId));
     }
 
 }
