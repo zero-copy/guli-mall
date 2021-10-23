@@ -8,8 +8,11 @@ import com.study.mall.common.utils.Query;
 import com.study.mall.product.entity.BrandEntity;
 import com.study.mall.product.mapper.BrandMapper;
 import com.study.mall.product.service.IBrandService;
+import com.study.mall.product.service.ICategoryBrandRelationService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import java.util.Map;
 
 /**
@@ -21,6 +24,9 @@ import java.util.Map;
  */
 @Service("brandService")
 public class BrandServiceImpl extends ServiceImpl<BrandMapper, BrandEntity> implements IBrandService {
+
+    @Resource
+    private ICategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -34,6 +40,16 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, BrandEntity> impl
                 wrapper
         );
         return new PageUtils(page);
+    }
+
+    @Override
+    public boolean updateDetail(BrandEntity brand) {
+        boolean isSuccess = updateById(brand);
+        //同步更新关联表
+        if (StringUtils.isNotEmpty(brand.getName())) {
+            isSuccess = isSuccess && categoryBrandRelationService.updateBrand(brand.getBrandId(), brand.getName());
+        }
+        return isSuccess;
     }
 
 }

@@ -22,5 +22,13 @@ public interface ICategoryBrandRelationService extends IService<CategoryBrandRel
      * @return 是否成功
      */
     boolean saveDetail(CategoryBrandRelationEntity categoryBrandRelation);
+
+    /**
+     * 更新品牌名
+     * @param brandId 品牌ID
+     * @param brandName 品牌名
+     * @return 是否成功
+     */
+    boolean updateBrand(Long brandId, String brandName);
 }
 

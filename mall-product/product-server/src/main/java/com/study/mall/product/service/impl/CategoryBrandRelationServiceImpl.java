@@ -1,6 +1,7 @@
 package com.study.mall.product.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.study.mall.common.utils.PageUtils;
@@ -61,6 +62,14 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
             return save(categoryBrandRelation);
         }
         return false;
+    }
+
+    @Override
+    public boolean updateBrand(Long brandId, String brandName) {
+        CategoryBrandRelationEntity relationEntity = new CategoryBrandRelationEntity();
+        relationEntity.setBrandId(brandId);
+        relationEntity.setBrandName(brandName);
+        return update(relationEntity, new UpdateWrapper<CategoryBrandRelationEntity>().eq(CategoryBrandRelationEntity.BRAND_ID, brandId));
     }
 
 }
