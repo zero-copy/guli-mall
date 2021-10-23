@@ -19,23 +19,18 @@ public class MybatisConfig {
 
     /**
      * 分页插件
-     * @return 分页插件
-     */
-    @Bean
-    public PaginationInnerInterceptor paginationInnerInterceptor() {
-        PaginationInnerInterceptor innerInterceptor = new PaginationInnerInterceptor(DbType.MYSQL);
-        innerInterceptor.setOverflow(true);
-        innerInterceptor.setMaxLimit(250L);
-        return innerInterceptor;
-    }
-
-    /**
      * 乐观锁
-     * @return 乐观锁
+     * @return 拦截器
      */
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        //分页插件
+        PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor(DbType.MYSQL);
+        paginationInnerInterceptor.setMaxLimit(200L);
+        paginationInnerInterceptor.setOverflow(true);
+        interceptor.addInnerInterceptor(paginationInnerInterceptor);
+        //乐观锁
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
         return interceptor;
     }
