@@ -67,19 +67,19 @@ public class BrandEntity implements Serializable {
     private Integer sort;
 
         
-    private static final String BRAND_ID = "brand_id";
+    public static final String BRAND_ID = "brand_id";
 
-    private static final String NAME = "name";
+    public static final String NAME = "name";
 
-    private static final String LOGO = "logo";
+    public static final String LOGO = "logo";
 
-    private static final String DESCRIPT = "descript";
+    public static final String DESCRIPT = "descript";
 
-    private static final String SHOW_STATUS = "show_status";
+    public static final String SHOW_STATUS = "show_status";
 
-    private static final String FIRST_LETTER = "first_letter";
+    public static final String FIRST_LETTER = "first_letter";
 
-    private static final String SORT = "sort";
+    public static final String SORT = "sort";
 
     
 }
