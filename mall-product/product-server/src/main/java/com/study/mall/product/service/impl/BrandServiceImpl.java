@@ -11,6 +11,7 @@ import com.study.mall.product.service.IBrandService;
 import com.study.mall.product.service.ICategoryBrandRelationService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -23,6 +24,7 @@ import java.util.Map;
  * @date 2021-10-10 02:17:56
  */
 @Service("brandService")
+@Transactional(rollbackFor = Exception.class)
 public class BrandServiceImpl extends ServiceImpl<BrandMapper, BrandEntity> implements IBrandService {
 
     @Resource
