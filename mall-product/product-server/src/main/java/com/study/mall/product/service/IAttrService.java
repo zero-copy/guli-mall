@@ -3,6 +3,7 @@ package com.study.mall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.product.entity.AttrEntity;
+import com.study.mall.product.vo.AttrReqVo;
 import com.study.mall.product.vo.AttrRespVo;
 
 import java.util.Map;
@@ -40,5 +41,12 @@ public interface IAttrService extends IService<AttrEntity> {
      * @return 详细信息
      */
     AttrRespVo getDetailById(Long attrId);
+
+    /**
+     * 更新详细信息
+     * @param attr 属性
+     * @return 是否成功
+     */
+    boolean updateDetail(AttrReqVo attr);
 }
 

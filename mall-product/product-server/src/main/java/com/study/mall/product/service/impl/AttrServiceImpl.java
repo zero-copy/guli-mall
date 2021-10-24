@@ -2,6 +2,7 @@ package com.study.mall.product.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.study.mall.common.utils.PageUtils;
@@ -10,11 +11,12 @@ import com.study.mall.product.entity.AttrAttrgroupRelationEntity;
 import com.study.mall.product.entity.AttrEntity;
 import com.study.mall.product.entity.AttrGroupEntity;
 import com.study.mall.product.entity.CategoryEntity;
-import com.study.mall.product.mapper.AttrAttrgroupRelationMapper;
-import com.study.mall.product.mapper.AttrGroupMapper;
 import com.study.mall.product.mapper.AttrMapper;
+import com.study.mall.product.service.IAttrAttrgroupRelationService;
+import com.study.mall.product.service.IAttrGroupService;
 import com.study.mall.product.service.IAttrService;
 import com.study.mall.product.service.ICategoryService;
+import com.study.mall.product.vo.AttrReqVo;
 import com.study.mall.product.vo.AttrRespVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -38,10 +40,10 @@ import java.util.stream.Collectors;
 public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> implements IAttrService {
 
     @Resource
-    private AttrAttrgroupRelationMapper relationMapper;
+    private IAttrAttrgroupRelationService relationService;
 
     @Resource
-    private AttrGroupMapper attrGroupMapper;
+    private IAttrGroupService attrGroupService;
 
     @Resource
     private ICategoryService categoryService;
@@ -61,7 +63,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
         AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
         relationEntity.setAttrId(attr.getAttrId());
         relationEntity.setAttrGroupId(groupId);
-        return relationMapper.insert(relationEntity) != 0;
+        return relationService.save(relationEntity);
     }
 
     @Override
@@ -81,11 +83,11 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
         );
         List<AttrRespVo> attrRespVos = page.getRecords().stream().map(attr -> {
             AttrRespVo respVo = BeanUtil.copyProperties(attr, AttrRespVo.class);
-            AttrAttrgroupRelationEntity relationEntity = relationMapper.selectOne(new QueryWrapper<AttrAttrgroupRelationEntity>()
+            AttrAttrgroupRelationEntity relationEntity = relationService.getOne(new QueryWrapper<AttrAttrgroupRelationEntity>()
                     .eq(AttrAttrgroupRelationEntity.ATTR_ID, attr.getAttrId())
             );
             if (Objects.nonNull(relationEntity)) {
-                AttrGroupEntity groupEntity = attrGroupMapper.selectById(relationEntity.getAttrGroupId());
+                AttrGroupEntity groupEntity = attrGroupService.getById(relationEntity.getAttrGroupId());
                 respVo.setGroupName(groupEntity.getAttrGroupName());
             }
             CategoryEntity categoryEntity = categoryService.getById(attr.getCatelogId());
@@ -106,10 +108,10 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
             return null;
         }
         AttrRespVo attrRespVo = BeanUtil.copyProperties(attrEntity, AttrRespVo.class);
-        AttrAttrgroupRelationEntity relationEntity = relationMapper.selectOne(new QueryWrapper<AttrAttrgroupRelationEntity>().eq(AttrAttrgroupRelationEntity.ATTR_ID, attrId));
+        AttrAttrgroupRelationEntity relationEntity = relationService.getOne(new QueryWrapper<AttrAttrgroupRelationEntity>().eq(AttrAttrgroupRelationEntity.ATTR_ID, attrId));
         if (Objects.nonNull(relationEntity)) {
             attrRespVo.setAttrGroupId(relationEntity.getAttrGroupId());
-            AttrGroupEntity attrGroupEntity = attrGroupMapper.selectById(relationEntity.getAttrGroupId());
+            AttrGroupEntity attrGroupEntity = attrGroupService.getById(relationEntity.getAttrGroupId());
             if (Objects.nonNull(attrGroupEntity)) {
                 attrRespVo.setGroupName(attrGroupEntity.getAttrGroupName());
             }
@@ -121,6 +123,24 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
             attrRespVo.setCatelogName(categoryEntity.getName());
         }
         return attrRespVo;
+    }
+
+    @Override
+    public boolean updateDetail(AttrReqVo attr) {
+        AttrEntity attrEntity = BeanUtil.copyProperties(attr, AttrEntity.class);
+        updateById(attrEntity);
+        AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
+        relationEntity.setAttrGroupId(attr.getAttrGroupId());
+        relationEntity.setAttrId(attr.getAttrId());
+        long count = relationService.count(new UpdateWrapper<AttrAttrgroupRelationEntity>()
+                .eq(AttrAttrgroupRelationEntity.ATTR_ID, attr.getAttrId()));
+        if (count > 0) {
+            return relationService.update(relationEntity, new UpdateWrapper<AttrAttrgroupRelationEntity>()
+                    .eq(AttrAttrgroupRelationEntity.ATTR_ID, attr.getAttrId())
+            );
+        } else {
+            return relationService.save(relationEntity);
+        }
     }
 
 }

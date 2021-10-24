@@ -72,8 +72,8 @@ public class AttrController {
      */
     @PostMapping("/update")
     //product:attr:update
-    public R update(@RequestBody AttrEntity attr) {
-        attrService.updateById(attr);
+    public R update(@RequestBody AttrReqVo attr) {
+        attrService.updateDetail(attr);
         return R.ok();
     }
 
