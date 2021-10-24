@@ -3,6 +3,7 @@ package com.study.mall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.product.entity.AttrEntity;
+
 import java.util.Map;
 
 /**
@@ -15,5 +16,13 @@ import java.util.Map;
 public interface IAttrService extends IService<AttrEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 保存属性
+     * @param groupId 属性分组
+     * @param attr 属性信息
+     * @return 是否成功
+     */
+    boolean save(Long groupId, AttrEntity attr);
 }
 

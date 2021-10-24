@@ -1,9 +1,11 @@
 package com.study.mall.product.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.R;
 import com.study.mall.product.entity.AttrEntity;
 import com.study.mall.product.service.IAttrService;
+import com.study.mall.product.vo.AttrVo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -51,8 +53,10 @@ public class AttrController {
      */
     @PostMapping("/save")
     //product:attr:save
-    public R save(@RequestBody AttrEntity attr) {
-        attrService.save(attr);
+    public R save(@RequestBody AttrVo attr) {
+        AttrEntity attrEntity = BeanUtil.copyProperties(attr, AttrEntity.class);
+        Long groupId = attr.getAttrGroupId();
+        attrService.save(groupId, attrEntity);
         return R.ok();
     }
 

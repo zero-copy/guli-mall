@@ -3,6 +3,7 @@ package com.study.mall.product.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -69,26 +70,25 @@ public class AttrEntity implements Serializable {
     */
     private Integer showDesc;
 
-        
-    private static final String ATTR_ID = "attr_id";
+    public static final String ATTR_ID = "attr_id";
 
-    private static final String ATTR_NAME = "attr_name";
+    public static final String ATTR_NAME = "attr_name";
 
-    private static final String SEARCH_TYPE = "search_type";
+    public static final String SEARCH_TYPE = "search_type";
 
-    private static final String VALUE_TYPE = "value_type";
+    public static final String VALUE_TYPE = "value_type";
 
-    private static final String ICON = "icon";
+    public static final String ICON = "icon";
 
-    private static final String VALUE_SELECT = "value_select";
+    public static final String VALUE_SELECT = "value_select";
 
-    private static final String ATTR_TYPE = "attr_type";
+    public static final String ATTR_TYPE = "attr_type";
 
-    private static final String ENABLE = "enable";
+    public static final String ENABLE = "enable";
 
-    private static final String CATELOG_ID = "catelog_id";
+    public static final String CATELOG_ID = "catelog_id";
 
-    private static final String SHOW_DESC = "show_desc";
+    public static final String SHOW_DESC = "show_desc";
 
     
 }
