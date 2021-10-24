@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Harlan
@@ -22,4 +23,9 @@ public class AttrRespVo extends AttrReqVo implements Serializable {
      * 分组名
      */
     private String groupName;
+
+    /**
+     * 分类路径
+     */
+    private List<Long> catelogPath;
 }

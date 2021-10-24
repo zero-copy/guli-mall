@@ -6,6 +6,7 @@ import com.study.mall.common.utils.R;
 import com.study.mall.product.entity.AttrEntity;
 import com.study.mall.product.service.IAttrService;
 import com.study.mall.product.vo.AttrReqVo;
+import com.study.mall.product.vo.AttrRespVo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -50,8 +51,8 @@ public class AttrController {
     @GetMapping("/info/{attrId}")
     //product:attr:info
     public R info(@PathVariable("attrId") Long attrId) {
-        AttrEntity attr = attrService.getById(attrId);
-        return R.ok().put("attr", attr);
+        AttrRespVo respVo = attrService.getDetailById(attrId);
+        return R.ok().put("attr", respVo);
     }
 
     /**

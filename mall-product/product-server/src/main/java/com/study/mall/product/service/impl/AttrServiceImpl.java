@@ -13,12 +13,13 @@ import com.study.mall.product.entity.CategoryEntity;
 import com.study.mall.product.mapper.AttrAttrgroupRelationMapper;
 import com.study.mall.product.mapper.AttrGroupMapper;
 import com.study.mall.product.mapper.AttrMapper;
-import com.study.mall.product.mapper.CategoryMapper;
 import com.study.mall.product.service.IAttrService;
+import com.study.mall.product.service.ICategoryService;
 import com.study.mall.product.vo.AttrRespVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
     private AttrGroupMapper attrGroupMapper;
 
     @Resource
-    private CategoryMapper categoryMapper;
+    private ICategoryService categoryService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -87,7 +88,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
                 AttrGroupEntity groupEntity = attrGroupMapper.selectById(relationEntity.getAttrGroupId());
                 respVo.setGroupName(groupEntity.getAttrGroupName());
             }
-            CategoryEntity categoryEntity = categoryMapper.selectById(attr.getCatelogId());
+            CategoryEntity categoryEntity = categoryService.getById(attr.getCatelogId());
             if (Objects.nonNull(categoryEntity)) {
                 respVo.setCatelogName(categoryEntity.getName());
             }
@@ -96,6 +97,30 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
         PageUtils pageUtils = new PageUtils(page);
         pageUtils.setList(attrRespVos);
         return pageUtils;
+    }
+
+    @Override
+    public AttrRespVo getDetailById(Long attrId) {
+        AttrEntity attrEntity = getById(attrId);
+        if (Objects.isNull(attrEntity)) {
+            return null;
+        }
+        AttrRespVo attrRespVo = BeanUtil.copyProperties(attrEntity, AttrRespVo.class);
+        AttrAttrgroupRelationEntity relationEntity = relationMapper.selectOne(new QueryWrapper<AttrAttrgroupRelationEntity>().eq(AttrAttrgroupRelationEntity.ATTR_ID, attrId));
+        if (Objects.nonNull(relationEntity)) {
+            attrRespVo.setAttrGroupId(relationEntity.getAttrGroupId());
+            AttrGroupEntity attrGroupEntity = attrGroupMapper.selectById(relationEntity.getAttrGroupId());
+            if (Objects.nonNull(attrGroupEntity)) {
+                attrRespVo.setGroupName(attrGroupEntity.getAttrGroupName());
+            }
+        }
+        List<Long> catelogPath = categoryService.findCatelogPath(attrEntity.getCatelogId());
+        attrRespVo.setCatelogPath(catelogPath);
+        CategoryEntity categoryEntity = categoryService.getById(attrEntity.getCatelogId());
+        if (Objects.nonNull(categoryEntity)) {
+            attrRespVo.setCatelogName(categoryEntity.getName());
+        }
+        return attrRespVo;
     }
 
 }
