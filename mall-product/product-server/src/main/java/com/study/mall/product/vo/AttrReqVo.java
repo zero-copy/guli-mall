@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @date 2021 10 24 下午 01:36
  */
 @Data
-public class AttrVo implements Serializable {
+public class AttrReqVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

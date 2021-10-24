@@ -5,7 +5,7 @@ import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.R;
 import com.study.mall.product.entity.AttrEntity;
 import com.study.mall.product.service.IAttrService;
-import com.study.mall.product.vo.AttrVo;
+import com.study.mall.product.vo.AttrReqVo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -59,7 +59,7 @@ public class AttrController {
      */
     @PostMapping("/save")
     //product:attr:save
-    public R save(@RequestBody AttrVo attr) {
+    public R save(@RequestBody AttrReqVo attr) {
         AttrEntity attrEntity = BeanUtil.copyProperties(attr, AttrEntity.class);
         Long groupId = attr.getAttrGroupId();
         attrService.save(groupId, attrEntity);
