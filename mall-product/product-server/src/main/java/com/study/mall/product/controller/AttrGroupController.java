@@ -11,7 +11,6 @@ import com.study.mall.product.service.IAttrService;
 import com.study.mall.product.service.ICategoryService;
 import com.study.mall.product.vo.AttrGroupRelationReqVo;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
@@ -38,6 +37,12 @@ public class AttrGroupController {
 
     @Resource
     private IAttrService attrService;
+
+    @GetMapping("/{attrgroupId}/noattr/relation")
+    public R attrNoRelation(@PathVariable("attrgroupId") Long attrGroupId, @RequestParam Map<String, Object> params) {
+        PageUtils page = attrService.getNoRelation(attrGroupId, params);
+        return R.ok(page);
+    }
 
     @GetMapping("/{attrgroupId}/attr/relation")
     public R attrRelation(@PathVariable("attrgroupId") Long attrGroupId) {

@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -155,7 +156,35 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
                         .eq(AttrAttrgroupRelationEntity.ATTR_GROUP_ID, attrGroupId)
         );
         List<Long> attrIds = relationEntities.stream().map(AttrAttrgroupRelationEntity::getAttrId).collect(Collectors.toList());
+        if (attrIds.isEmpty()) {
+            return Collections.emptyList();
+        }
         return listByIds(attrIds);
+    }
+
+    @Override
+    public PageUtils getNoRelation(Long attrGroupId, Map<String, Object> params) {
+        AttrGroupEntity groupEntity = attrGroupService.getById(attrGroupId);
+        Long catelogId = groupEntity.getCatelogId();
+        List<AttrGroupEntity> groupEntities = attrGroupService.list(new QueryWrapper<AttrGroupEntity>()
+                .eq(AttrGroupEntity.CATELOG_ID, catelogId));
+        List<Long> groupIds = groupEntities.stream().map(AttrGroupEntity::getAttrGroupId).collect(Collectors.toList());
+        List<AttrAttrgroupRelationEntity> relationEntities = relationService.list(new QueryWrapper<AttrAttrgroupRelationEntity>()
+                .in(AttrAttrgroupRelationEntity.ATTR_GROUP_ID, groupIds)
+        );
+        List<Long> attrIds = relationEntities.stream().map(AttrAttrgroupRelationEntity::getAttrId).collect(Collectors.toList());
+        QueryWrapper<AttrEntity> wrapper = new QueryWrapper<AttrEntity>()
+                .eq(AttrEntity.CATELOG_ID, catelogId)
+                .eq(AttrEntity.ATTR_TYPE, ProductConstant.AttrEnum.ATTR_TYPE_BASE.getValue());
+        if (!attrIds.isEmpty()) {
+            wrapper.notIn(AttrEntity.ATTR_ID, attrIds);
+        }
+        String key = (String) params.get("key");
+        if (StringUtils.isNotBlank(key)) {
+            wrapper.and(content -> content.eq(AttrEntity.ATTR_ID, key).or().like(AttrEntity.ATTR_NAME, key));
+        }
+        IPage<AttrEntity> page = page(new Query<AttrEntity>().getPage(params), wrapper);
+        return new PageUtils(page);
     }
 
 }

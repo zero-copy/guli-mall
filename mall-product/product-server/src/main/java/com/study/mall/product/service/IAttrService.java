@@ -56,5 +56,13 @@ public interface IAttrService extends IService<AttrEntity> {
      * @return 所有属性
      */
     List<AttrEntity> getGroupAttr(Long attrGroupId);
+
+    /**
+     * 获取没有被关联的属性
+     * @param attrGroupId 当前分组ID
+     * @param params 分页参数
+     * @return 分页信息
+     */
+    PageUtils getNoRelation(Long attrGroupId, Map<String, Object> params);
 }
 
