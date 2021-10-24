@@ -2,8 +2,10 @@ package com.study.mall.product.controller;
 
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.R;
+import com.study.mall.product.entity.AttrEntity;
 import com.study.mall.product.entity.AttrGroupEntity;
 import com.study.mall.product.service.IAttrGroupService;
+import com.study.mall.product.service.IAttrService;
 import com.study.mall.product.service.ICategoryService;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +32,15 @@ public class AttrGroupController {
     @Resource
     private ICategoryService categoryService;
 
+    @Resource
+    private IAttrService attrService;
+
+    @GetMapping("/{attrgroupId}/attr/relation")
+    public R attrRelation(@PathVariable("attrgroupId") Long attrGroupId) {
+        List<AttrEntity> attrEntities = attrService.getGroupAttr(attrGroupId);
+        return R.ok(attrEntities);
+    }
+
     /**
      * 列表
      */
@@ -39,7 +50,6 @@ public class AttrGroupController {
         PageUtils page = attrGroupService.queryPageByCatelogId(params, catelogId);
         return R.ok().put("page", page);
     }
-
 
     /**
      * 信息

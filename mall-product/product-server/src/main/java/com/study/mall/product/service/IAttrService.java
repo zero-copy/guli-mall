@@ -6,6 +6,7 @@ import com.study.mall.product.entity.AttrEntity;
 import com.study.mall.product.vo.AttrReqVo;
 import com.study.mall.product.vo.AttrRespVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,5 +50,12 @@ public interface IAttrService extends IService<AttrEntity> {
      * @return 是否成功
      */
     boolean updateDetail(AttrReqVo attr);
+
+    /**
+     * 获取分组中所有属性
+     * @param attrGroupId 分组ID
+     * @return 所有属性
+     */
+    List<AttrEntity> getGroupAttr(Long attrGroupId);
 }
 

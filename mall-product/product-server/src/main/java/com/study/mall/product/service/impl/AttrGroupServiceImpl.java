@@ -5,11 +5,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
+import com.study.mall.product.entity.AttrEntity;
 import com.study.mall.product.entity.AttrGroupEntity;
 import com.study.mall.product.mapper.AttrGroupMapper;
 import com.study.mall.product.service.IAttrGroupService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,6 +24,7 @@ import java.util.Map;
  * @date 2021-10-10 02:17:56
  */
 @Service("attrGroupService")
+@Transactional(rollbackFor = Exception.class)
 public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroupEntity> implements IAttrGroupService {
 
     @Override

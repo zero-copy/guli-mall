@@ -148,4 +148,14 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
         }
     }
 
+    @Override
+    public List<AttrEntity> getGroupAttr(Long attrGroupId) {
+        List<AttrAttrgroupRelationEntity> relationEntities = relationService.list(
+                new QueryWrapper<>(new AttrAttrgroupRelationEntity(), AttrAttrgroupRelationEntity.ATTR_ID)
+                        .eq(AttrAttrgroupRelationEntity.ATTR_GROUP_ID, attrGroupId)
+        );
+        List<Long> attrIds = relationEntities.stream().map(AttrAttrgroupRelationEntity::getAttrId).collect(Collectors.toList());
+        return listByIds(attrIds);
+    }
+
 }
