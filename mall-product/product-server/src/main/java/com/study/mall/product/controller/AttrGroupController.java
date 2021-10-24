@@ -6,11 +6,13 @@ import com.study.mall.common.utils.R;
 import com.study.mall.product.entity.AttrAttrgroupRelationEntity;
 import com.study.mall.product.entity.AttrEntity;
 import com.study.mall.product.entity.AttrGroupEntity;
+import com.study.mall.product.service.IAttrAttrgroupRelationService;
 import com.study.mall.product.service.IAttrGroupService;
 import com.study.mall.product.service.IAttrService;
 import com.study.mall.product.service.ICategoryService;
 import com.study.mall.product.vo.AttrGroupRelationReqVo;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +38,19 @@ public class AttrGroupController {
     private ICategoryService categoryService;
 
     @Resource
+    private IAttrAttrgroupRelationService relationService;
+
+    @Resource
     private IAttrService attrService;
+
+    @PostMapping("/attr/relation")
+    public R saveRelation(@RequestBody List<AttrGroupRelationReqVo> relationReqVos) {
+        List<AttrAttrgroupRelationEntity> relationEntities = relationReqVos.stream()
+                .map(vo -> BeanUtil.copyProperties(vo, AttrAttrgroupRelationEntity.class))
+                .collect(Collectors.toList());
+        relationService.saveBatch(relationEntities);
+        return R.ok();
+    }
 
     @GetMapping("/{attrgroupId}/noattr/relation")
     public R attrNoRelation(@PathVariable("attrgroupId") Long attrGroupId, @RequestParam Map<String, Object> params) {
