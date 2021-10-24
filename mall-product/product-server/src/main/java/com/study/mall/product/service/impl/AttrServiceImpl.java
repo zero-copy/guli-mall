@@ -61,7 +61,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
 
     @Override
     public boolean save(Long groupId, AttrEntity attr) {
-        if (attr.getAttrType().equals(ProductConstant.AttrEnum.ATTR_TYPE_SALE.getValue())) {
+        if (attr.getAttrType().equals(ProductConstant.AttrEnum.ATTR_TYPE_SALE.getValue()) || Objects.isNull(groupId)) {
             return save(attr);
         }
         AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
