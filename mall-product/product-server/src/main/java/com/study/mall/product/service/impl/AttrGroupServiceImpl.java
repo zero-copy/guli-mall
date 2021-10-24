@@ -5,14 +5,16 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
-import com.study.mall.product.entity.AttrEntity;
+import com.study.mall.product.entity.AttrAttrgroupRelationEntity;
 import com.study.mall.product.entity.AttrGroupEntity;
 import com.study.mall.product.mapper.AttrGroupMapper;
+import com.study.mall.product.service.IAttrAttrgroupRelationService;
 import com.study.mall.product.service.IAttrGroupService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +28,9 @@ import java.util.Map;
 @Service("attrGroupService")
 @Transactional(rollbackFor = Exception.class)
 public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroupEntity> implements IAttrGroupService {
+
+    @Resource
+    private IAttrAttrgroupRelationService relationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -51,6 +56,11 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
         }
         page = page(new Query<AttrGroupEntity>().getPage(params), wrapper);
         return new PageUtils(page);
+    }
+
+    @Override
+    public boolean removeRelation(List<AttrAttrgroupRelationEntity> relations) {
+        return relationService.removeBatchRelation(relations);
     }
 
 }

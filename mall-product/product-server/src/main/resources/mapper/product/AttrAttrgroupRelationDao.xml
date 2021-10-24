@@ -5,10 +5,16 @@
 
     <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.study.mall.product.entity.AttrAttrgroupRelationEntity" id="attrAttrgroupRelationMap">
-                    <result property="id" column="id"/>
-                    <result property="attrId" column="attr_id"/>
-                    <result property="attrGroupId" column="attr_group_id"/>
-                    <result property="attrSort" column="attr_sort"/>
-            </resultMap>
+        <result property="id" column="id"/>
+        <result property="attrId" column="attr_id"/>
+        <result property="attrGroupId" column="attr_group_id"/>
+        <result property="attrSort" column="attr_sort"/>
+    </resultMap>
 
+    <delete id="deleteBatchRelation">
+        DELETE FROM `mall-pms`.pms_attr_attrgroup_relation WHERE
+        <foreach open="(" close=")" collection="relations" item="relation" separator="OR">
+            attr_group_id = #{relation.attrGroupId} AND attr_id = #{relation.attrId}
+        </foreach>
+    </delete>
 </mapper>

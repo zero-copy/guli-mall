@@ -5,7 +5,6 @@ import com.study.mall.common.utils.PageUtils;
 import com.study.mall.product.entity.AttrEntity;
 import com.study.mall.product.vo.AttrReqVo;
 import com.study.mall.product.vo.AttrRespVo;
-
 import java.util.List;
 import java.util.Map;
 

@@ -2,7 +2,10 @@ package com.study.mall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.study.mall.common.utils.PageUtils;
+import com.study.mall.product.entity.AttrAttrgroupRelationEntity;
 import com.study.mall.product.entity.AttrGroupEntity;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,5 +26,12 @@ public interface IAttrGroupService extends IService<AttrGroupEntity> {
      * @return 分页数据
      */
     PageUtils queryPageByCatelogId(Map<String, Object> params, Long catelogId);
+
+    /**
+     * 移除当前分组中的属性
+     * @param relations 分组-属性
+     * @return 是否成功
+     */
+    boolean removeRelation(List<AttrAttrgroupRelationEntity> relations);
 }
 

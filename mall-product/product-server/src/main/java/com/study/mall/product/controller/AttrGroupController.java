@@ -1,18 +1,22 @@
 package com.study.mall.product.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.R;
+import com.study.mall.product.entity.AttrAttrgroupRelationEntity;
 import com.study.mall.product.entity.AttrEntity;
 import com.study.mall.product.entity.AttrGroupEntity;
 import com.study.mall.product.service.IAttrGroupService;
 import com.study.mall.product.service.IAttrService;
 import com.study.mall.product.service.ICategoryService;
+import com.study.mall.product.vo.AttrGroupRelationReqVo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -39,6 +43,15 @@ public class AttrGroupController {
     public R attrRelation(@PathVariable("attrgroupId") Long attrGroupId) {
         List<AttrEntity> attrEntities = attrService.getGroupAttr(attrGroupId);
         return R.ok(attrEntities);
+    }
+
+    @PostMapping("/attr/relation/delete")
+    public R deleteRelation(@RequestBody List<AttrGroupRelationReqVo> relationReqVos) {
+        List<AttrAttrgroupRelationEntity> relationEntities = relationReqVos.stream()
+                .map(vo -> BeanUtil.copyProperties(vo, AttrAttrgroupRelationEntity.class))
+                .collect(Collectors.toList());
+        attrGroupService.removeRelation(relationEntities);
+        return R.ok();
     }
 
     /**
