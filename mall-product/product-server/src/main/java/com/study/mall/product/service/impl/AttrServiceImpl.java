@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.study.mall.common.constant.ProductConstant;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
 import com.study.mall.product.entity.AttrAttrgroupRelationEntity;
@@ -59,16 +60,17 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
 
     @Override
     public boolean save(Long groupId, AttrEntity attr) {
-        save(attr);
+        if (attr.getAttrType().equals(ProductConstant.AttrEnum.ATTR_TYPE_SALE.getValue())) {
+            return save(attr);
+        }
         AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
         relationEntity.setAttrId(attr.getAttrId());
         relationEntity.setAttrGroupId(groupId);
         return relationService.save(relationEntity);
     }
 
-    @Override
-    public PageUtils queryBaseAttrPage(Long catelogId, Map<String, Object> params) {
-        QueryWrapper<AttrEntity> wrapper = new QueryWrapper<>();
+    public PageUtils queryAttrPage(Integer attrType, Long catelogId, Map<String, Object> params) {
+        QueryWrapper<AttrEntity> wrapper = new QueryWrapper<AttrEntity>().eq(AttrEntity.ATTR_TYPE, attrType);
         if (catelogId != 0) {
             wrapper.eq(AttrEntity.CATELOG_ID, catelogId);
         }
@@ -86,7 +88,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
             AttrAttrgroupRelationEntity relationEntity = relationService.getOne(new QueryWrapper<AttrAttrgroupRelationEntity>()
                     .eq(AttrAttrgroupRelationEntity.ATTR_ID, attr.getAttrId())
             );
-            if (Objects.nonNull(relationEntity)) {
+            if (attrType.equals(ProductConstant.AttrEnum.ATTR_TYPE_BASE.getValue()) && Objects.nonNull(relationEntity)) {
                 AttrGroupEntity groupEntity = attrGroupService.getById(relationEntity.getAttrGroupId());
                 respVo.setGroupName(groupEntity.getAttrGroupName());
             }
@@ -128,18 +130,21 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
     @Override
     public boolean updateDetail(AttrReqVo attr) {
         AttrEntity attrEntity = BeanUtil.copyProperties(attr, AttrEntity.class);
-        updateById(attrEntity);
-        AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
-        relationEntity.setAttrGroupId(attr.getAttrGroupId());
-        relationEntity.setAttrId(attr.getAttrId());
-        long count = relationService.count(new UpdateWrapper<AttrAttrgroupRelationEntity>()
-                .eq(AttrAttrgroupRelationEntity.ATTR_ID, attr.getAttrId()));
-        if (count > 0) {
-            return relationService.update(relationEntity, new UpdateWrapper<AttrAttrgroupRelationEntity>()
-                    .eq(AttrAttrgroupRelationEntity.ATTR_ID, attr.getAttrId())
-            );
+        if (attr.getAttrType().equals(ProductConstant.AttrEnum.ATTR_TYPE_SALE.getValue())) {
+            return updateById(attrEntity);
         } else {
-            return relationService.save(relationEntity);
+            AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
+            relationEntity.setAttrGroupId(attr.getAttrGroupId());
+            relationEntity.setAttrId(attr.getAttrId());
+            long count = relationService.count(new UpdateWrapper<AttrAttrgroupRelationEntity>()
+                    .eq(AttrAttrgroupRelationEntity.ATTR_ID, attr.getAttrId()));
+            if (count > 0) {
+                return relationService.update(relationEntity, new UpdateWrapper<AttrAttrgroupRelationEntity>()
+                        .eq(AttrAttrgroupRelationEntity.ATTR_ID, attr.getAttrId())
+                );
+            } else {
+                return relationService.save(relationEntity);
+            }
         }
     }
 

@@ -29,11 +29,12 @@ public interface IAttrService extends IService<AttrEntity> {
 
     /**
      * 查询基础属性
+     * @param attrType 属性类别
      * @param catelogId 分类Id
      * @param params 参数
      * @return 分页信息
      */
-    PageUtils queryBaseAttrPage(Long catelogId, Map<String, Object> params);
+    PageUtils queryAttrPage(Integer attrType, Long catelogId, Map<String, Object> params);
 
     /**
      * 查询详细信息

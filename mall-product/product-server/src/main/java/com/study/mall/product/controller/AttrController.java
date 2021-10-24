@@ -1,6 +1,7 @@
 package com.study.mall.product.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.study.mall.common.constant.ProductConstant;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.R;
 import com.study.mall.product.entity.AttrEntity;
@@ -28,9 +29,11 @@ public class AttrController {
     @Resource
     private IAttrService attrService;
 
-    @GetMapping("/base/list/{catelogId}")
-    public R baseAttrList(@PathVariable Long catelogId, @RequestParam Map<String, Object> params) {
-        PageUtils page = attrService.queryBaseAttrPage(catelogId, params);
+    @GetMapping("/{attrType}/list/{catelogId}")
+    public R baseAttrList(@PathVariable String attrType, @PathVariable Long catelogId, @RequestParam Map<String, Object> params) {
+        Integer type = ProductConstant.AttrEnum.ATTR_TYPE_BASE.getType().equalsIgnoreCase(attrType) ?
+                ProductConstant.AttrEnum.ATTR_TYPE_BASE.getValue() : ProductConstant.AttrEnum.ATTR_TYPE_SALE.getValue();
+        PageUtils page = attrService.queryAttrPage(type, catelogId, params);
         return R.ok(page);
     }
 
