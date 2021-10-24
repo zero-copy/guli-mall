@@ -35,7 +35,7 @@ private $column.attrType $column.attrname;
     #end
 
     #foreach ($column in $columns)
-private static final String $column.columnName.toUpperCase() = "$column.columnName";
+public static final String $column.columnName.toUpperCase() = "$column.columnName";
 
     #end
 
