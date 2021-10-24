@@ -73,6 +73,13 @@ public class R extends HashMap<String, Object> {
         return ok(map);
     }
 
+    public static R ok(PageUtils page) {
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("msg", "success");
+        map.put("page", page);
+        return ok(map);
+    }
+
     public static R ok() {
         return new R();
     }

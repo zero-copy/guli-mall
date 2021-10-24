@@ -24,5 +24,13 @@ public interface IAttrService extends IService<AttrEntity> {
      * @return 是否成功
      */
     boolean save(Long groupId, AttrEntity attr);
+
+    /**
+     * 查询基础属性
+     * @param catelogId 分类Id
+     * @param params 参数
+     * @return 分页信息
+     */
+    PageUtils queryBaseAttrPage(Long catelogId, Map<String, Object> params);
 }
 
