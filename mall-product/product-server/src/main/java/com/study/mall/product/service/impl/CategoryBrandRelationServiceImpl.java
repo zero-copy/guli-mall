@@ -9,17 +9,19 @@ import com.study.mall.common.utils.Query;
 import com.study.mall.product.entity.BrandEntity;
 import com.study.mall.product.entity.CategoryBrandRelationEntity;
 import com.study.mall.product.entity.CategoryEntity;
-import com.study.mall.product.mapper.BrandMapper;
 import com.study.mall.product.mapper.CategoryBrandRelationMapper;
-import com.study.mall.product.mapper.CategoryMapper;
+import com.study.mall.product.service.IBrandService;
 import com.study.mall.product.service.ICategoryBrandRelationService;
+import com.study.mall.product.service.ICategoryService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 品牌分类关联
@@ -33,10 +35,10 @@ import java.util.Objects;
 public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandRelationMapper, CategoryBrandRelationEntity> implements ICategoryBrandRelationService {
 
     @Resource
-    private BrandMapper brandMapper;
+    private IBrandService brandService;
 
     @Resource
-    private CategoryMapper categoryMapper;
+    private ICategoryService categoryService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -56,8 +58,8 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     public boolean saveDetail(CategoryBrandRelationEntity categoryBrandRelation) {
         Long brandId = categoryBrandRelation.getBrandId();
         Long catelogId = categoryBrandRelation.getCatelogId();
-        BrandEntity brandEntity = brandMapper.selectById(brandId);
-        CategoryEntity categoryEntity = categoryMapper.selectById(catelogId);
+        BrandEntity brandEntity = brandService.getById(brandId);
+        CategoryEntity categoryEntity = categoryService.getById(catelogId);
         if (Objects.nonNull(categoryEntity) && Objects.nonNull(brandEntity)) {
             categoryBrandRelation.setBrandName(brandEntity.getName());
             categoryBrandRelation.setCatelogName(categoryEntity.getName());
@@ -82,6 +84,15 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
         relationEntity.setCatelogName(categoryName);
         return update(relationEntity, new UpdateWrapper<CategoryBrandRelationEntity>()
                 .eq(CategoryBrandRelationEntity.CATELOG_ID, categoryId));
+    }
+
+    @Override
+    public List<BrandEntity> getBrandByCatId(Long catId) {
+        List<CategoryBrandRelationEntity> relationEntities = list(new QueryWrapper<CategoryBrandRelationEntity>()
+                .eq(CategoryBrandRelationEntity.CATELOG_ID, catId));
+        List<Long> brandIds = relationEntities.stream().map(CategoryBrandRelationEntity::getBrandId)
+                .collect(Collectors.toList());
+        return brandService.listByIds(brandIds);
     }
 
 }
