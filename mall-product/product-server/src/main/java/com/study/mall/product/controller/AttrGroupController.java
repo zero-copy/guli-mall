@@ -1,6 +1,7 @@
 package com.study.mall.product.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.R;
 import com.study.mall.product.entity.AttrAttrgroupRelationEntity;
@@ -11,6 +12,7 @@ import com.study.mall.product.service.IAttrGroupService;
 import com.study.mall.product.service.IAttrService;
 import com.study.mall.product.service.ICategoryService;
 import com.study.mall.product.vo.AttrGroupRelationReqVo;
+import com.study.mall.product.vo.AttrGroupWithAttrVo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -42,6 +44,20 @@ public class AttrGroupController {
 
     @Resource
     private IAttrService attrService;
+
+    @GetMapping("/{catelogId}/withattr")
+    public R categoryWithAttr(@PathVariable Long catelogId) {
+        List<AttrGroupEntity> groupEntities = attrGroupService.list(
+                new QueryWrapper<AttrGroupEntity>().eq(AttrGroupEntity.CATELOG_ID, catelogId)
+        );
+        List<AttrGroupWithAttrVo> vos = groupEntities.stream().map(group -> {
+            AttrGroupWithAttrVo vo = BeanUtil.copyProperties(group, AttrGroupWithAttrVo.class);
+            List<AttrEntity> attrEntities = attrService.getGroupAttr(group.getAttrGroupId());
+            vo.setAttrs(attrEntities);
+            return vo;
+        }).collect(Collectors.toList());
+        return R.ok(vos);
+    }
 
     @PostMapping("/attr/relation")
     public R saveRelation(@RequestBody List<AttrGroupRelationReqVo> relationReqVos) {
