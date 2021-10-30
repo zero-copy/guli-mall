@@ -67,7 +67,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
         AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
         relationEntity.setAttrId(attr.getAttrId());
         relationEntity.setAttrGroupId(groupId);
-        return relationService.save(relationEntity);
+        return relationService.save(relationEntity) && save(attr);
     }
 
     public PageUtils queryAttrPage(Integer attrType, Long catelogId, Map<String, Object> params) {
