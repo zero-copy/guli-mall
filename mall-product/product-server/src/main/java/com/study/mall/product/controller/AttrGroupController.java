@@ -2,6 +2,7 @@ package com.study.mall.product.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.study.mall.common.constant.ProductConstant;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.R;
 import com.study.mall.product.entity.AttrAttrgroupRelationEntity;
@@ -52,7 +53,9 @@ public class AttrGroupController {
         );
         List<AttrGroupWithAttrVo> vos = groupEntities.stream().map(group -> {
             AttrGroupWithAttrVo vo = BeanUtil.copyProperties(group, AttrGroupWithAttrVo.class);
-            List<AttrEntity> attrEntities = attrService.getGroupAttr(group.getAttrGroupId());
+            List<AttrEntity> attrEntities = attrService.getGroupAttr(group.getAttrGroupId()).stream()
+                    .filter(attrEntity -> attrEntity.getAttrType().equals(ProductConstant.AttrEnum.ATTR_TYPE_BASE.getValue()))
+                    .collect(Collectors.toList());
             vo.setAttrs(attrEntities);
             return vo;
         }).collect(Collectors.toList());
