@@ -61,13 +61,14 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
 
     @Override
     public boolean save(Long groupId, AttrEntity attr) {
-        if (attr.getAttrType().equals(ProductConstant.AttrEnum.ATTR_TYPE_SALE.getValue()) || Objects.isNull(groupId)) {
-            return save(attr);
+        boolean isSuccess = save(attr);
+        if (attr.getAttrType().equals(ProductConstant.AttrEnum.ATTR_TYPE_BASE.getValue()) || Objects.nonNull(groupId)) {
+            AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
+            relationEntity.setAttrId(attr.getAttrId());
+            relationEntity.setAttrGroupId(groupId);
+            return relationService.save(relationEntity) && isSuccess;
         }
-        AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
-        relationEntity.setAttrId(attr.getAttrId());
-        relationEntity.setAttrGroupId(groupId);
-        return relationService.save(relationEntity) && save(attr);
+        return isSuccess;
     }
 
     public PageUtils queryAttrPage(Integer attrType, Long catelogId, Map<String, Object> params) {
