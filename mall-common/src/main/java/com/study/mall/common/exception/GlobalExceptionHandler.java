@@ -57,7 +57,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public R handleException(Exception e) {
-        log.error("异常: {} --- {}", e.getClass(), e.getMessage());
+        log.error("异常: {} --- {} --- {}", e.getClass(), e.getMessage(), e.getStackTrace());
+        e.printStackTrace();
         return R.error(ErrorCodeEnum.UNKNOWN_EXCEPTION.getCode(), ErrorCodeEnum.UNKNOWN_EXCEPTION.getMessage());
     }
 }
