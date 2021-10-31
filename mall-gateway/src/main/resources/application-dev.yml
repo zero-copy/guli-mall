@@ -16,6 +16,13 @@ spring:
             - Path=/api/member/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
+        # ware
+        - id: ware_route
+          uri: lb://mall-ware
+          predicates:
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
         # third
         - id: third_route
           uri: lb://mall-third
@@ -23,13 +30,6 @@ spring:
             - Path=/api/thirdparty/**
           filters:
             - RewritePath=/api/thirdparty(?<segment>.*),/$\{segment}
-        # ware
-        - id: ware_route
-          uri: lb://mall-ware
-          predicates:
-            - Path=/api/ware/**
-          filters:
-            - RewritePath=/api/ware(?<segment>.*),/$\{segment}
         # admin
         - id: admin_route
           uri: lb://renren-fast
