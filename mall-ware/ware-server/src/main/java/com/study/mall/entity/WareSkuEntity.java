@@ -2,10 +2,9 @@ package com.study.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
 import lombok.Data;
+
+import java.io.Serializable;
     
 /**
  * 商品库存
@@ -52,17 +51,17 @@ public class WareSkuEntity implements Serializable {
     private Integer stockLocked;
 
     
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String SKU_ID = "sku_id";
+    public static final String SKU_ID = "sku_id";
 
-    private static final String WARE_ID = "ware_id";
+    public static final String WARE_ID = "ware_id";
 
-    private static final String STOCK = "stock";
+    public static final String STOCK = "stock";
 
-    private static final String SKU_NAME = "sku_name";
+    public static final String SKU_NAME = "sku_name";
 
-    private static final String STOCK_LOCKED = "stock_locked";
+    public static final String STOCK_LOCKED = "stock_locked";
 
     
 }

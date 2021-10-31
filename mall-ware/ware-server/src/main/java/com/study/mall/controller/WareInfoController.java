@@ -5,7 +5,6 @@ import com.study.mall.common.utils.R;
 import com.study.mall.entity.WareInfoEntity;
 import com.study.mall.service.IWareInfoService;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Map;
@@ -28,7 +27,7 @@ public class WareInfoController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     //ware:wareinfo:list
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = wareInfoService.queryPage(params);
@@ -39,7 +38,7 @@ public class WareInfoController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
+    @GetMapping("/info/{id}")
     //ware:wareinfo:info
     public R info(@PathVariable("id") Long id) {
         WareInfoEntity wareInfo = wareInfoService.getById(id);
@@ -49,7 +48,7 @@ public class WareInfoController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     //ware:wareinfo:save
     public R save(@RequestBody WareInfoEntity wareInfo) {
         wareInfoService.save(wareInfo);
@@ -59,7 +58,7 @@ public class WareInfoController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     //ware:wareinfo:update
     public R update(@RequestBody WareInfoEntity wareInfo) {
         wareInfoService.updateById(wareInfo);
@@ -69,7 +68,7 @@ public class WareInfoController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     //@RequiresPermissions("ware:wareinfo:delete")
     public R delete(@RequestBody Long[] ids) {
         wareInfoService.removeByIds(Arrays.asList(ids));
