@@ -2,11 +2,10 @@ package com.study.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
-        import java.math.BigDecimal;
-    import lombok.Data;
+import java.math.BigDecimal;
 
 /**
  * sku信息
@@ -78,27 +77,27 @@ public class SkuInfoEntity implements Serializable {
     private Long saleCount;
 
         
-    private static final String SKU_ID = "sku_id";
+    public static final String SKU_ID = "sku_id";
 
-    private static final String SPU_ID = "spu_id";
+    public static final String SPU_ID = "spu_id";
 
-    private static final String SKU_NAME = "sku_name";
+    public static final String SKU_NAME = "sku_name";
 
-    private static final String SKU_DESC = "sku_desc";
+    public static final String SKU_DESC = "sku_desc";
 
-    private static final String CATALOG_ID = "catalog_id";
+    public static final String CATALOG_ID = "catalog_id";
 
-    private static final String BRAND_ID = "brand_id";
+    public static final String BRAND_ID = "brand_id";
 
-    private static final String SKU_DEFAULT_IMG = "sku_default_img";
+    public static final String SKU_DEFAULT_IMG = "sku_default_img";
 
-    private static final String SKU_TITLE = "sku_title";
+    public static final String SKU_TITLE = "sku_title";
 
-    private static final String SKU_SUBTITLE = "sku_subtitle";
+    public static final String SKU_SUBTITLE = "sku_subtitle";
 
-    private static final String PRICE = "price";
+    public static final String PRICE = "price";
 
-    private static final String SALE_COUNT = "sale_count";
+    public static final String SALE_COUNT = "sale_count";
 
     
 }
