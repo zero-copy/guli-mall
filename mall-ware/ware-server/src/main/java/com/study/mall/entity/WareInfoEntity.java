@@ -2,10 +2,9 @@ package com.study.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
 import lombok.Data;
+
+import java.io.Serializable;
     
 /**
  * 仓库信息
@@ -42,13 +41,13 @@ public class WareInfoEntity implements Serializable {
     private String areacode;
 
     
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String NAME = "name";
+    public static final String NAME = "name";
 
-    private static final String ADDRESS = "address";
+    public static final String ADDRESS = "address";
 
-    private static final String AREACODE = "areacode";
+    public static final String AREACODE = "areacode";
 
     
 }
