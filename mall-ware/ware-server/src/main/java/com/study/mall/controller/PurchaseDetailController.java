@@ -1,17 +1,14 @@
 package com.study.mall.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-import javax.annotation.Resource;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import com.study.mall.entity.PurchaseDetailEntity;
-import com.study.mall.service.IPurchaseDetailService;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.R;
+import com.study.mall.entity.PurchaseDetailEntity;
+import com.study.mall.service.IPurchaseDetailService;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.Map;
 
 
 /**
@@ -31,7 +28,7 @@ public class PurchaseDetailController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     //ware:purchasedetail:list
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = purchaseDetailService.queryPage(params);
@@ -42,40 +39,40 @@ public class PurchaseDetailController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
+    @GetMapping("/info/{id}")
     //ware:purchasedetail:info
     public R info(@PathVariable("id") Long id) {
-            PurchaseDetailEntity purchaseDetail = purchaseDetailService.getById(id);
+        PurchaseDetailEntity purchaseDetail = purchaseDetailService.getById(id);
         return R.ok().put("purchaseDetail", purchaseDetail);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     //ware:purchasedetail:save
     public R save(@RequestBody PurchaseDetailEntity purchaseDetail) {
-            purchaseDetailService.save(purchaseDetail);
+        purchaseDetailService.save(purchaseDetail);
         return R.ok();
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     //ware:purchasedetail:update
     public R update(@RequestBody PurchaseDetailEntity purchaseDetail) {
-            purchaseDetailService.updateById(purchaseDetail);
+        purchaseDetailService.updateById(purchaseDetail);
         return R.ok();
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     //@RequiresPermissions("ware:purchasedetail:delete")
     public R delete(@RequestBody Long[] ids) {
-            purchaseDetailService.removeByIds(Arrays.asList(ids));
+        purchaseDetailService.removeByIds(Arrays.asList(ids));
         return R.ok();
     }
 

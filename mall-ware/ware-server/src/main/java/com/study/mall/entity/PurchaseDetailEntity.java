@@ -56,19 +56,19 @@ public class PurchaseDetailEntity implements Serializable {
     private Integer status;
 
     
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String PURCHASE_ID = "purchase_id";
+    public static final String PURCHASE_ID = "purchase_id";
 
-    private static final String SKU_ID = "sku_id";
+    public static final String SKU_ID = "sku_id";
 
-    private static final String SKU_NUM = "sku_num";
+    public static final String SKU_NUM = "sku_num";
 
-    private static final String SKU_PRICE = "sku_price";
+    public static final String SKU_PRICE = "sku_price";
 
-    private static final String WARE_ID = "ware_id";
+    public static final String WARE_ID = "ware_id";
 
-    private static final String STATUS = "status";
+    public static final String STATUS = "status";
 
     
 }
