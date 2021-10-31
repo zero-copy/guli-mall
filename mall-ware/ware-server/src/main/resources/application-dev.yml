@@ -16,5 +16,9 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
 
+logging:
+  level:
+    com.study.mall: debug
+
 config:
   version: v0.1
