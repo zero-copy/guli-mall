@@ -3,10 +3,12 @@ package com.study.mall.controller;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.R;
 import com.study.mall.entity.PurchaseEntity;
+import com.study.mall.form.MergeForm;
 import com.study.mall.service.IPurchaseService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -24,6 +26,12 @@ public class PurchaseController {
 
     @Resource
     private IPurchaseService purchaseService;
+
+    @PostMapping("/merge")
+    public R merge(@RequestBody MergeForm mergeForm) {
+        purchaseService.merge(mergeForm.getPurchaseId(), mergeForm.getItems());
+        return R.ok();
+    }
 
     @GetMapping("/unreceive/list")
     public R unreceiveList(@RequestParam Map<String, Object> params) {
@@ -58,6 +66,8 @@ public class PurchaseController {
     @PostMapping("/save")
     //ware:purchase:save
     public R save(@RequestBody PurchaseEntity purchase) {
+        purchase.setUpdateTime(LocalDateTime.now());
+        purchase.setCreateTime(LocalDateTime.now());
         purchaseService.save(purchase);
         return R.ok();
     }
@@ -68,6 +78,7 @@ public class PurchaseController {
     @PostMapping("/update")
     //ware:purchase:update
     public R update(@RequestBody PurchaseEntity purchase) {
+        purchase.setUpdateTime(LocalDateTime.now());
         purchaseService.updateById(purchase);
         return R.ok();
     }
