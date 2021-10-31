@@ -2,11 +2,11 @@ package com.study.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.LocalDate;
-        import java.math.BigDecimal;
-    import lombok.Data;
 
 /**
  * spu信息
@@ -68,23 +68,23 @@ public class SpuInfoEntity implements Serializable {
     private LocalDateTime updateTime;
 
         
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String SPU_NAME = "spu_name";
+    public static final String SPU_NAME = "spu_name";
 
-    private static final String SPU_DESCRIPTION = "spu_description";
+    public static final String SPU_DESCRIPTION = "spu_description";
 
-    private static final String CATALOG_ID = "catalog_id";
+    public static final String CATALOG_ID = "catalog_id";
 
-    private static final String BRAND_ID = "brand_id";
+    public static final String BRAND_ID = "brand_id";
 
-    private static final String WEIGHT = "weight";
+    public static final String WEIGHT = "weight";
 
-    private static final String PUBLISH_STATUS = "publish_status";
+    public static final String PUBLISH_STATUS = "publish_status";
 
-    private static final String CREATE_TIME = "create_time";
+    public static final String CREATE_TIME = "create_time";
 
-    private static final String UPDATE_TIME = "update_time";
+    public static final String UPDATE_TIME = "update_time";
 
     
 }

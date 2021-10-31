@@ -24,5 +24,12 @@ public interface ISpuInfoService extends IService<SpuInfoEntity> {
      * @return 是否成功
      */
     boolean saveInfo(SpuSaveForm spuInfoForm);
+
+    /**
+     * 通过条件检索Spu信息
+     * @param params 查询条件
+     * @return 分页信息
+     */
+    PageUtils queryPageByCondition(Map<String, Object> params);
 }
 

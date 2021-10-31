@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -74,6 +75,8 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
     public boolean saveInfo(SpuSaveForm spuInfoForm) {
         //保存Spu基本信息
         SpuInfoEntity spuInfo = BeanUtil.copyProperties(spuInfoForm, SpuInfoEntity.class);
+        spuInfo.setCreateTime(LocalDateTime.now());
+        spuInfo.setUpdateTime(LocalDateTime.now());
         save(spuInfo);
         //保存Spu描述图片
         List<String> decriptList = spuInfoForm.getDecript();
@@ -163,6 +166,33 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
             });
         }
         return true;
+    }
+
+    @Override
+    public PageUtils queryPageByCondition(Map<String, Object> params) {
+        QueryWrapper<SpuInfoEntity> wrapper = new QueryWrapper<>();
+        String key = (String) params.get("key");
+        if (StringUtils.isNotBlank(key)) {
+            wrapper.and(w -> w.eq(SpuInfoEntity.ID, key))
+                    .or().like(SpuInfoEntity.SPU_NAME, key);
+        }
+        String status = (String) params.get("status");
+        if (StringUtils.isNotBlank(status)) {
+            wrapper.eq(SpuInfoEntity.PUBLISH_STATUS, status);
+        }
+        String brandId = (String) params.get("brandId");
+        if (StringUtils.isNotBlank(brandId)) {
+            wrapper.eq(SpuInfoEntity.BRAND_ID, brandId);
+        }
+        String catelogId = (String) params.get("catelogId");
+        if (StringUtils.isNotBlank(catelogId)) {
+            wrapper.eq(SpuInfoEntity.CATALOG_ID, catelogId);
+        }
+        IPage<SpuInfoEntity> page = this.page(
+                new Query<SpuInfoEntity>().getPage(params),
+                wrapper
+        );
+        return new PageUtils(page);
     }
 
 }
