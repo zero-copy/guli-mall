@@ -15,5 +15,12 @@ import java.util.Map;
 public interface IPurchaseService extends IService<PurchaseEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 查询为分配的采购单
+     * @param params 查询条件
+     * @return 分页信息
+     */
+    PageUtils queryPageUnreceive(Map<String, Object> params);
 }
 

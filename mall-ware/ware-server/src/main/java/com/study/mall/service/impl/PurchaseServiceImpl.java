@@ -1,15 +1,16 @@
 package com.study.mall.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
-import com.study.mall.mapper.PurchaseMapper;
 import com.study.mall.entity.PurchaseEntity;
+import com.study.mall.mapper.PurchaseMapper;
 import com.study.mall.service.IPurchaseService;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 /**
  * 采购信息
@@ -25,7 +26,16 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, PurchaseEnt
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<PurchaseEntity> page = this.page(
                 new Query<PurchaseEntity>().getPage(params),
-                new QueryWrapper<PurchaseEntity>()
+                new QueryWrapper<>()
+        );
+        return new PageUtils(page);
+    }
+
+    @Override
+    public PageUtils queryPageUnreceive(Map<String, Object> params) {
+        IPage<PurchaseEntity> page = this.page(
+                new Query<PurchaseEntity>().getPage(params),
+                new QueryWrapper<PurchaseEntity>().eq(PurchaseEntity.STATUS, 0).or().eq(PurchaseEntity.STATUS, 1)
         );
         return new PageUtils(page);
     }

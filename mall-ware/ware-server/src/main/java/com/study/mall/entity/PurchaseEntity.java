@@ -2,11 +2,11 @@ package com.study.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
 import lombok.Data;
-        import java.math.BigDecimal;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
     
 /**
  * 采购信息
@@ -73,25 +73,25 @@ public class PurchaseEntity implements Serializable {
     private LocalDateTime updateTime;
 
     
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String ASSIGNEE_ID = "assignee_id";
+    public static final String ASSIGNEE_ID = "assignee_id";
 
-    private static final String ASSIGNEE_NAME = "assignee_name";
+    public static final String ASSIGNEE_NAME = "assignee_name";
 
-    private static final String PHONE = "phone";
+    public static final String PHONE = "phone";
 
-    private static final String PRIORITY = "priority";
+    public static final String PRIORITY = "priority";
 
-    private static final String STATUS = "status";
+    public static final String STATUS = "status";
 
-    private static final String WARE_ID = "ware_id";
+    public static final String WARE_ID = "ware_id";
 
-    private static final String AMOUNT = "amount";
+    public static final String AMOUNT = "amount";
 
-    private static final String CREATE_TIME = "create_time";
+    public static final String CREATE_TIME = "create_time";
 
-    private static final String UPDATE_TIME = "update_time";
+    public static final String UPDATE_TIME = "update_time";
 
     
 }
