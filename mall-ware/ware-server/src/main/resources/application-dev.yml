@@ -4,6 +4,8 @@ spring:
     url: jdbc:mysql://scorpio-study.mysql.cn-chengdu.rds.aliyuncs.com/mall-wms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: dbadmin
     password: lb82ndLF
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
