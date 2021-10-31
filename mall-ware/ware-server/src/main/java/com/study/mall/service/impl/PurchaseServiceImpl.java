@@ -77,4 +77,26 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, PurchaseEnt
         return purchaseDetailService.updateBatchById(detailEntities);
     }
 
+    @Override
+    public boolean received(List<Long> purchaseIds) {
+        List<PurchaseEntity> purchaseEntities = listByIds(purchaseIds);
+        List<PurchaseEntity> entities = purchaseEntities.stream()
+                .filter(entity -> entity.getStatus() == WareConstant.PurchaseStatusEnum.CREATED.getValue() ||
+                        entity.getStatus() == WareConstant.PurchaseStatusEnum.ASSIGNED.getValue())
+                .peek(entity -> {
+                    entity.setStatus(WareConstant.PurchaseStatusEnum.RECEIVED.getValue());
+                    entity.setUpdateTime(LocalDateTime.now());
+                })
+                .collect(Collectors.toList());
+        updateBatchById(entities);
+        entities.forEach(item -> {
+            List<PurchaseDetailEntity> detailEntities = purchaseDetailService.list(new QueryWrapper<PurchaseDetailEntity>().eq(PurchaseDetailEntity.PURCHASE_ID, item.getId()));
+            List<PurchaseDetailEntity> updateDetails = detailEntities.stream()
+                    .peek(detail -> detail.setStatus(WareConstant.PurchaseDetailStatusEnum.BUYING.getValue()))
+                    .collect(Collectors.toList());
+            purchaseDetailService.updateBatchById(updateDetails);
+        });
+        return true;
+    }
+
 }

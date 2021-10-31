@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -26,6 +27,12 @@ public class PurchaseController {
 
     @Resource
     private IPurchaseService purchaseService;
+
+    @PostMapping("/received")
+    public R received(@RequestBody List<Long> purchaseIds) {
+        purchaseService.received(purchaseIds);
+        return R.ok();
+    }
 
     @PostMapping("/merge")
     public R merge(@RequestBody MergeForm mergeForm) {

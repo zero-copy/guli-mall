@@ -32,5 +32,12 @@ public interface IPurchaseService extends IService<PurchaseEntity> {
      * @return 是否成功
      */
     boolean merge(Long purchaseId, List<Long> items);
+
+    /**
+     * 领取采购单
+     * @param purchaseIds 采购单Id
+     * @return 是否成功
+     */
+    boolean received(List<Long> purchaseIds);
 }
 
