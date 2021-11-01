@@ -1,15 +1,16 @@
 package com.study.mall.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
-import com.study.mall.mapper.ProductAttrValueMapper;
 import com.study.mall.entity.ProductAttrValueEntity;
+import com.study.mall.mapper.ProductAttrValueMapper;
 import com.study.mall.service.IProductAttrValueService;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 /**
  * spu属性值
@@ -25,7 +26,7 @@ public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueMap
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<ProductAttrValueEntity> page = this.page(
                 new Query<ProductAttrValueEntity>().getPage(params),
-                new QueryWrapper<ProductAttrValueEntity>()
+                new QueryWrapper<>()
         );
         return new PageUtils(page);
     }

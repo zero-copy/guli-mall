@@ -1,17 +1,21 @@
 package com.study.mall.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.study.mall.common.constant.ProductConstant;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.R;
 import com.study.mall.entity.AttrEntity;
+import com.study.mall.entity.ProductAttrValueEntity;
 import com.study.mall.service.IAttrService;
+import com.study.mall.service.IProductAttrValueService;
 import com.study.mall.vo.AttrReqVo;
 import com.study.mall.vo.AttrRespVo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -28,6 +32,16 @@ public class AttrController {
 
     @Resource
     private IAttrService attrService;
+
+    @Resource
+    private IProductAttrValueService attrValueService;
+
+    @GetMapping("/base/listforspu/{spuId}")
+    public R baseAttrList(@PathVariable Long spuId) {
+        List<ProductAttrValueEntity> attrValueEntities = attrValueService
+                .list(new QueryWrapper<ProductAttrValueEntity>().eq(ProductAttrValueEntity.SPU_ID, spuId));
+        return R.ok(attrValueEntities);
+    }
 
     @GetMapping("/{attrType}/list/{catelogId}")
     public R baseAttrList(@PathVariable String attrType, @PathVariable Long catelogId, @RequestParam Map<String, Object> params) {
@@ -46,7 +60,6 @@ public class AttrController {
         PageUtils page = attrService.queryPage(params);
         return R.ok().put("page", page);
     }
-
 
     /**
      * 信息

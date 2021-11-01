@@ -57,19 +57,19 @@ public class ProductAttrValueEntity implements Serializable {
     private Integer quickShow;
 
         
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String SPU_ID = "spu_id";
+    public static final String SPU_ID = "spu_id";
 
-    private static final String ATTR_ID = "attr_id";
+    public static final String ATTR_ID = "attr_id";
 
-    private static final String ATTR_NAME = "attr_name";
+    public static final String ATTR_NAME = "attr_name";
 
-    private static final String ATTR_VALUE = "attr_value";
+    public static final String ATTR_VALUE = "attr_value";
 
-    private static final String ATTR_SORT = "attr_sort";
+    public static final String ATTR_SORT = "attr_sort";
 
-    private static final String QUICK_SHOW = "quick_show";
+    public static final String QUICK_SHOW = "quick_show";
 
     
 }
