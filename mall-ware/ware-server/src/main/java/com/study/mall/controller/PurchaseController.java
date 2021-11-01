@@ -2,9 +2,12 @@ package com.study.mall.controller;
 
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.R;
+import com.study.mall.entity.PurchaseDetailEntity;
 import com.study.mall.entity.PurchaseEntity;
 import com.study.mall.form.MergeForm;
+import com.study.mall.form.PurchaseDoneForm;
 import com.study.mall.service.IPurchaseService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -12,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -27,6 +31,20 @@ public class PurchaseController {
 
     @Resource
     private IPurchaseService purchaseService;
+
+    @PostMapping("/done")
+    public R finished(@RequestBody @Validated PurchaseDoneForm doneForm) {
+        Long purchaseId = doneForm.getId();
+        List<PurchaseDetailEntity> detailEntities = doneForm.getItems().stream().map(item -> {
+            PurchaseDetailEntity detailEntity = new PurchaseDetailEntity();
+            detailEntity.setPurchaseId(purchaseId);
+            detailEntity.setId(item.getItemId());
+            detailEntity.setStatus(item.getStatus());
+            return detailEntity;
+        }).collect(Collectors.toList());
+        purchaseService.done(purchaseId, detailEntities);
+        return R.ok();
+    }
 
     @PostMapping("/received")
     public R received(@RequestBody List<Long> purchaseIds) {

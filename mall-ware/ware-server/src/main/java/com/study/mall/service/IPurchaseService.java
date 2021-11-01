@@ -2,6 +2,7 @@ package com.study.mall.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.study.mall.common.utils.PageUtils;
+import com.study.mall.entity.PurchaseDetailEntity;
 import com.study.mall.entity.PurchaseEntity;
 
 import java.util.List;
@@ -39,5 +40,13 @@ public interface IPurchaseService extends IService<PurchaseEntity> {
      * @return 是否成功
      */
     boolean received(List<Long> purchaseIds);
+
+    /**
+     * 完成采购
+     * @param purchaseId 采购单id
+     * @param detailEntities 采购需求
+     * @return 是否成功
+     */
+    boolean done(Long purchaseId, List<PurchaseDetailEntity> detailEntities);
 }
 

@@ -12,6 +12,7 @@ import com.study.mall.entity.PurchaseEntity;
 import com.study.mall.mapper.PurchaseMapper;
 import com.study.mall.service.IPurchaseDetailService;
 import com.study.mall.service.IPurchaseService;
+import com.study.mall.service.IWareSkuService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,9 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, PurchaseEnt
 
     @Resource
     private IPurchaseDetailService purchaseDetailService;
+
+    @Resource
+    private IWareSkuService wareSkuService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -97,6 +101,27 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, PurchaseEnt
             purchaseDetailService.updateBatchById(updateDetails);
         });
         return true;
+    }
+
+    @Override
+    public boolean done(Long purchaseId, List<PurchaseDetailEntity> detailEntities) {
+        boolean isSuccess = true;
+        for (PurchaseDetailEntity entity : detailEntities) {
+            if (WareConstant.PurchaseDetailStatusEnum.ERROR.getValue() == entity.getStatus()) {
+                isSuccess = false;
+            } else {
+                entity.setStatus(WareConstant.PurchaseDetailStatusEnum.FINISHED.getValue());
+                PurchaseDetailEntity detail = purchaseDetailService.getById(entity.getId());
+                wareSkuService.addStock(detail.getSkuId(), detail.getWareId(), detail.getSkuNum());
+            }
+        }
+        purchaseDetailService.updateBatchById(detailEntities);
+        PurchaseEntity purchaseEntity = new PurchaseEntity();
+        purchaseEntity.setId(purchaseId);
+        purchaseEntity.setStatus(isSuccess ? WareConstant.PurchaseStatusEnum.FINISHED.getValue() : WareConstant.PurchaseStatusEnum.ERROR.getValue());
+        purchaseEntity.setUpdateTime(LocalDateTime.now());
+        updateById(purchaseEntity);
+        return false;
     }
 
 }
