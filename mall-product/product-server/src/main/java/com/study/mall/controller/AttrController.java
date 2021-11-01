@@ -36,6 +36,12 @@ public class AttrController {
     @Resource
     private IProductAttrValueService attrValueService;
 
+    @PostMapping("/update/{spuId}")
+    public R update(@PathVariable Long spuId, @RequestBody List<ProductAttrValueEntity> attrValueEntities) {
+        attrValueService.updateBySpuId(spuId, attrValueEntities);
+        return R.ok();
+    }
+
     @GetMapping("/base/listforspu/{spuId}")
     public R baseAttrList(@PathVariable Long spuId) {
         List<ProductAttrValueEntity> attrValueEntities = attrValueService

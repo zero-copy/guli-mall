@@ -9,7 +9,8 @@ import com.study.mall.entity.ProductAttrValueEntity;
 import com.study.mall.mapper.ProductAttrValueMapper;
 import com.study.mall.service.IProductAttrValueService;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,6 +21,7 @@ import java.util.Map;
  * @date 2021-10-10 02:17:56
  */
 @Service("productAttrValueService")
+@Transactional(rollbackFor = Exception.class)
 public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueMapper, ProductAttrValueEntity> implements IProductAttrValueService {
 
     @Override
@@ -29,6 +31,13 @@ public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueMap
                 new QueryWrapper<>()
         );
         return new PageUtils(page);
+    }
+
+    @Override
+    public boolean updateBySpuId(Long spuId, List<ProductAttrValueEntity> attrValueEntities) {
+        remove(new QueryWrapper<ProductAttrValueEntity>().eq(ProductAttrValueEntity.SPU_ID, spuId));
+        attrValueEntities.forEach(attrValue -> attrValue.setSpuId(spuId));
+        return saveBatch(attrValueEntities);
     }
 
 }
