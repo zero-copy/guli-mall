@@ -10,6 +10,7 @@ import com.study.mall.entity.WareSkuEntity;
 import com.study.mall.feign.ISkuInfoFeignService;
 import com.study.mall.mapper.WareSkuMapper;
 import com.study.mall.service.IWareSkuService;
+import com.study.mall.common.dto.SkuStockDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 商品库存
@@ -71,6 +73,17 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
         } else {
             return wareSkuMapper.addStock(skuId, wareId, skuNum) != 0;
         }
+    }
+
+    @Override
+    public List<SkuStockDto> getStockByIds(List<Long> skuIds) {
+        return skuIds.stream().map(id ->{
+            Long stock = baseMapper.getStock(id);
+            SkuStockDto vo = new SkuStockDto();
+            vo.setSkuId(id);
+            vo.setHasStock(stock > 0);
+            return vo;
+        }).collect(Collectors.toList());
     }
 
 }

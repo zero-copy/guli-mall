@@ -188,4 +188,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
         return new PageUtils(page);
     }
 
+    @Override
+    public List<Long> getSearchType(List<Long> attrIds) {
+        return baseMapper.selectSearchType(attrIds);
+    }
+
 }

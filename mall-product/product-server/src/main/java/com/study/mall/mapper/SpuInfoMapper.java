@@ -1,8 +1,9 @@
 package com.study.mall.mapper;
 
-import com.study.mall.entity.SpuInfoEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.study.mall.entity.SpuInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * spu信息
@@ -14,4 +15,12 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SpuInfoMapper extends BaseMapper<SpuInfoEntity> {
 
+    /**
+     * 更新Spu状态
+     *
+     * @param spuId  spuid
+     * @param status 状态
+     * @return 影响行数
+     */
+    long updateStatus(@Param("spuId") Long spuId, @Param("status") int status);
 }

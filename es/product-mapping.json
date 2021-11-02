@@ -31,7 +31,7 @@
       "brandId": {
         "type": "long"
       },
-      "catelogId": {
+      "catalogId": {
         "type": "long"
       },
       "brandName": {
@@ -44,7 +44,7 @@
         "index": false,
         "doc_values": false
       },
-      "catelogName": {
+      "catalogName": {
         "type": "keyword",
         "index": false,
         "doc_values": false

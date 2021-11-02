@@ -4,13 +4,18 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.study.mall.common.constant.ProductConstant;
 import com.study.mall.common.dto.SkuReductionDto;
+import com.study.mall.common.dto.SkuStockDto;
 import com.study.mall.common.dto.SpuBoundsDto;
+import com.study.mall.common.dto.es.SkuEsDto;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
 import com.study.mall.common.utils.R;
 import com.study.mall.entity.*;
 import com.study.mall.feign.ICouponFeignService;
+import com.study.mall.feign.IEsProductFeignService;
+import com.study.mall.feign.IWareSkuFeignService;
 import com.study.mall.form.*;
 import com.study.mall.mapper.SpuInfoMapper;
 import com.study.mall.service.*;
@@ -18,12 +23,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -61,6 +65,18 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
 
     @Resource
     private ICouponFeignService couponFeignService;
+
+    @Resource
+    private IBrandService brandService;
+
+    @Resource
+    private ICategoryService categoryService;
+
+    @Resource
+    private IWareSkuFeignService wareSkuFeignService;
+
+    @Resource
+    private IEsProductFeignService esProductFeignService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -193,6 +209,54 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
                 wrapper
         );
         return new PageUtils(page);
+    }
+
+    @Override
+    public boolean up(Long spuId) {
+        List<SkuInfoEntity> skuInfoEntities = skuInfoService.getBySpuId(spuId);
+        List<Long> skuIds = skuInfoEntities.stream().map(SkuInfoEntity::getSkuId).collect(Collectors.toList());
+        R<List<SkuStockDto>> response = wareSkuFeignService.hasStock(skuIds);
+        List<SkuStockDto> skuStockDtos = response.getData();
+        Map<Long, Boolean> stockMap = skuStockDtos.stream()
+                .collect(Collectors.toMap(SkuStockDto::getSkuId, SkuStockDto::getHasStock));
+        //查询可被检索的规格属性
+        List<ProductAttrValueEntity> attrValueEntities = attrValueService.list(
+                new QueryWrapper<ProductAttrValueEntity>().eq(ProductAttrValueEntity.SPU_ID, spuId)
+        );
+        List<Long> attrIds = attrValueEntities.stream()
+                .map(ProductAttrValueEntity::getAttrId)
+                .collect(Collectors.toList());
+        List<Long> searchTypeIds = attrService.getSearchType(attrIds);
+        Set<Long> idSet = new HashSet<>(searchTypeIds);
+        List<SkuEsDto.Attrs> searchAttrs = attrValueEntities.stream()
+                .filter(item -> idSet.contains(item.getAttrId()))
+                .map(item -> BeanUtil.copyProperties(item, SkuEsDto.Attrs.class))
+                .collect(Collectors.toList());
+        List<SkuEsDto> skuEsDtos = skuInfoEntities.stream().map(sku -> {
+            SkuEsDto skuEsDto = BeanUtil.copyProperties(sku, SkuEsDto.class);
+            skuEsDto.setSkuPrice(sku.getPrice());
+            skuEsDto.setSkuImg(sku.getSkuDefaultImg());
+            //查询是否有库存
+            skuEsDto.setHasStock(stockMap.get(sku.getSkuId()));
+            //热度评分
+            skuEsDto.setHotScore(0L);
+            BrandEntity brandEntity = brandService.getById(sku.getBrandId());
+            skuEsDto.setBrandName(brandEntity.getName());
+            skuEsDto.setBrandImg(brandEntity.getLogo());
+            CategoryEntity categoryEntity = categoryService.getById(sku.getCatalogId());
+            skuEsDto.setCatalogId(sku.getCatalogId());
+            skuEsDto.setCatalogName(categoryEntity.getName());
+            skuEsDto.setAttrs(searchAttrs);
+            return skuEsDto;
+        }).collect(Collectors.toList());
+        //发送Es
+        R r = esProductFeignService.productStatusUp(skuEsDtos);
+        boolean isSuccess = r.getCode() == 0;
+        if (isSuccess) {
+
+        } else {
+            return baseMapper.updateStatus(spuId, ProductConstant.StatusEnum.UP.getValue()) != 0;
+        }
     }
 
 }

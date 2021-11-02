@@ -26,6 +26,16 @@
             <groupId>com.study.mall</groupId>
             <artifactId>coupon-api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.study.mall</groupId>
+            <artifactId>ware-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.study.mall</groupId>
+            <artifactId>search-api</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

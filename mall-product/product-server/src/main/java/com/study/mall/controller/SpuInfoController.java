@@ -26,6 +26,12 @@ public class SpuInfoController {
     @Resource
     private ISpuInfoService spuInfoService;
 
+    @PostMapping("/{spuId}/up")
+    public R spuUp(@PathVariable Long spuId) {
+        spuInfoService.up(spuId);
+        return R.ok();
+    }
+
     /**
      * 列表
      */

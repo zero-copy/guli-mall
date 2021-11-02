@@ -29,4 +29,30 @@ public class ProductConstant {
             return type;
         }
     }
+
+    public enum StatusEnum {
+
+        NEW_SPU(0, "new"),
+
+        UP(1, "up"),
+
+        DOWN(2, "down");
+
+        private final int value;
+
+        private final String type;
+
+        StatusEnum(int value, String type) {
+            this.value = value;
+            this.type = type;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public String getType() {
+            return type;
+        }
+    }
 }

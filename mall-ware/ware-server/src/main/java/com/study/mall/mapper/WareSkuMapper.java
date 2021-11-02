@@ -23,4 +23,11 @@ public interface WareSkuMapper extends BaseMapper<WareSkuEntity> {
      * @return 影响行数
      */
     int addStock(@Param("skuId") Long skuId, @Param("wareId") Long wareId, @Param("skuNum") Integer skuNum);
+
+    /**
+     * 获取当前库存
+     * @param skuId skuId
+     * @return 库存量
+     */
+    Long getStock(Long skuId);
 }

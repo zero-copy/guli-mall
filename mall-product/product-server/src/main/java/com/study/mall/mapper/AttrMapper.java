@@ -4,6 +4,8 @@ import com.study.mall.entity.AttrEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * 商品属性
  *
@@ -14,4 +16,10 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface AttrMapper extends BaseMapper<AttrEntity> {
 
+    /**
+     * 查询可检索的属性id
+     * @param attrIds 属性id
+     * @return 属性id
+     */
+    List<Long> selectSearchType(List<Long> attrIds);
 }

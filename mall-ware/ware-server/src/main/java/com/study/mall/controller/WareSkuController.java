@@ -4,9 +4,11 @@ import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.R;
 import com.study.mall.entity.WareSkuEntity;
 import com.study.mall.service.IWareSkuService;
+import com.study.mall.common.dto.SkuStockDto;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -23,6 +25,16 @@ public class WareSkuController {
 
     @Resource
     private IWareSkuService wareSkuService;
+
+    /**
+     * 查询是否有库存
+     */
+    @PostMapping("/hasStock")
+    public R<List<SkuStockDto>> hasStock(@RequestBody List<Long> skuIds) {
+        R<List<SkuStockDto>> r = R.ok();
+        r.setData(wareSkuService.getStockByIds(skuIds));
+        return r;
+    }
 
     /**
      * 列表

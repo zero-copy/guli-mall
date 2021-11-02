@@ -10,8 +10,10 @@ import com.study.mall.mapper.SkuInfoMapper;
 import com.study.mall.service.ISkuInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,6 +24,7 @@ import java.util.Map;
  * @date 2021-10-10 02:17:55
  */
 @Service("skuInfoService")
+@Transactional(rollbackFor = Exception.class)
 public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfoEntity> implements ISkuInfoService {
 
     @Override
@@ -65,6 +68,11 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfoEntity
                 wrapper
         );
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<SkuInfoEntity> getBySpuId(Long spuId) {
+        return list(new QueryWrapper<SkuInfoEntity>().eq(SkuInfoEntity.SPU_ID, spuId));
     }
 
 }

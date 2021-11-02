@@ -3,6 +3,9 @@ package com.study.mall.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.entity.WareSkuEntity;
+import com.study.mall.common.dto.SkuStockDto;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,5 +27,12 @@ public interface IWareSkuService extends IService<WareSkuEntity> {
      * @return 是否成功
      */
     boolean addStock(Long skuId, Long wareId, Integer skuNum);
+
+    /**
+     * 查询是否有库存
+     * @param skuIds skuIds
+     * @return 库存信息
+     */
+    List<SkuStockDto> getStockByIds(List<Long> skuIds);
 }
 
