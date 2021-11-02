@@ -1,0 +1,20 @@
+server:
+  port: 12070
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: mall-search
+  cloud:
+    nacos:
+      discovery:
+        server-addr: nacos-server:8848
+      config:
+        server-addr: nacos-server:8848
+        namespace: feba8dfb-f085-4b25-8258-5d41ed86826e
+        group: DEFAULT_GROUP
+        file-extension: yml
+
+config:
+  version: v0.1

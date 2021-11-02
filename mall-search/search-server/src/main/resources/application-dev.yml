@@ -1,0 +1,6 @@
+logging:
+  level:
+    com.study.mall: debug
+
+config:
+  version: v0.1
