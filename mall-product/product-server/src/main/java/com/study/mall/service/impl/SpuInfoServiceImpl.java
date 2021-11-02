@@ -253,9 +253,10 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
         R r = esProductFeignService.productStatusUp(skuEsDtos);
         boolean isSuccess = r.getCode() == 0;
         if (isSuccess) {
-
-        } else {
             return baseMapper.updateStatus(spuId, ProductConstant.StatusEnum.UP.getValue()) != 0;
+        } else {
+            log.error((String) r.get("msg"));
+            return false;
         }
     }
 
