@@ -24,10 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -49,6 +46,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
 
     @Resource
     private ICategoryService categoryService;
+
+    @Resource
+    private AttrMapper attrMapper;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -190,7 +190,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
 
     @Override
     public List<Long> getSearchType(List<Long> attrIds) {
-        return baseMapper.selectSearchType(attrIds);
+        return attrMapper.selectSearchType(attrIds);
     }
 
 }

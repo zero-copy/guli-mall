@@ -18,7 +18,7 @@
 
     <select id="selectSearchType" resultType="java.lang.Long">
         SELECT `mall-pms`.pms_attr.attr_id FROM `mall-pms`.pms_attr WHERE attr_id IN
-        <foreach collection="list" index="id" open="(" close=")" separator=",">
+        <foreach collection="attrIds" item="id" open="(" close=")" separator=",">
             #{id}
         </foreach>
         AND search_type = 1
