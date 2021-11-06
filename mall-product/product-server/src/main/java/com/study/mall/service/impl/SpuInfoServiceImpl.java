@@ -5,13 +5,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.study.mall.common.constant.ProductConstant;
-import com.study.mall.common.dto.SkuReductionDto;
-import com.study.mall.common.dto.SkuStockDto;
-import com.study.mall.common.dto.SpuBoundsDto;
-import com.study.mall.common.dto.es.SkuEsDto;
+import com.study.mall.common.lang.dto.SkuReductionDto;
+import com.study.mall.common.lang.dto.SkuStockDto;
+import com.study.mall.common.lang.dto.SpuBoundsDto;
+import com.study.mall.common.lang.dto.es.SkuEsDto;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
-import com.study.mall.common.utils.R;
+import com.study.mall.common.lang.R;
 import com.study.mall.entity.*;
 import com.study.mall.feign.ICouponFeignService;
 import com.study.mall.feign.IEsProductFeignService;
@@ -130,8 +130,8 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
         SpuBoundsForm boundsForm = spuInfoForm.getBounds();
         SpuBoundsDto spuBoundsDto = BeanUtil.copyProperties(boundsForm, SpuBoundsDto.class);
         spuBoundsDto.setSpuId(spuInfo.getId());
-        R boundsRes = couponFeignService.saveSpuBounds(spuBoundsDto);
-        if (!boundsRes.isOk()) {
+        R<Object> boundsRes = couponFeignService.saveSpuBounds(spuBoundsDto);
+        if (boundsRes.getCode() != 0) {
             log.error("远程保存优惠信息失败");
         }
         //保存Sku基本信息
@@ -175,7 +175,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
                 reductionDto.setSkuId(skuInfoEntity.getSkuId());
                 if (reductionDto.getFullCount() <= 0 || reductionDto.getFullPrice().compareTo(new BigDecimal(0)) > 0) {
                     R reductionRes = couponFeignService.saveSkuReduction(reductionDto);
-                    if (!reductionRes.isOk()) {
+                    if (reductionRes.getCode() != 0) {
                         log.error("远程保存Spu积分信息失败");
                     }
                 }
@@ -250,12 +250,12 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfoEntity
             return skuEsDto;
         }).collect(Collectors.toList());
         //发送Es
-        R r = esProductFeignService.productStatusUp(skuEsDtos);
+        R<Object> r = esProductFeignService.productStatusUp(skuEsDtos);
         boolean isSuccess = r.getCode() == 0;
         if (isSuccess) {
             return baseMapper.updateStatus(spuId, ProductConstant.StatusEnum.UP.getValue()) != 0;
         } else {
-            log.error((String) r.get("msg"));
+            log.error(r.getMsg());
             return false;
         }
     }

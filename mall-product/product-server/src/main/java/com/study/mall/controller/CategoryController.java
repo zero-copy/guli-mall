@@ -1,6 +1,6 @@
 package com.study.mall.controller;
 
-import com.study.mall.common.utils.R;
+import com.study.mall.common.lang.R;
 import com.study.mall.entity.CategoryEntity;
 import com.study.mall.service.ICategoryService;
 import org.springframework.web.bind.annotation.*;

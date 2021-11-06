@@ -1,16 +1,18 @@
 package com.study.mall.service.impl;
 
+import com.alibaba.nacos.common.utils.Objects;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.study.mall.common.lang.dto.SkuInfoDto;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
-import com.study.mall.common.utils.R;
+import com.study.mall.common.lang.R;
 import com.study.mall.entity.WareSkuEntity;
 import com.study.mall.feign.ISkuInfoFeignService;
 import com.study.mall.mapper.WareSkuMapper;
 import com.study.mall.service.IWareSkuService;
-import com.study.mall.common.dto.SkuStockDto;
+import com.study.mall.common.lang.dto.SkuStockDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,10 +66,9 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
             wareSkuEntity.setWareId(wareId);
             wareSkuEntity.setStock(skuNum);
             wareSkuEntity.setStockLocked(0);
-            R response = skuInfoFeignService.info(skuId);
-            if (response.isOk()) {
-                Map<String, Object> dataMap = (Map<String, Object>) response.getData();
-                wareSkuEntity.setSkuName((String) dataMap.get("skuName"));
+            R<SkuInfoDto> response = skuInfoFeignService.info(skuId);
+            if (response.getCode() == 0) {
+                wareSkuEntity.setSkuName(response.getData().getSkuName());
             }
             return save(wareSkuEntity);
         } else {
@@ -81,7 +82,11 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
             Long stock = baseMapper.getStock(id);
             SkuStockDto vo = new SkuStockDto();
             vo.setSkuId(id);
-            vo.setHasStock(stock > 0);
+            if (Objects.isNull(stock)) {
+                vo.setHasStock(false);
+            } else {
+                vo.setHasStock(stock > 0);
+            }
             return vo;
         }).collect(Collectors.toList());
     }

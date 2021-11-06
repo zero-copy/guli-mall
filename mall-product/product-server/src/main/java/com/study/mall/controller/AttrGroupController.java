@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.study.mall.common.constant.ProductConstant;
 import com.study.mall.common.utils.PageUtils;
-import com.study.mall.common.utils.R;
+import com.study.mall.common.lang.R;
 import com.study.mall.entity.AttrAttrgroupRelationEntity;
 import com.study.mall.entity.AttrEntity;
 import com.study.mall.entity.AttrGroupEntity;

@@ -1,4 +1,4 @@
-package com.study.mall.common.dto;
+package com.study.mall.common.lang.dto;
 
 import lombok.Data;
 import java.math.BigDecimal;

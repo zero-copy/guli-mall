@@ -1,9 +1,9 @@
 package com.study.mall.controller;
 
-import com.study.mall.common.dto.es.SkuEsDto;
+import com.study.mall.common.lang.dto.es.SkuEsDto;
 import com.study.mall.common.enums.ErrorCodeEnum;
-import com.study.mall.common.utils.R;
-import com.study.mall.product.IProductSaveService;
+import com.study.mall.common.lang.R;
+import com.study.mall.service.IProductSaveService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

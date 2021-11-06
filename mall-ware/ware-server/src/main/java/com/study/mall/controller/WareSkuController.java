@@ -1,10 +1,10 @@
 package com.study.mall.controller;
 
 import com.study.mall.common.utils.PageUtils;
-import com.study.mall.common.utils.R;
+import com.study.mall.common.lang.R;
 import com.study.mall.entity.WareSkuEntity;
 import com.study.mall.service.IWareSkuService;
-import com.study.mall.common.dto.SkuStockDto;
+import com.study.mall.common.lang.dto.SkuStockDto;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -31,8 +31,14 @@ public class WareSkuController {
      */
     @PostMapping("/hasStock")
     public R<List<SkuStockDto>> hasStock(@RequestBody List<Long> skuIds) {
-        R<List<SkuStockDto>> r = R.ok();
-        r.setData(wareSkuService.getStockByIds(skuIds));
+        R<List<SkuStockDto>> r = new R<>();
+        List<SkuStockDto> skuStockDtos = wareSkuService.getStockByIds(skuIds);
+        try {
+            r.setData(skuStockDtos);
+            r.setCode(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return r;
     }
 

@@ -2,7 +2,7 @@ package com.study.mall.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.study.mall.common.utils.PageUtils;
-import com.study.mall.common.utils.R;
+import com.study.mall.common.lang.R;
 import com.study.mall.form.BrandStatusForm;
 import com.study.mall.entity.BrandEntity;
 import com.study.mall.service.IBrandService;

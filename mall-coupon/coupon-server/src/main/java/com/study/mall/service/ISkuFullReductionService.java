@@ -1,7 +1,7 @@
 package com.study.mall.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.study.mall.common.dto.SkuReductionDto;
+import com.study.mall.common.lang.dto.SkuReductionDto;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.entity.SkuFullReductionEntity;
 

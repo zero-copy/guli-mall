@@ -1,6 +1,7 @@
 package com.study.mall.feign;
 
-import com.study.mall.common.utils.R;
+import com.study.mall.common.lang.R;
+import com.study.mall.common.lang.dto.SkuInfoDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,5 +17,5 @@ public interface ISkuInfoFeignService {
      * 信息
      */
     @RequestMapping("/info/{skuId}")
-    R info(@PathVariable("skuId") Long skuId);
+    R<SkuInfoDto> info(@PathVariable("skuId") Long skuId);
 }

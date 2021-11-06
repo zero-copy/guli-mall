@@ -1,6 +1,6 @@
-package com.study.mall.product;
+package com.study.mall.service;
 
-import com.study.mall.common.dto.es.SkuEsDto;
+import com.study.mall.common.lang.dto.es.SkuEsDto;
 
 import java.io.IOException;
 import java.util.List;

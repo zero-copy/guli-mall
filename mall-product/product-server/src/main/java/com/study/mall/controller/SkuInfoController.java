@@ -1,7 +1,9 @@
 package com.study.mall.controller;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.study.mall.common.lang.dto.SkuInfoDto;
 import com.study.mall.common.utils.PageUtils;
-import com.study.mall.common.utils.R;
+import com.study.mall.common.lang.R;
 import com.study.mall.entity.SkuInfoEntity;
 import com.study.mall.service.ISkuInfoService;
 import org.springframework.web.bind.annotation.*;
@@ -41,9 +43,10 @@ public class SkuInfoController {
      */
     @RequestMapping("/info/{skuId}")
     //product:skuinfo:info
-    public R info(@PathVariable("skuId") Long skuId) {
+    public R<SkuInfoDto> info(@PathVariable("skuId") Long skuId) {
         SkuInfoEntity skuInfo = skuInfoService.getById(skuId);
-        return R.ok().put("skuInfo", skuInfo);
+        SkuInfoDto skuInfoDto = BeanUtil.copyProperties(skuInfo, SkuInfoDto.class);
+        return R.ok(skuInfoDto);
     }
 
     /**

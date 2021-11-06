@@ -1,7 +1,7 @@
 package com.study.mall.controller;
 
 import com.study.mall.common.utils.PageUtils;
-import com.study.mall.common.utils.R;
+import com.study.mall.common.lang.R;
 import com.study.mall.entity.PurchaseDetailEntity;
 import com.study.mall.service.IPurchaseDetailService;
 import org.springframework.web.bind.annotation.*;

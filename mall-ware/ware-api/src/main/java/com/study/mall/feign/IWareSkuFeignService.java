@@ -1,7 +1,7 @@
 package com.study.mall.feign;
 
-import com.study.mall.common.dto.SkuStockDto;
-import com.study.mall.common.utils.R;
+import com.study.mall.common.lang.dto.SkuStockDto;
+import com.study.mall.common.lang.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

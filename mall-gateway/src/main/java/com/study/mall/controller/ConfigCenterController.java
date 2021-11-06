@@ -1,6 +1,6 @@
 package com.study.mall.controller;
 
-import com.study.mall.common.utils.R;
+import com.study.mall.common.lang.R;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;

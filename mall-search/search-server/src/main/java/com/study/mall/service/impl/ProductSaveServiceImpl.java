@@ -1,10 +1,10 @@
-package com.study.mall.product.impl;
+package com.study.mall.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.study.mall.common.dto.es.SkuEsDto;
+import com.study.mall.common.lang.dto.es.SkuEsDto;
 import com.study.mall.config.es.ElasticSearchConfig;
 import com.study.mall.constant.EsConstant;
-import com.study.mall.product.IProductSaveService;
+import com.study.mall.service.IProductSaveService;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequest;

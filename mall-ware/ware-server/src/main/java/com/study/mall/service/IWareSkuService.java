@@ -3,7 +3,7 @@ package com.study.mall.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.entity.WareSkuEntity;
-import com.study.mall.common.dto.SkuStockDto;
+import com.study.mall.common.lang.dto.SkuStockDto;
 
 import java.util.List;
 import java.util.Map;

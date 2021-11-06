@@ -2,7 +2,7 @@ package com.study.mall.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.study.mall.common.utils.PageUtils;
-import com.study.mall.common.utils.R;
+import com.study.mall.common.lang.R;
 import com.study.mall.entity.BrandEntity;
 import com.study.mall.entity.CategoryBrandRelationEntity;
 import com.study.mall.service.ICategoryBrandRelationService;

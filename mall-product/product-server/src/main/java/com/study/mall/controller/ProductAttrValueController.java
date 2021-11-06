@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.study.mall.entity.ProductAttrValueEntity;
 import com.study.mall.service.IProductAttrValueService;
 import com.study.mall.common.utils.PageUtils;
-import com.study.mall.common.utils.R;
+import com.study.mall.common.lang.R;
 
 
 /**

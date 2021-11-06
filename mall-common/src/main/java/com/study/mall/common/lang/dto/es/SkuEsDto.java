@@ -1,4 +1,4 @@
-package com.study.mall.common.dto.es;
+package com.study.mall.common.lang.dto.es;
 
 import lombok.Data;
 
