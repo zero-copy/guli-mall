@@ -78,6 +78,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
         return false;
     }
 
+    @Override
+    public List<CategoryEntity> getRoot() {
+        return list(new QueryWrapper<CategoryEntity>().eq(CategoryEntity.PARENT_CID, 0));
+    }
+
     /**
      * 递归查询子菜单
      * @param parent 当前菜单

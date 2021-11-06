@@ -43,5 +43,11 @@ public interface ICategoryService extends IService<CategoryEntity> {
      * @param category 分类信息
      */
     boolean updateCased(CategoryEntity category);
+
+    /**
+     * 查询跟节点
+     * @return 根节点
+     */
+    List<CategoryEntity> getRoot();
 }
 

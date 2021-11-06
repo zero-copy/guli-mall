@@ -77,23 +77,23 @@ public class CategoryEntity implements Serializable {
     @TableField(exist = false)
     private List<CategoryEntity> children;
         
-    private static final String CAT_ID = "cat_id";
+    public static final String CAT_ID = "cat_id";
 
-    private static final String NAME = "name";
+    public static final String NAME = "name";
 
-    private static final String PARENT_CID = "parent_cid";
+    public static final String PARENT_CID = "parent_cid";
 
-    private static final String CAT_LEVEL = "cat_level";
+    public static final String CAT_LEVEL = "cat_level";
 
-    private static final String SHOW_STATUS = "show_status";
+    public static final String SHOW_STATUS = "show_status";
 
-    private static final String SORT = "sort";
+    public static final String SORT = "sort";
 
-    private static final String ICON = "icon";
+    public static final String ICON = "icon";
 
-    private static final String PRODUCT_UNIT = "product_unit";
+    public static final String PRODUCT_UNIT = "product_unit";
 
-    private static final String PRODUCT_COUNT = "product_count";
+    public static final String PRODUCT_COUNT = "product_count";
 
     
 }
