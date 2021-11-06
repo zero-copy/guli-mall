@@ -5,6 +5,9 @@ spring:
     username: dbadmin
     password: lb82ndLF
 
+  thymeleaf:
+    cache: false
+
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
 
