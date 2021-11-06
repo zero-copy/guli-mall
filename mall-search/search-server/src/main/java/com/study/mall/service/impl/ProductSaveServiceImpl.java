@@ -47,6 +47,6 @@ public class ProductSaveServiceImpl implements IProductSaveService {
                     .collect(Collectors.toList());
             log.error("商品保存ElasticSearch错误: {}", failedIds);
         }
-        return hasFailures;
+        return !hasFailures;
     }
 }
