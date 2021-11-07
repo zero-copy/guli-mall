@@ -3,6 +3,7 @@ package com.study.mall.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.entity.CategoryEntity;
+import com.study.mall.vo.Catelog2Vo;
 
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,6 @@ public interface ICategoryService extends IService<CategoryEntity> {
      * 查出所有分类
      * @return map
      */
-    Map<String, Object> getJsonMap();
+    Map<String, List<Catelog2Vo>> getJsonMap();
 }
 

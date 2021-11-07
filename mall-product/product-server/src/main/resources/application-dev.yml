@@ -5,6 +5,12 @@ spring:
     username: dbadmin
     password: lb82ndLF
 
+  redis:
+    host: redis-server
+    password: lb82ndLF
+    port: 6379
+    database: 0
+
   thymeleaf:
     cache: false
 

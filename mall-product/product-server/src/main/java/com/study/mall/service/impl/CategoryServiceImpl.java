@@ -1,5 +1,7 @@
 package com.study.mall.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -12,6 +14,7 @@ import com.study.mall.service.ICategoryService;
 import com.study.mall.vo.Catelog2Vo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +36,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
 
     @Resource
     private ICategoryBrandRelationService categoryBrandRelationService;
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -81,11 +87,32 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
 
     @Override
     public List<CategoryEntity> getRoot() {
-        return list(new QueryWrapper<CategoryEntity>().eq(CategoryEntity.PARENT_CID, 0));
+        String json = stringRedisTemplate.opsForValue().get("catalog-root");
+        if (StringUtils.isBlank(json)) {
+            List<CategoryEntity> rootCatelog = list(new QueryWrapper<CategoryEntity>().eq(CategoryEntity.PARENT_CID, 0));
+            stringRedisTemplate.opsForValue().set("catalog-root", JSON.toJSONString(rootCatelog));
+            return rootCatelog;
+        }
+        return JSON.parseObject(json, new TypeReference<List<CategoryEntity>>(){});
     }
 
     @Override
-    public Map<String, Object> getJsonMap() {
+    public Map<String, List<Catelog2Vo>> getJsonMap() {
+        String json = stringRedisTemplate.opsForValue().get("catalog-json");
+        //缓存中没有 查询数据库 并存入缓存
+        if (StringUtils.isBlank(json)) {
+            Map<String, List<Catelog2Vo>> jsonMap = getJsonMapFormDb();
+            stringRedisTemplate.opsForValue().set("catalog-json", JSON.toJSONString(jsonMap));
+            return jsonMap;
+        }
+        return JSON.parseObject(json, new TypeReference<Map<String, List<Catelog2Vo>>>(){});
+    }
+
+    /**
+     * 从Db中查询三级分类
+     * @return 三级分类信息
+     */
+    private Map<String, List<Catelog2Vo>> getJsonMapFormDb() {
         //查询所有
         List<CategoryEntity> sourceList = list();
         //获取root
@@ -102,6 +129,12 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
         }));
     }
 
+    /**
+     * 获取子分类
+     * @param sourceList 源数据
+     * @param parentCatId 父分类Id
+     * @return 子分类
+     */
     private List<CategoryEntity> getChild(List<CategoryEntity> sourceList,Long parentCatId) {
         return sourceList.stream()
                 .filter(item -> item.getParentCid().equals(parentCatId))

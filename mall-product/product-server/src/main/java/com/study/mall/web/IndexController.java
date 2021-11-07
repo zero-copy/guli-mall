@@ -2,6 +2,7 @@ package com.study.mall.web;
 
 import com.study.mall.entity.CategoryEntity;
 import com.study.mall.service.ICategoryService;
+import com.study.mall.vo.Catelog2Vo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,7 @@ public class IndexController {
 
     @ResponseBody
     @GetMapping("/index/json/catalog.json")
-    public Map<String, Object> getCategoryJson() {
+    public Map<String, List<Catelog2Vo>> getCategoryJson() {
         return categoryService.getJsonMap();
     }
 }
