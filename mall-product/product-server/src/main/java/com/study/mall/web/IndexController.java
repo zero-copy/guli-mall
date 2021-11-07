@@ -5,9 +5,10 @@ import com.study.mall.service.ICategoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Harlan
@@ -24,5 +25,11 @@ public class IndexController {
         List<CategoryEntity> rootEntity = categoryService.getRoot();
         model.addAttribute("categorys", rootEntity);
         return "index";
+    }
+
+    @ResponseBody
+    @GetMapping("/index/catalog.json")
+    public Map<String, Object> getCategoryJson() {
+        return categoryService.getJsonMap();
     }
 }

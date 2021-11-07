@@ -9,6 +9,7 @@ import com.study.mall.entity.CategoryEntity;
 import com.study.mall.mapper.CategoryMapper;
 import com.study.mall.service.ICategoryBrandRelationService;
 import com.study.mall.service.ICategoryService;
+import com.study.mall.vo.Catelog2Vo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -81,6 +82,21 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
     @Override
     public List<CategoryEntity> getRoot() {
         return list(new QueryWrapper<CategoryEntity>().eq(CategoryEntity.PARENT_CID, 0));
+    }
+
+    @Override
+    public Map<String, Object> getJsonMap() {
+        List<CategoryEntity> root = getRoot();
+        return root.stream().collect(Collectors.toMap(k -> k.getCatId().toString(), v -> {
+            List<CategoryEntity> child = list(new QueryWrapper<CategoryEntity>().eq(CategoryEntity.PARENT_CID, v.getCatId()));
+            return child.stream().map(item -> {
+                //查询3级分类
+                List<Catelog2Vo.Catelog3Vo> catelog3Vos = list(new QueryWrapper<CategoryEntity>().eq(CategoryEntity.PARENT_CID, item.getCatId()))
+                        .stream().map(i3 -> new Catelog2Vo.Catelog3Vo(item.getCatId().toString(), i3.getCatId().toString(), i3.getName()))
+                        .collect(Collectors.toList());
+                return new Catelog2Vo(v.getCatId().toString(), catelog3Vos, item.getCatId().toString(), item.getName());
+            }).collect(Collectors.toList());
+        }));
     }
 
     /**

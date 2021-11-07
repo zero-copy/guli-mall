@@ -37,6 +37,11 @@ spring:
             - Path=/api/**
           filters:
             - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
+        # host
+        - id: host_route
+          uri: lb://mall-product
+          predicates:
+            - Host=**.gulimall.com
         # icu
         - id: icu_route
           uri: https://996.icu/#/zh_CN

@@ -49,5 +49,11 @@ public interface ICategoryService extends IService<CategoryEntity> {
      * @return 根节点
      */
     List<CategoryEntity> getRoot();
+
+    /**
+     * 查出所有分类
+     * @return map
+     */
+    Map<String, Object> getJsonMap();
 }
 
