@@ -86,17 +86,26 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
 
     @Override
     public Map<String, Object> getJsonMap() {
-        List<CategoryEntity> root = getRoot();
+        //查询所有
+        List<CategoryEntity> sourceList = list();
+        //获取root
+        List<CategoryEntity> root = getChild(sourceList, 0L);
         return root.stream().collect(Collectors.toMap(k -> k.getCatId().toString(), v -> {
-            List<CategoryEntity> child = list(new QueryWrapper<CategoryEntity>().eq(CategoryEntity.PARENT_CID, v.getCatId()));
+            List<CategoryEntity> child = getChild(sourceList, v.getCatId());
             return child.stream().map(item -> {
                 //查询3级分类
-                List<Catelog2Vo.Catelog3Vo> catelog3Vos = list(new QueryWrapper<CategoryEntity>().eq(CategoryEntity.PARENT_CID, item.getCatId()))
+                List<Catelog2Vo.Catelog3Vo> catelog3Vos = getChild(sourceList, item.getCatId())
                         .stream().map(i3 -> new Catelog2Vo.Catelog3Vo(item.getCatId().toString(), i3.getCatId().toString(), i3.getName()))
                         .collect(Collectors.toList());
                 return new Catelog2Vo(v.getCatId().toString(), catelog3Vos, item.getCatId().toString(), item.getName());
             }).collect(Collectors.toList());
         }));
+    }
+
+    private List<CategoryEntity> getChild(List<CategoryEntity> sourceList,Long parentCatId) {
+        return sourceList.stream()
+                .filter(item -> item.getParentCid().equals(parentCatId))
+                .collect(Collectors.toList());
     }
 
     /**
