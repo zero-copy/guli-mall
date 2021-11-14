@@ -7,3 +7,9 @@ spring:
         endpoint: oss-cn-chengdu.aliyuncs.com
         bucket: mall-zero-copy
         host: https://${spring.cloud.alicloud.oss.bucket}.${spring.cloud.alicloud.oss.endpoint}
+
+  redis:
+    host: redis-server
+    password: lb82ndLF
+    port: 6379
+    database: 0

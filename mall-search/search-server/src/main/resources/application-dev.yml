@@ -1,3 +1,10 @@
+spring:
+  redis:
+    host: redis-server
+    password: lb82ndLF
+    port: 6379
+    database: 0
+
 logging:
   level:
     com.study.mall: debug

@@ -49,5 +49,12 @@ spring:
             - Path=/icu
           filters:
             - RedirectTo=302,https://996.icu/#/zh_CN
+
+  redis:
+    host: redis-server
+    password: lb82ndLF
+    port: 6379
+    database: 0
+
 config:
   version: v0.1
