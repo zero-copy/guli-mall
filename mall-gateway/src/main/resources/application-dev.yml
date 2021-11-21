@@ -41,7 +41,12 @@ spring:
         - id: host_route
           uri: lb://mall-product
           predicates:
-            - Host=**.gulimall.com
+            - Host=gulimall.com
+        # search-host
+        - id: search_host_route
+          uri: lb://mall-search
+          predicates:
+            - Host=search.gulimall.com
         # icu
         - id: icu_route
           uri: https://996.icu/#/zh_CN
