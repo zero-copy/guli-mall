@@ -15,9 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 public class Catelog2Vo implements Serializable {
 
-    private String catelog1Id;
+    private String catalog1Id;
 
-    private List<Catelog3Vo> catelog3List;
+    private List<Catelog3Vo> catalog3List;
 
     private String id;
 
@@ -28,7 +28,7 @@ public class Catelog2Vo implements Serializable {
     @AllArgsConstructor
     public static class Catelog3Vo implements Serializable {
 
-        private String catelog2Id;
+        private String catalog2Id;
 
         private String id;
 
