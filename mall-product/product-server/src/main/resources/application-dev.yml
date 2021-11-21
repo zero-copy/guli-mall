@@ -11,6 +11,11 @@ spring:
     port: 6379
     database: 0
 
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000
+
   thymeleaf:
     cache: false
 

@@ -1,7 +1,5 @@
 package com.study.mall.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,6 +12,9 @@ import com.study.mall.service.ICategoryService;
 import com.study.mall.vo.Catelog2Vo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.redisson.api.RedissonClient;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +40,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+
+    @Resource
+    private RedissonClient redisson;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -76,6 +80,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
         return parentPath;
     }
 
+    @CacheEvict(value = "category", allEntries = true)
     @Override
     public boolean updateCased(CategoryEntity category) {
         boolean isSuccess = updateById(category);
@@ -85,34 +90,15 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
         return false;
     }
 
+    @Cacheable(value = "category", key = "#root.methodName")
     @Override
     public List<CategoryEntity> getRoot() {
-        String json = stringRedisTemplate.opsForValue().get("catalog-root");
-        if (StringUtils.isBlank(json)) {
-            List<CategoryEntity> rootCatelog = list(new QueryWrapper<CategoryEntity>().eq(CategoryEntity.PARENT_CID, 0));
-            stringRedisTemplate.opsForValue().set("catalog-root", JSON.toJSONString(rootCatelog));
-            return rootCatelog;
-        }
-        return JSON.parseObject(json, new TypeReference<List<CategoryEntity>>(){});
+        return list(new QueryWrapper<CategoryEntity>().eq(CategoryEntity.PARENT_CID, 0));
     }
 
+    @Cacheable(value = "category", key = "#root.methodName")
     @Override
     public Map<String, List<Catelog2Vo>> getJsonMap() {
-        String json = stringRedisTemplate.opsForValue().get("catalog-json");
-        //缓存中没有 查询数据库 并存入缓存
-        if (StringUtils.isBlank(json)) {
-            Map<String, List<Catelog2Vo>> jsonMap = getJsonMapFormDb();
-            stringRedisTemplate.opsForValue().set("catalog-json", JSON.toJSONString(jsonMap));
-            return jsonMap;
-        }
-        return JSON.parseObject(json, new TypeReference<Map<String, List<Catelog2Vo>>>(){});
-    }
-
-    /**
-     * 从Db中查询三级分类
-     * @return 三级分类信息
-     */
-    private Map<String, List<Catelog2Vo>> getJsonMapFormDb() {
         //查询所有
         List<CategoryEntity> sourceList = list();
         //获取root
