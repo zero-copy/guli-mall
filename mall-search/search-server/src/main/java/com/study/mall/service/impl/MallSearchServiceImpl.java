@@ -137,6 +137,11 @@ public class MallSearchServiceImpl implements IMallSearchService {
         long pageSize = total % EsConstant.PRODUCT_PAGE_SIZE == 0 ? total / EsConstant.PRODUCT_PAGE_SIZE : total / EsConstant.PRODUCT_PAGE_SIZE + 1;
         searchVo.setTotal(total);
         searchVo.setTotalPages(pageSize);
+        List<Integer> pageNavs = new ArrayList<>();
+        for (int i = 1; i <= pageSize; i++) {
+            pageNavs.add(i);
+        }
+        searchVo.setPageNavs(pageNavs);
         return searchVo;
     }
 

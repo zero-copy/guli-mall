@@ -46,6 +46,11 @@ public class SearchVo {
      */
     private Long totalPages;
 
+    /**
+     * 导航页码
+     */
+    private List<Integer> pageNavs;
+
     @Data
     public static class BrandVo {
 

@@ -402,8 +402,8 @@
         <a href="http://gulimall.com"><img src="/static/search/./image/logo1.jpg" alt=""></a>
     </div>
     <div class="header_form">
-        <input type="text" placeholder="手机"/>
-        <a href="#">搜索</a>
+        <input id="keyword_input" type="text" placeholder="手机" th:value="${param.keyword}"/>
+        <a href="javascript:searchByKeyword();">搜索</a>
     </div>
     <div class="header_ico">
         <div class="header_gw">
@@ -785,7 +785,7 @@
                         <div class="sl_value_logo">
                             <ul>
                                 <li th:each="brand : ${result.getBrands()}">
-                                    <a href="#">
+                                    <a href="#" th:href="${'javascript:searchProduct(&quot;brandIds&quot;, ' + brand.brandId +')'}">
                                         <img th:src="${brand.getBrandImg()}">
                                         <div th:text="${brand.getBrandName()}"></div>
                                     </a>
@@ -815,7 +815,7 @@
                         <div class="sl_value_logo">
                             <ul>
                                 <li th:each="catalog : ${result.getCatalogs()}">
-                                    <a href="#" th:text="${catalog.getCatalogName()}"></a>
+                                    <a th:href="${'javascript:searchProduct(&quot;catalog3Id&quot;, ' + catalog.catalogId +')'}" th:text="${catalog.getCatalogName()}"></a>
                                 </li>
                             </ul>
                         </div>
@@ -840,7 +840,9 @@
                     </div>
                     <div class="sl_value">
                         <ul>
-                            <li th:each="value : ${attr.getAttrValue()}"><a href="#" th:text="${value}"></a></li>
+                            <li th:each="value : ${attr.getAttrValue()}">
+                                <a th:href="${'javascript:searchProduct(&quot;attrs&quot;,&quot;' + attr.attrId + '_' + value +'&quot;)'}" th:text="${value}"></a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -1202,23 +1204,19 @@
                     <div class="filter_page">
                         <div class="page_wrap">
                             <span class="page_span1">
-                                <a href="#">
+                                <a class="page_a" th:attr="pn=${result.pageNum - 1}" th:if="${result.pageNum > 1}">
                                     < 上一页
                                 </a>
-                                <a href="#" style="border: 0;color:#ee2222;background: #fff">1</a>
-                                <a href="#">2</a>
-                                <a href="#">3</a>
-                                <a href="#" style="border: 0;font-size: 20px;color: #999;background: #fff">...</a>
-                                <a href="#">169</a>
-                                <a href="#">
+                                <a class="page_a" th:each="nav : ${result.pageNavs}" th:attr="pn=${nav},style=${nav == result.pageNum ? 'border: 0;color: #ee2222;background: #fff' : ''}" >[[${nav}]]</a>
+                                <a class="page_a" th:attr="pn=${result.pageNum + 1}" th:if="${result.pageNum < result.totalPages}">
                                     下一页 >
                                 </a>
                             </span>
                             <span class="page_span2">
-                                <em>共<b>169</b>页&nbsp;&nbsp;到第</em>
+                                <em>共<b>[[${result.totalPages}]]</b>页&nbsp;&nbsp;到第</em>
                                 <input type="number" value="1">
                                 <em>页</em>
-                                <a href="#">确定</a>
+                                <a class="page_submit">确定</a>
                             </span>
                         </div>
                     </div>
@@ -1966,6 +1964,37 @@
     }, function () {
         $(this).css("color", "#727272")
     })
+
+    function searchProduct(name, value) {
+        let href = location.href + "";
+        console.log(name + '-' + value)
+        if (-1 !== href.indexOf("?")) {
+            location.href = location.href + "&" + name + "=" + value;
+        } else {
+            location.href = location.href + "?" + name + "=" + value;
+        }
+    }
+
+    function searchByKeyword() {
+        searchProduct("keyword", $("#keyword_input").val())
+    }
+
+    $(".page_a").click(function () {
+        let pn = $(this).attr('pn');
+        let href = location.href + '';
+        if (href.indexOf("pageNum") !== -1) {
+            location.href = replaceParamVal(href, "pageNum", pn)
+        } else {
+            location.href = location.href + "&pageNum=" + pn;
+        }
+    })
+    
+    function replaceParamVal(url, paramName, replaceVal) {
+        let oUrl = url.toString();
+        let re = eval('/(' + paramName + '=)([^&]*)/gi');
+        let nUrl = oUrl.replace(re, paramName + '=' + replaceVal);
+        return nUrl;
+    }
 </script>
 </body>
 </html>
