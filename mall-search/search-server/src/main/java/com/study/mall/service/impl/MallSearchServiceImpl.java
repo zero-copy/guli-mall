@@ -1,6 +1,8 @@
 package com.study.mall.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.common.utils.Objects;
+import com.study.mall.common.lang.dto.es.SkuEsDto;
 import com.study.mall.constant.EsConstant;
 import com.study.mall.form.SearchForm;
 import com.study.mall.service.IMallSearchService;
@@ -15,13 +17,28 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.NestedQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
+import org.elasticsearch.search.aggregations.bucket.nested.NestedAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.nested.ParsedNested;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Harlan
@@ -40,6 +57,7 @@ public class MallSearchServiceImpl implements IMallSearchService {
         try {
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
             searchVo = buildSearchVo(searchResponse);
+            searchVo.setPageNum(searchParam.getPageNum());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,7 +70,74 @@ public class MallSearchServiceImpl implements IMallSearchService {
      * @return 结果数据
      */
     private SearchVo buildSearchVo(SearchResponse searchResponse) {
-        return null;
+        SearchHits hits = searchResponse.getHits();
+        List<SkuEsDto> skuEsDtos = new ArrayList<>();
+        if (Objects.nonNull(hits.getHits())) {
+            //遍历命中记录
+            for (SearchHit hit : hits.getHits()) {
+                String source = hit.getSourceAsString();
+                SkuEsDto skuEsDto = JSON.parseObject(source, SkuEsDto.class);
+                HighlightField skuTitle = hit.getHighlightFields().get("skuTitle");
+                if (Objects.nonNull(skuTitle) && skuTitle.getFragments().length > 0) {
+                    skuEsDto.setSkuTitle(skuTitle.getFragments()[0].string());
+                }
+                skuEsDtos.add(skuEsDto);
+            }
+        }
+        SearchVo searchVo = new SearchVo();
+        //封装所有商品
+        searchVo.setProducts(skuEsDtos);
+        //所有聚合
+        Aggregations aggregations = searchResponse.getAggregations();
+        //当前所有商品所有属性
+        ParsedNested attrAgg = aggregations.get("attr_agg");
+        ParsedLongTerms attrIdAgg = attrAgg.getAggregations().get("attr_id_agg");
+        List<SearchVo.AttrVo> attrVos = new ArrayList<>();
+        for (Terms.Bucket bucket : attrIdAgg.getBuckets()) {
+            SearchVo.AttrVo attrVo = new SearchVo.AttrVo();
+            long attrId = bucket.getKeyAsNumber().longValue();
+            String attrName = ((ParsedStringTerms) bucket.getAggregations().get("attr_name_agg")).getBuckets().get(0).getKeyAsString();
+            List<String> attrValues = ((ParsedStringTerms) bucket.getAggregations().get("attr_value_agg")).getBuckets().stream()
+                    .map(MultiBucketsAggregation.Bucket::getKeyAsString).collect(Collectors.toList());
+            attrVo.setAttrId(attrId);
+            attrVo.setAttrName(attrName);
+            attrVo.setAttrValue(attrValues);
+            attrVos.add(attrVo);
+        }
+        searchVo.setAttrs(attrVos);
+        //当前所有品牌信息
+        List<SearchVo.BrandVo> brandVos = new ArrayList<>();
+        ParsedLongTerms brandAgg = aggregations.get("brand_agg");
+        for (Terms.Bucket bucket : brandAgg.getBuckets()) {
+            SearchVo.BrandVo brandVo = new SearchVo.BrandVo();
+            long brandId = bucket.getKeyAsNumber().longValue();
+            String brandImg = ((ParsedStringTerms) bucket.getAggregations().get("brand_img_agg")).getBuckets().get(0).getKeyAsString();
+            String brandName = ((ParsedStringTerms) bucket.getAggregations().get("brand_name_agg")).getBuckets().get(0).getKeyAsString();
+            brandVo.setBrandId(brandId);
+            brandVo.setBrandImg(brandImg);
+            brandVo.setBrandName(brandName);
+            brandVos.add(brandVo);
+        }
+        searchVo.setBrands(brandVos);
+        //当前所有分类信息
+        ParsedLongTerms catalogAgg = aggregations.get("catalog_agg");
+        List<SearchVo.CatalogVo> catalogVos = new ArrayList<>();
+        for (Terms.Bucket bucket : catalogAgg.getBuckets()) {
+            SearchVo.CatalogVo catalogVo = new SearchVo.CatalogVo();
+            String catalogId = bucket.getKeyAsString();
+            catalogVo.setCatalogId(Long.parseLong(catalogId));
+            ParsedStringTerms catalogNameAgg = bucket.getAggregations().get("catalog_name_agg");
+            String catelogName = catalogNameAgg.getBuckets().get(0).getKeyAsString();
+            catalogVo.setCatalogName(catelogName);
+            catalogVos.add(catalogVo);
+        }
+        searchVo.setCatalogs(catalogVos);
+        //分页信息
+        long total = hits.getTotalHits().value;
+        long pageSize = total % EsConstant.PRODUCT_PAGE_SIZE == 0 ? total / EsConstant.PRODUCT_PAGE_SIZE : total / EsConstant.PRODUCT_PAGE_SIZE + 1;
+        searchVo.setTotal(total);
+        searchVo.setTotalPages(pageSize);
+        return searchVo;
     }
 
     /**
@@ -124,12 +209,32 @@ public class MallSearchServiceImpl implements IMallSearchService {
         if (Strings.isNotBlank(searchParam.getKeyword())) {
             HighlightBuilder highlightBuilder = new HighlightBuilder();
             highlightBuilder.field("skuTitle");
-            highlightBuilder.preTags("<b style:'color:red>");
+            highlightBuilder.preTags("<b style='color:red'>");
             highlightBuilder.postTags("</b>");
             searchSourceBuilder.highlighter(highlightBuilder);
         }
-        String string = searchSourceBuilder.toString();
         //聚合分析
+        //品牌聚合
+        TermsAggregationBuilder brandAgg = AggregationBuilders.terms("brand_agg");
+        brandAgg.field("brandId");
+        //品牌聚合子聚合
+        brandAgg.subAggregation(AggregationBuilders.terms("brand_name_agg").field("brandName").size(1));
+        brandAgg.subAggregation(AggregationBuilders.terms("brand_img_agg").field("brandImg").size(1));
+        //分类聚合
+        TermsAggregationBuilder catalogAgg = AggregationBuilders.terms("catalog_agg").field("catalogId").size(20);
+        //分类子聚合
+        catalogAgg.subAggregation(AggregationBuilders.terms("catalog_name_agg").field("catalogName").size(1));
+        //属性聚合
+        NestedAggregationBuilder attrAgg = AggregationBuilders.nested("attr_agg", "attrs");
+        //属性聚合子聚合
+        TermsAggregationBuilder attrIdAgg = AggregationBuilders.terms("attr_id_agg").field("attrs.attrId");
+        attrIdAgg.subAggregation(AggregationBuilders.terms("attr_name_agg").field("attrs.attrName").size(1));
+        attrIdAgg.subAggregation(AggregationBuilders.terms("attr_value_agg").field("attrs.attrValue").size(50));
+        attrAgg.subAggregation(attrIdAgg);
+        //添加聚合
+        searchSourceBuilder.aggregation(brandAgg);
+        searchSourceBuilder.aggregation(catalogAgg);
+        searchSourceBuilder.aggregation(attrAgg);
         return new SearchRequest(new String[]{EsConstant.PRODUCT_INDEX}, searchSourceBuilder);
     }
 }

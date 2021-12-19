@@ -44,7 +44,7 @@ public class SearchVo {
     /**
      * 总页码
      */
-    private Integer totalPages;
+    private Long totalPages;
 
     @Data
     public static class BrandVo {
