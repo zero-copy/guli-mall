@@ -10,6 +10,7 @@ import com.study.mall.entity.AttrGroupEntity;
 import com.study.mall.mapper.AttrGroupMapper;
 import com.study.mall.service.IAttrAttrgroupRelationService;
 import com.study.mall.service.IAttrGroupService;
+import com.study.mall.vo.SkuItemVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +62,13 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
     @Override
     public boolean removeRelation(List<AttrAttrgroupRelationEntity> relations) {
         return relationService.removeBatchRelation(relations);
+    }
+
+    @Override
+    public List<SkuItemVo.SpuItemAttrGroupVo> getWithAttrBySpuId(Long spuId, Long catalogId) {
+        List<AttrGroupEntity> attrGroupEntities = list(new QueryWrapper<AttrGroupEntity>().eq(AttrGroupEntity.CATELOG_ID, catalogId));
+
+        return null;
     }
 
 }

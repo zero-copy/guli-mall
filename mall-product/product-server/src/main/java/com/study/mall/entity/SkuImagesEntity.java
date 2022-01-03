@@ -2,10 +2,9 @@ package com.study.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
-    import lombok.Data;
 
 /**
  * sku图片
@@ -47,15 +46,15 @@ public class SkuImagesEntity implements Serializable {
     private Integer defaultImg;
 
         
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String SKU_ID = "sku_id";
+    public static final String SKU_ID = "sku_id";
 
-    private static final String IMG_URL = "img_url";
+    public static final String IMG_URL = "img_url";
 
-    private static final String IMG_SORT = "img_sort";
+    public static final String IMG_SORT = "img_sort";
 
-    private static final String DEFAULT_IMG = "default_img";
+    public static final String DEFAULT_IMG = "default_img";
 
     
 }
