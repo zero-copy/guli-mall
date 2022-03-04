@@ -17,7 +17,6 @@ import com.study.mall.vo.SkuItemVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
@@ -104,7 +103,10 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfoEntity
         skuItemVo.setImages(images);
         //spu介绍
         for (SkuImagesEntity image : images) {
+            System.out.println(image.getId());
+            System.out.println(image.getImgUrl());
             System.out.println(image.getDefaultImg());
+            System.out.println(image.getImgSort());
         }
         SpuInfoDescEntity descEntity = spuInfoDescService.getById(spuId);
         skuItemVo.setDesp(descEntity);
