@@ -2,8 +2,11 @@ package com.study.mall.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.common.utils.Objects;
+import com.study.mall.common.lang.R;
 import com.study.mall.common.lang.dto.es.SkuEsDto;
 import com.study.mall.constant.EsConstant;
+import com.study.mall.dto.AttrDto;
+import com.study.mall.feign.IProductFeignService;
 import com.study.mall.form.SearchForm;
 import com.study.mall.service.IMallSearchService;
 import com.study.mall.vo.SearchVo;
@@ -50,13 +53,16 @@ public class MallSearchServiceImpl implements IMallSearchService {
     @Resource
     private RestHighLevelClient restHighLevelClient;
 
+    @Resource
+    private IProductFeignService productFeignService;
+
     @Override
     public SearchVo search(SearchForm searchParam) {
         SearchVo searchVo = null;
         SearchRequest searchRequest = buildSearchRequest(searchParam);
         try {
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
-            searchVo = buildSearchVo(searchResponse);
+            searchVo = buildSearchVo(searchResponse, searchParam);
             searchVo.setPageNum(searchParam.getPageNum());
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,7 +75,7 @@ public class MallSearchServiceImpl implements IMallSearchService {
      * @param searchResponse 结果集
      * @return 结果数据
      */
-    private SearchVo buildSearchVo(SearchResponse searchResponse) {
+    private SearchVo buildSearchVo(SearchResponse searchResponse, SearchForm searchParam) {
         SearchHits hits = searchResponse.getHits();
         List<SkuEsDto> skuEsDtos = new ArrayList<>();
         if (Objects.nonNull(hits.getHits())) {
@@ -142,6 +148,25 @@ public class MallSearchServiceImpl implements IMallSearchService {
             pageNavs.add(i);
         }
         searchVo.setPageNavs(pageNavs);
+        //构建面包导航
+        if (Objects.nonNull(searchParam.getAttrs()) && !searchParam.getAttrs().isEmpty()) {
+            List<SearchVo.NavVo> navVos = searchParam.getAttrs().stream().map(attr -> {
+                SearchVo.NavVo navVo = new SearchVo.NavVo();
+                String[] strings = attr.split("_");
+                R<AttrDto> info = productFeignService.getInfo(Long.parseLong(strings[0]));
+                if (info.getCode() == 0) {
+                    AttrDto data = info.getData();
+                    navVo.setNavName(data.getAttrName());
+                } else {
+                    navVo.setNavName(strings[0]);
+                }
+                String link = searchParam.get_queryString().replace("&attrs=" + attr, "");
+                navVo.setLink("http://search.gulimall.com/list.html?" + link);
+                navVo.setNavValue(strings[1]);
+                return navVo;
+            }).collect(Collectors.toList());
+            searchVo.setNavs(navVos);
+        }
         return searchVo;
     }
 

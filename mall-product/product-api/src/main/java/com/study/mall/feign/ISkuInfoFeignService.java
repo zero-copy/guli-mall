@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Harlan
  * @date 2021 11 01 下午 10:55
  */
-@FeignClient(value = "mall-product", path = "/product/skuinfo")
+@FeignClient(contextId = "skuinfo", value = "mall-product", path = "/product/skuinfo")
 public interface ISkuInfoFeignService {
 
     /**

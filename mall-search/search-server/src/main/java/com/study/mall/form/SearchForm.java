@@ -50,4 +50,9 @@ public class SearchForm {
      */
     private Integer pageNum = 1;
 
+    /**
+     * 查询条件
+     */
+    private String _queryString;
+
 }

@@ -6,8 +6,8 @@ import com.study.mall.vo.SearchVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 /**
@@ -21,10 +21,12 @@ public class SearchController {
     private IMallSearchService mallSearchService;
 
     @GetMapping({"/", "/list.html"})
-    public String listPage(SearchForm searchForm, Model model) {
+    public String listPage(SearchForm searchForm, Model model, HttpServletRequest request) {
         if (Objects.isNull(searchForm)) {
             searchForm = new SearchForm();
         }
+        String query = request.getQueryString();
+        searchForm.set_queryString(query);
         SearchVo searchVo = mallSearchService.search(searchForm);
         model.addAttribute("result", searchVo);
         return "list";

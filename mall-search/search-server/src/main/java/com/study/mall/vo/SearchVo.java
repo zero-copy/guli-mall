@@ -47,9 +47,24 @@ public class SearchVo {
     private Long totalPages;
 
     /**
+     * 面包屑导航
+     */
+    private List<NavVo> navs;
+
+    /**
      * 导航页码
      */
     private List<Integer> pageNavs;
+
+    @Data
+    public static class NavVo {
+
+        private String navName;
+
+        private String navValue;
+
+        private String link;
+    }
 
     @Data
     public static class BrandVo {
