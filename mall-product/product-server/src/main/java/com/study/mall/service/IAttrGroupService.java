@@ -4,8 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.entity.AttrAttrgroupRelationEntity;
 import com.study.mall.entity.AttrGroupEntity;
-import com.study.mall.vo.SkuItemVo;
-
+import com.study.mall.vo.SpuItemAttrGroupVo;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +34,12 @@ public interface IAttrGroupService extends IService<AttrGroupEntity> {
      */
     boolean removeRelation(List<AttrAttrgroupRelationEntity> relations);
 
-    List<SkuItemVo.SpuItemAttrGroupVo> getWithAttrBySpuId(Long spuId, Long catalogId);
+    /**
+     * 获取销售属性
+     * @param spuId spuId
+     * @param catalogId catelogId
+     * @return 销售属性
+     */
+    List<SpuItemAttrGroupVo> getWithAttrBySpuId(Long spuId, Long catalogId);
 }
 

@@ -1,15 +1,18 @@
 package com.study.mall.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
-import com.study.mall.mapper.SkuSaleAttrValueMapper;
 import com.study.mall.entity.SkuSaleAttrValueEntity;
+import com.study.mall.mapper.SkuSaleAttrValueMapper;
 import com.study.mall.service.ISkuSaleAttrValueService;
+import com.study.mall.vo.SkuItemSaleAttrVo;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * sku销售属性&值
@@ -25,9 +28,14 @@ public class SkuSaleAttrValueServiceImpl extends ServiceImpl<SkuSaleAttrValueMap
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<SkuSaleAttrValueEntity> page = this.page(
                 new Query<SkuSaleAttrValueEntity>().getPage(params),
-                new QueryWrapper<SkuSaleAttrValueEntity>()
+                new QueryWrapper<>()
         );
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<SkuItemSaleAttrVo> getSaleAttrsBySpuId(Long spuId) {
+        return baseMapper.getSaleAttrsBySpuId(spuId);
     }
 
 }

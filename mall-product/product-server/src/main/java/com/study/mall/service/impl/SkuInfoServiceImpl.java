@@ -13,10 +13,13 @@ import com.study.mall.service.IAttrGroupService;
 import com.study.mall.service.ISkuImagesService;
 import com.study.mall.service.ISkuInfoService;
 import com.study.mall.service.ISpuInfoDescService;
+import com.study.mall.vo.SkuItemSaleAttrVo;
 import com.study.mall.vo.SkuItemVo;
+import com.study.mall.vo.SpuItemAttrGroupVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
@@ -41,6 +44,9 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfoEntity
 
     @Resource
     private IAttrGroupService attrGroupService;
+
+    @Resource
+    SkuSaleAttrValueServiceImpl saleAttrValueService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -102,18 +108,14 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfoEntity
         List<SkuImagesEntity> images = skuImagesService.getBySkuId(skuId);
         skuItemVo.setImages(images);
         //spu介绍
-        for (SkuImagesEntity image : images) {
-            System.out.println(image.getId());
-            System.out.println(image.getImgUrl());
-            System.out.println(image.getDefaultImg());
-            System.out.println(image.getImgSort());
-        }
         SpuInfoDescEntity descEntity = spuInfoDescService.getById(spuId);
         skuItemVo.setDesp(descEntity);
-        //spu销售属性组合
-        List<SkuItemVo.SpuItemAttrGroupVo> attrGroupVos = attrGroupService.getWithAttrBySpuId(spuId, catalogId);
-        skuItemVo.setGroupAttrs(attrGroupVos);
         //spu规格参数
+        List<SpuItemAttrGroupVo> attrGroupVos = attrGroupService.getWithAttrBySpuId(spuId, catalogId);
+        skuItemVo.setGroupAttrs(attrGroupVos);
+        //spu销售属性组合
+        List<SkuItemSaleAttrVo> saleAttrVos = saleAttrValueService.getSaleAttrsBySpuId(spuId);
+        skuItemVo.setSaleAttr(saleAttrVos);
         return skuItemVo;
     }
 

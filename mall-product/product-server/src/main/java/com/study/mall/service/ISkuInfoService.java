@@ -33,6 +33,11 @@ public interface ISkuInfoService extends IService<SkuInfoEntity> {
      */
     List<SkuInfoEntity> getBySpuId(Long spuId);
 
+    /**
+     * 通过SkuId擦好像详情
+     * @param skuId skuId
+     * @return 详情
+     */
     SkuItemVo item(Long skuId);
 }
 
