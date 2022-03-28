@@ -47,6 +47,11 @@ spring:
           uri: lb://mall-search
           predicates:
             - Host=search.gulimall.com
+        # auth
+        - id: auth_route
+          uri: lb://mall-auth
+          predicates:
+            - Host=auth.gulimall.com
         # icu
         - id: icu_route
           uri: https://996.icu/#/zh_CN

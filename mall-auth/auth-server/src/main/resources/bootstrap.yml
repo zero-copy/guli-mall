@@ -1,0 +1,20 @@
+server:
+  port: 12060
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: mall-auth
+  cloud:
+    nacos:
+      discovery:
+        server-addr: nacos-server:8848
+      config:
+        server-addr: nacos-server:8848
+        namespace: b5db686b-e35c-422e-83e1-efdf3034c542
+        group: DEFAULT_GROUP
+        file-extension: yml
+
+config:
+  version: v0.1
