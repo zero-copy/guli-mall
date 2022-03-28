@@ -8,6 +8,9 @@ spring:
     port: 6379
     database: 0
 
+  thymeleaf:
+    cache: false
+
 logging:
   level:
     com.study.mall: debug
