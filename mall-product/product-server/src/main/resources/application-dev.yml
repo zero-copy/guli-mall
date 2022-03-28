@@ -37,5 +37,10 @@ logging:
   level:
     com.study.mall: debug
 
+thread:
+  core-size: 20
+  max-size: 200
+  keep-alive: 10
+
 config:
   version: v0.1
