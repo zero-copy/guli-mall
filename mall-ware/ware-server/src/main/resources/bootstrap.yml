@@ -1,5 +1,5 @@
 server:
-  port: 12040
+  port: 22040
 
 spring:
   profiles:

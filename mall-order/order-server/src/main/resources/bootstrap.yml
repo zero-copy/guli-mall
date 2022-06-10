@@ -1,5 +1,5 @@
 server:
-  port: 12020
+  port: 22020
 
 spring:
   profiles:

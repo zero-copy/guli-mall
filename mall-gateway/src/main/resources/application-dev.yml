@@ -41,7 +41,7 @@ spring:
         - id: host_route
           uri: lb://mall-product
           predicates:
-            - Host=gulimall.com,item.gulimall.com
+            - Host=gulimall.com,item.gulimall.com,192.168.31.79
         # search-host
         - id: search_host_route
           uri: lb://mall-search

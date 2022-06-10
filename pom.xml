@@ -93,6 +93,12 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.study.mall</groupId>
+                <artifactId>third-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <!-- spring cloud -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
