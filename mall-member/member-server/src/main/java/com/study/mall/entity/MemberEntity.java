@@ -2,10 +2,11 @@ package com.study.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
     
 /**
  * 会员
@@ -126,48 +127,48 @@ public class MemberEntity implements Serializable {
     */
     private String expiresIn;
 
-    
-    private static final String ID = "id";
 
-    private static final String LEVEL_ID = "level_id";
+    public static final String ID = "id";
 
-    private static final String USERNAME = "username";
+    public static final String LEVEL_ID = "level_id";
 
-    private static final String PASSWORD = "password";
+    public static final String USERNAME = "username";
 
-    private static final String NICKNAME = "nickname";
+    public static final String PASSWORD = "password";
 
-    private static final String MOBILE = "mobile";
+    public static final String NICKNAME = "nickname";
 
-    private static final String EMAIL = "email";
+    public static final String MOBILE = "mobile";
 
-    private static final String HEADER = "header";
+    public static final String EMAIL = "email";
 
-    private static final String GENDER = "gender";
+    public static final String HEADER = "header";
 
-    private static final String BIRTH = "birth";
+    public static final String GENDER = "gender";
 
-    private static final String CITY = "city";
+    public static final String BIRTH = "birth";
 
-    private static final String JOB = "job";
+    public static final String CITY = "city";
 
-    private static final String SIGN = "sign";
+    public static final String JOB = "job";
 
-    private static final String SOURCE_TYPE = "source_type";
+    public static final String SIGN = "sign";
 
-    private static final String INTEGRATION = "integration";
+    public static final String SOURCE_TYPE = "source_type";
 
-    private static final String GROWTH = "growth";
+    public static final String INTEGRATION = "integration";
 
-    private static final String STATUS = "status";
+    public static final String GROWTH = "growth";
 
-    private static final String CREATE_TIME = "create_time";
+    public static final String STATUS = "status";
 
-    private static final String SOCIAL_UID = "social_uid";
+    public static final String CREATE_TIME = "create_time";
 
-    private static final String ACCESS_TOKEN = "access_token";
+    public static final String SOCIAL_UID = "social_uid";
 
-    private static final String EXPIRES_IN = "expires_in";
+    public static final String ACCESS_TOKEN = "access_token";
+
+    public static final String EXPIRES_IN = "expires_in";
 
     
 }

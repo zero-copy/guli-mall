@@ -4,8 +4,10 @@ import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.lang.R;
 import com.study.mall.entity.MemberEntity;
 import com.study.mall.service.IMemberService;
+import com.study.mall.vo.MemberRegisterVo;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -41,7 +43,7 @@ public class MemberController {
     @RequestMapping("/info/{id}")
     //member:member:info
     public R info(@PathVariable("id") Long id) {
-            MemberEntity member = memberService.getById(id);
+        MemberEntity member = memberService.getById(id);
         return R.ok().put("member", member);
     }
 
@@ -51,7 +53,7 @@ public class MemberController {
     @RequestMapping("/save")
     //member:member:save
     public R save(@RequestBody MemberEntity member) {
-            memberService.save(member);
+        memberService.save(member);
         return R.ok();
     }
 
@@ -61,7 +63,7 @@ public class MemberController {
     @RequestMapping("/update")
     //member:member:update
     public R update(@RequestBody MemberEntity member) {
-            memberService.updateById(member);
+        memberService.updateById(member);
         return R.ok();
     }
 
@@ -71,7 +73,16 @@ public class MemberController {
     @RequestMapping("/delete")
     //@RequiresPermissions("member:member:delete")
     public R delete(@RequestBody Long[] ids) {
-            memberService.removeByIds(Arrays.asList(ids));
+        memberService.removeByIds(Arrays.asList(ids));
+        return R.ok();
+    }
+
+    @PostMapping("/register")
+    public R register(@Valid @RequestBody MemberRegisterVo registerVo) {
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setUsername(registerVo.getUsername());
+        memberEntity.setMobile(registerVo.getPhoneNum());
+        memberService.register(memberEntity, registerVo.getPassword());
         return R.ok();
     }
 

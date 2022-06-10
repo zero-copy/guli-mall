@@ -2,11 +2,10 @@ package com.study.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
 import lombok.Data;
-        import java.math.BigDecimal;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
     
 /**
  * 会员等级
@@ -73,25 +72,25 @@ public class MemberLevelEntity implements Serializable {
     private String note;
 
     
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String NAME = "name";
+    public static final String NAME = "name";
 
-    private static final String GROWTH_POINT = "growth_point";
+    public static final String GROWTH_POINT = "growth_point";
 
-    private static final String DEFAULT_STATUS = "default_status";
+    public static final String DEFAULT_STATUS = "default_status";
 
-    private static final String FREE_FREIGHT_POINT = "free_freight_point";
+    public static final String FREE_FREIGHT_POINT = "free_freight_point";
 
-    private static final String COMMENT_GROWTH_POINT = "comment_growth_point";
+    public static final String COMMENT_GROWTH_POINT = "comment_growth_point";
 
-    private static final String PRIVILEDGE_FREE_FREIGHT = "priviledge_free_freight";
+    public static final String PRIVILEDGE_FREE_FREIGHT = "priviledge_free_freight";
 
-    private static final String PRIVILEDGE_MEMBER_PRICE = "priviledge_member_price";
+    public static final String PRIVILEDGE_MEMBER_PRICE = "priviledge_member_price";
 
-    private static final String PRIVILEDGE_BIRTHDAY = "priviledge_birthday";
+    public static final String PRIVILEDGE_BIRTHDAY = "priviledge_birthday";
 
-    private static final String NOTE = "note";
+    public static final String NOTE = "note";
 
     
 }

@@ -41,7 +41,7 @@ public class LoginController {
             codeSb.append(NUMS[random.nextInt(NUMS.length)]);
         }
         if (StringUtils.isBlank(redisCode)) {
-            redisTemplate.opsForValue().set(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phoneNum, codeSb.toString() + "-" + System.currentTimeMillis(), 10, TimeUnit.MINUTES);
+            redisTemplate.opsForValue().set(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phoneNum, codeSb + "-" + System.currentTimeMillis(), 10, TimeUnit.MINUTES);
             smsFeignService.sendCode(phoneNum, codeSb.toString());
             return R.ok();
         } else {
@@ -49,7 +49,7 @@ public class LoginController {
             if (System.currentTimeMillis() - time < (60 * 1000)) {
                 return R.error(ErrorCodeEnum.SMS_CODE_EXCEPTION.getCode(), ErrorCodeEnum.SMS_CODE_EXCEPTION.getMessage());
             } else {
-                redisTemplate.opsForValue().set(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phoneNum, codeSb.toString() + "-" + System.currentTimeMillis(), 10, TimeUnit.MINUTES);
+                redisTemplate.opsForValue().set(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phoneNum, codeSb + "-" + System.currentTimeMillis(), 10, TimeUnit.MINUTES);
                 smsFeignService.sendCode(phoneNum, codeSb.toString());
                 return R.ok();
             }
