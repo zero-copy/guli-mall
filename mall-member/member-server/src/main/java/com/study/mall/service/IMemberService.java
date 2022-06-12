@@ -29,5 +29,13 @@ public interface IMemberService extends IService<MemberEntity> {
     boolean checkUsernameUnique(String username);
 
     boolean checkEmailUnique(String email);
+
+    /**
+     * 用户登陆
+     * @param account 账号
+     * @param password 密码
+     * @return 用户信息
+     */
+    MemberEntity login(String account, String password);
 }
 

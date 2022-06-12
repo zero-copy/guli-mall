@@ -5308,7 +5308,7 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
 					if ($(this).hasClass("disable")) {
 
 					} else {
-						$.get("/login/send-code?phoneNum=" + $("#phone-num").val(), function (data) {
+						$.get("/register/send-code?phoneNum=" + $("#phone-num").val(), function (data) {
 							if (data.code !== 0) {
 								alert(data.msg);
 							}

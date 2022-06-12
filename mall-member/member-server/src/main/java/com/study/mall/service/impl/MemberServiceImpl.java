@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -54,6 +55,24 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
         String encodePassword = passwordEncoder.encode(password);
         memberEntity.setPassword(encodePassword);
         baseMapper.insert(memberEntity);
+    }
+
+    @Override
+    public MemberEntity login(String account, String password) {
+        List<MemberEntity> memberEntities = baseMapper.selectList(new QueryWrapper<MemberEntity>().eq(MemberEntity.USERNAME, account).or().eq(MemberEntity.MOBILE, account));
+        if (memberEntities.isEmpty()) {
+            //无用户
+            return null;
+        }
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        for (MemberEntity memberEntity : memberEntities) {
+            String encodePassword = memberEntity.getPassword();
+            boolean matches = passwordEncoder.matches(password, encodePassword);
+            if (matches) {
+                return memberEntity;
+            }
+        }
+        return null;
     }
 
     @Override

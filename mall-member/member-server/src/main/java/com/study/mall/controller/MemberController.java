@@ -1,8 +1,10 @@
 package com.study.mall.controller;
 
+import com.study.mall.common.enums.ErrorCodeEnum;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.lang.R;
 import com.study.mall.entity.MemberEntity;
+import com.study.mall.form.MemberLoginForm;
 import com.study.mall.service.IMemberService;
 import com.study.mall.vo.MemberRegisterVo;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -83,6 +86,15 @@ public class MemberController {
         memberEntity.setUsername(registerVo.getUsername());
         memberEntity.setMobile(registerVo.getPhoneNum());
         memberService.register(memberEntity, registerVo.getPassword());
+        return R.ok();
+    }
+
+    @PostMapping("/login")
+    public R login(@RequestBody MemberLoginForm loginForm) {
+        MemberEntity memberEntity = memberService.login(loginForm.getAccount(), loginForm.getPassword());
+        if (Objects.isNull(memberEntity)) {
+            return R.error(ErrorCodeEnum.LOGIN_ACCOUNT_PASSWORD_INVAILD_EXCEPTION.getCode(), ErrorCodeEnum.LOGIN_ACCOUNT_PASSWORD_INVAILD_EXCEPTION.getMessage());
+        }
         return R.ok();
     }
 

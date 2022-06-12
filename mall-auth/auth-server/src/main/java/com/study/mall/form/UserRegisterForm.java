@@ -1,4 +1,4 @@
-package com.study.mall.vo;
+package com.study.mall.form;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @date 2022 06 10 下午 12:23
  */
 @Data
-public class UserRegisterVo implements Serializable {
+public class UserRegisterForm implements Serializable {
 
     @NotBlank(message = "用户名不能为空")
     @Length(min = 6, max = 18, message = "用户名必须是6-18个字符")

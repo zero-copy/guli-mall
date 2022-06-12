@@ -1,6 +1,7 @@
 package com.study.mall.feign;
 
 import com.study.mall.common.lang.R;
+import com.study.mall.dto.MemberLoginDto;
 import com.study.mall.dto.MemberRegisterDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,4 +18,7 @@ public interface IMemberFeignService {
 
     @PostMapping("/register")
     R register(@Valid @RequestBody MemberRegisterDto registerVo);
+
+    @PostMapping("/login")
+    public R login(@RequestBody MemberLoginDto loginDto);
 }
