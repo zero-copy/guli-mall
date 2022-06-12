@@ -50,7 +50,7 @@ public class RegisterController {
             String codeKey = AuthServerConstant.SMS_CODE_CACHE_PREFIX + registerVo.getPhoneNum();
             String redisCode = redisTemplate.opsForValue().get(codeKey);
             if (StringUtils.isNotBlank(redisCode)) {
-                modelAndView.setViewName("redirect:login");
+                modelAndView.setViewName("redirect:http://auth:gulimall.com/login.html");
                 if (redisCode.split("-")[0].equals(code)) {
                     //调用远程服务进行注册
                     redisTemplate.delete(codeKey);
