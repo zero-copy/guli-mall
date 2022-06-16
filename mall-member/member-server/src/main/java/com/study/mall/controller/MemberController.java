@@ -1,13 +1,15 @@
 package com.study.mall.controller;
 
 import com.study.mall.common.enums.ErrorCodeEnum;
-import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.lang.R;
+import com.study.mall.common.utils.PageUtils;
 import com.study.mall.entity.MemberEntity;
+import com.study.mall.entity.SocialUser;
 import com.study.mall.form.MemberLoginForm;
 import com.study.mall.service.IMemberService;
 import com.study.mall.vo.MemberRegisterVo;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.Arrays;
@@ -90,12 +92,18 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public R login(@RequestBody MemberLoginForm loginForm) {
+    public R<MemberEntity> login(@RequestBody MemberLoginForm loginForm) {
         MemberEntity memberEntity = memberService.login(loginForm.getAccount(), loginForm.getPassword());
         if (Objects.isNull(memberEntity)) {
             return R.error(ErrorCodeEnum.LOGIN_ACCOUNT_PASSWORD_INVAILD_EXCEPTION.getCode(), ErrorCodeEnum.LOGIN_ACCOUNT_PASSWORD_INVAILD_EXCEPTION.getMessage());
         }
-        return R.ok();
+        return R.ok(memberEntity);
+    }
+
+    @PostMapping("/login/oauth")
+    public R<MemberEntity> oauthLogin(@RequestBody SocialUser socialUser) {
+        MemberEntity memberEntity = memberService.login(socialUser);
+        return R.ok(memberEntity);
     }
 
 }

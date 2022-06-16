@@ -16,6 +16,10 @@ spring:
     redis:
       time-to-live: 3600000
 
+  session:
+    store-type: redis
+    timeout: 6000000
+
   thymeleaf:
     cache: false
 

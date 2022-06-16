@@ -1,13 +1,12 @@
-package com.study.mall.entity;
+package com.study.mall.common.dto;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-    
+
 /**
  * 会员
  *
@@ -16,8 +15,7 @@ import java.time.LocalDateTime;
  * @date 2021-10-10 14:15:58
  */
 @Data
-@TableName("ums_member")
-public class MemberEntity implements Serializable {
+public class MemberEntityDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

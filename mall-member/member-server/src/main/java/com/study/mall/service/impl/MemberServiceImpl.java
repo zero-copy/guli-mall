@@ -8,6 +8,7 @@ import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
 import com.study.mall.entity.MemberEntity;
 import com.study.mall.entity.MemberLevelEntity;
+import com.study.mall.entity.SocialUser;
 import com.study.mall.mapper.MemberMapper;
 import com.study.mall.service.IMemberLevelService;
 import com.study.mall.service.IMemberService;
@@ -73,6 +74,25 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
             }
         }
         return null;
+    }
+
+    @Override
+    public MemberEntity login(SocialUser socialUser) {
+        MemberEntity memberEntity = baseMapper.selectOne(new QueryWrapper<MemberEntity>().eq(MemberEntity.SOCIAL_UID, socialUser.getId()));
+        if (Objects.nonNull(memberEntity)) {
+            memberEntity.setAccessToken(socialUser.getAccessToken());
+            memberEntity.setExpiresIn(socialUser.getExpiresIn());
+            baseMapper.updateById(memberEntity);
+        } else {
+            memberEntity = new MemberEntity();
+            memberEntity.setUsername(socialUser.getName());
+            memberEntity.setLevelId(memberLevelService.getDefaultLevel().getId());
+            memberEntity.setAccessToken(socialUser.getAccessToken());
+            memberEntity.setExpiresIn(socialUser.getExpiresIn());
+            memberEntity.setSocialUid(socialUser.getId());
+            baseMapper.insert(memberEntity);
+        }
+        return memberEntity;
     }
 
     @Override

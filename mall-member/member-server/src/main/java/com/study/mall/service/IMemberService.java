@@ -3,6 +3,7 @@ package com.study.mall.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.entity.MemberEntity;
+import com.study.mall.entity.SocialUser;
 
 import java.util.Map;
 
@@ -37,5 +38,12 @@ public interface IMemberService extends IService<MemberEntity> {
      * @return 用户信息
      */
     MemberEntity login(String account, String password);
+
+    /**
+     * 社交登陆
+     * @param socialUser 社交账号信息
+     * @return 用户信息
+     */
+    MemberEntity login(SocialUser socialUser);
 }
 

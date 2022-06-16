@@ -8,12 +8,21 @@ spring:
     port: 6379
     database: 0
 
+  session:
+    store-type: redis
+    timeout: 600000
+
   thymeleaf:
     cache: false
 
 logging:
   level:
     com.study.mall: debug
+
+oauth2:
+  gitee:
+    client-id: 759205ec6abb13ba224c246d3b5f1c1e39f38cf456aaeeb0094551f7a46f3bb4
+    client-secret: 030c606a5b7d25be23648bc2d4114d53fe7644596e4ee803b248e1dedeec6817
 
 config:
   version: v0.1
