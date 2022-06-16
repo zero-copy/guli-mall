@@ -6,6 +6,7 @@ import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.study.mall.common.constant.AuthServerConstant;
 import com.study.mall.common.dto.MemberEntityDto;
 import com.study.mall.common.lang.R;
 import com.study.mall.dto.MemberLoginDto;
@@ -25,6 +26,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Harlan
@@ -43,6 +45,15 @@ public class LoginController {
     @Resource
     private IMemberFeignService memberFeignService;
 
+    @GetMapping("/login.html")
+    public String loginPage(HttpSession session) {
+        Object attribute = session.getAttribute(AuthServerConstant.LOGIN_USER);
+        if (Objects.isNull(attribute)) {
+            return "login";
+        }
+        return "redirect:http://gulimall.com";
+    }
+
     @PostMapping("/login")
     public String login(UserLoginForm userLoginForm, RedirectAttributes attributes, HttpSession session) {
         MemberLoginDto loginDto = BeanUtil.copyProperties(userLoginForm, MemberLoginDto.class);
@@ -50,7 +61,7 @@ public class LoginController {
         if (result.getCode() == 0) {
             //success
             MemberEntityDto memberEntityDto = result.getData();
-            session.setAttribute("loginUser", memberEntityDto);
+            session.setAttribute(AuthServerConstant.LOGIN_USER, memberEntityDto);
             return "redirect:http://gulimall.com";
         }
         attributes.addFlashAttribute("errors", result.getMsg());
@@ -81,7 +92,7 @@ public class LoginController {
             }
             SocialUserDto socialUserDto = BeanUtil.copyProperties(socialUser, SocialUserDto.class);
             R<MemberEntityDto> memberEntityDto = memberFeignService.oauthLogin(socialUserDto);
-            session.setAttribute("loginUser", memberEntityDto);
+            session.setAttribute(AuthServerConstant.LOGIN_USER, memberEntityDto);
             return "redirect:http://gulimall.com";
         }
         return "redirect:http:auth.gulimall.com/login.html";

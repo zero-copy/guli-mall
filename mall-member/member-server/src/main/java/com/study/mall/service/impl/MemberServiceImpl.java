@@ -48,6 +48,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberEntity> i
     public void register(MemberEntity memberEntity, String password) {
         MemberLevelEntity levelEntity = memberLevelService.getDefaultLevel();
         memberEntity.setLevelId(levelEntity.getId());
+        memberEntity.setNickname(memberEntity.getUsername());
         boolean isUnique = checkPhoneNumUnique(memberEntity.getMobile()) && checkUsernameUnique(memberEntity.getUsername());
         if (!isUnique) {
             throw new MallException("用户信息已存在");
