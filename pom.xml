@@ -23,6 +23,7 @@
         <module>renren-fast</module>
         <module>renren-generator</module>
         <module>mall-auth</module>
+        <module>mall-cart</module>
     </modules>
 
     <properties>
@@ -96,6 +97,12 @@
             <dependency>
                 <groupId>com.study.mall</groupId>
                 <artifactId>third-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.study.mall</groupId>
+                <artifactId>cart-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

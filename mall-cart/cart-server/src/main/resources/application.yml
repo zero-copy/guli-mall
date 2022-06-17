@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://scorpio-study.mysql.cn-chengdu.rds.aliyuncs.com/mall-pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: dbadmin
+    password: lb82ndLF
+
+  redis:
+    host: redis-server
+    password: lb82ndLF
+    port: 6379
+    database: 0
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000
+
+  thymeleaf:
+    cache: false
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  # 主键生成规则
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+  configuration:
+    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+
+logging:
+  level:
+    com.study.mall: debug
+
+config:
+  version: v0.1
