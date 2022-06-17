@@ -23,7 +23,7 @@ public class SessionConfig {
     }
 
     @Bean
-    public RedisSerializer springSessionDefaultRedisSerializer() {
+    public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
         return new GenericJackson2JsonRedisSerializer();
     }
 }

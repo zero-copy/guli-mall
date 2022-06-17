@@ -91,8 +91,10 @@ public class LoginController {
                 socialUser.setName(userInfoJson.getString("name"));
             }
             SocialUserDto socialUserDto = BeanUtil.copyProperties(socialUser, SocialUserDto.class);
-            R<MemberEntityDto> memberEntityDto = memberFeignService.oauthLogin(socialUserDto);
-            session.setAttribute(AuthServerConstant.LOGIN_USER, memberEntityDto);
+            R<MemberEntityDto> res = memberFeignService.oauthLogin(socialUserDto);
+            if (res.getCode() == 0) {
+                session.setAttribute(AuthServerConstant.LOGIN_USER, res.getData());
+            }
             return "redirect:http://gulimall.com";
         }
         return "redirect:http:auth.gulimall.com/login.html";
