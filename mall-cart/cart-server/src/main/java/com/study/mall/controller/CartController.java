@@ -42,7 +42,7 @@ public class CartController {
     public String addToCart(@RequestParam Long skuId, @RequestParam Integer num, RedirectAttributes redirectAttributes) throws ExecutionException, InterruptedException {
         cartService.addToCart(skuId, num);
         redirectAttributes.addAttribute("skuId", skuId);
-        return "redirect:/addToCartSuccess.html";
+        return "redirect:http://cart.gulimall.com/addToCartSuccess.html";
     }
 
     @GetMapping("/addToCartSuccess.html")
