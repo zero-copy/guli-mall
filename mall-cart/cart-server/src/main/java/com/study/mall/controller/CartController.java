@@ -48,7 +48,9 @@ public class CartController {
     @GetMapping("/addToCartSuccess.html")
     public String addToCartSuccessPage(@RequestParam Long skuId, Model model) {
         CartItemEntity cartItem = cartService.getCartItem(skuId);
-        model.addAttribute(cartItem);
+        if (Objects.nonNull(cartItem)) {
+            model.addAttribute(cartItem);
+        }
         return "success";
     }
 }
