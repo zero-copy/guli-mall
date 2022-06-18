@@ -23,4 +23,6 @@ public interface SkuSaleAttrValueMapper extends BaseMapper<SkuSaleAttrValueEntit
      * @return 销售属性
      */
     List<SkuItemSaleAttrVo> getSaleAttrsBySpuId(Long spuId);
+
+    List<String> getSKuSaleAttrValuesAsStringList(Long skuId);
 }

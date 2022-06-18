@@ -599,17 +599,14 @@
                                                         <li>北苑</li>
                                                     </ul>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </dd>
                                 </dl>
-
                             </div>
-
                         </li>
                         <li>
-                            <!-- <span th:text="${item.hasStock?'有货':'无货'}">无货</span>， 此商品暂时售完 -->
+                            <span th:text="${item.hasStock?'有货':'无货'}">无货</span>， 此商品暂时售完
                         </li>
                     </ul>
                 </div>
@@ -626,12 +623,10 @@
                         <dl>
                             <dt>选择[[${attr.attrName}]]</dt>
                             <dd th:each="val : ${attr.attrValues}">
-                                <!--<a th:attr=" class=${#lists.contains(#strings.listSplit(val.skuIds,','),item.info.skuId.toString())
-                                   ? 'sku_attr_value checked': 'sku_attr_value'}, skus=${val.skuIds} "
-                                >
+                                <a th:attr=" class=${#lists.contains(#strings.listSplit(val.skuIds,','),item.info.skuId.toString())
+                                   ? 'sku_attr_value checked': 'sku_attr_value'}, skus=${val.skuIds} ">
                                     [[${val.attrValue}]]
-                                    -->
-                                    <!--											<img src="/static/item/img/59ddfcb1Nc3edb8f1.jpg" /> -->
+                                    <img src="/static/item/img/59ddfcb1Nc3edb8f1.jpg"/>
                                 </a>
                             </dd>
                         </dl>
@@ -665,7 +660,6 @@
                     <div class="box-btns-one">
                         <input type="text" name="" id="productNum" value="1"/>
                         <div class="box-btns-one1">
-
                             <div>
                                 <button id="jia">
                                     +
@@ -676,17 +670,14 @@
                                     -
                                 </button>
                             </div>
-
                         </div>
                     </div>
-
-                    <!--<div class="box-btns-two"
+                    <div class="box-btns-two"
                          th:if="${item.seckillSkuVo == null }">
                         <a class="addToCart" href="#" th:attr="skuId=${item.info.skuId}">
                             加入购物车
                         </a>
                     </div>
-
                     <div class="box-btns-two"
                          th:if="${item.seckillSkuVo != null && (#dates.createNow().getTime() >= item.seckillSkuVo.startTime && #dates.createNow().getTime() <= item.seckillSkuVo.endTime)}">
                         <a class="seckill" href="#"
@@ -694,13 +685,10 @@
                             立即抢购
                         </a>
                     </div>
-                    -->
-
                     <div class="box-btns-three">
                         <img src="/static/item/img/e4ed3606843f664591ff1f68f7fda12d.png" alt=""/> 分享
                     </div>
                 </div>
-
                 <div class="box-footer-zo">
                     <div class="box-footer clear">
                         <dl>
@@ -712,7 +700,6 @@
                             </dd>
                         </dl>
                     </div>
-
                     <div class="box-footer">
                         <dl>
                             <dt>温馨提示</dt>
@@ -722,7 +709,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     <!--欲约抢购流程-->
@@ -762,7 +748,6 @@
             </li>
         </ul>
     </div>
-
     <div class="ShopXiangqing">
         <div class="allLeft">
             <!--火热预约-->
