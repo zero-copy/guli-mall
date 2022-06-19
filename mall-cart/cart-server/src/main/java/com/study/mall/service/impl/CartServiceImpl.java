@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -98,13 +99,42 @@ public class CartServiceImpl implements ICartService {
             List<CartItemEntity> tempCartItems = getCartItems(tempCartKey);
             List<CartItemEntity> cartItems = getCartItems(cartKey);
             cartItems = mergeCartItems(cartItems, tempCartItems);
-            delCartItems(tempCartKey);
+            clearCart(tempCartKey);
             cartEntity.setItems(cartItems);
         } else {
             String cartKey = CART_PREFIX + tempUserInfo.getUserKey();
             cartEntity.setItems(getCartItems(cartKey));
         }
         return cartEntity;
+    }
+
+    @Override
+    public void clearCart(String cartKey) {
+        redisTemplate.delete(cartKey);
+    }
+
+    @Override
+    public void checkItem(Long skuId, Integer check) {
+        BoundHashOperations<String, Object, Object> cartOps = getCartOps();
+        CartItemEntity cartItem = getCartItem(skuId);
+        cartItem.setChecked(check == 1);
+        String itemStr = JSON.toJSONString(cartItem);
+        cartOps.put(skuId.toString(), itemStr);
+    }
+
+    @Override
+    public void changeItemCount(Long skuId, Integer num) {
+        BoundHashOperations<String, Object, Object> cartOps = getCartOps();
+        CartItemEntity cartItem = getCartItem(skuId);
+        cartItem.setCount(num);
+        String itemStr = JSON.toJSONString(cartItem);
+        cartOps.put(skuId.toString(), itemStr);
+    }
+
+    @Override
+    public void delItem(Long skuId) {
+        BoundHashOperations<String, Object, Object> cartOps = getCartOps();
+        cartOps.delete(skuId.toString());
     }
 
     private BoundHashOperations<String, Object, Object> getCartOps() {
@@ -126,12 +156,7 @@ public class CartServiceImpl implements ICartService {
                     JSON.parseObject((String) value, CartItemEntity.class)
             ).collect(Collectors.toList());
         }
-        return null;
-    }
-
-    private void delCartItems(String cartKey) {
-        BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(cartKey);
-        hashOps.delete(cartKey);
+        return Collections.emptyList();
     }
 
     private List<CartItemEntity> mergeCartItems(List<CartItemEntity> cartItems, List<CartItemEntity> tempCartItems) {

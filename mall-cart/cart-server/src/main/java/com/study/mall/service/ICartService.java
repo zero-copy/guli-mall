@@ -31,4 +31,30 @@ public interface ICartService {
      * @return 购物车信息
      */
     CartEntity getCart();
+
+    /**
+     * 清空购物车
+     * @param cartKey key
+     */
+    void clearCart(String cartKey);
+
+    /**
+     * 勾选购物项
+     * @param skuId 商品id
+     * @param check 是否勾选
+     */
+    void checkItem(Long skuId, Integer check);
+
+    /**
+     * 修改商品数量
+     * @param skuId 商品Id
+     * @param num 商品数量
+     */
+    void changeItemCount(Long skuId, Integer num);
+
+    /**
+     * 删除购物项
+     * @param skuId 商品Id
+     */
+    void delItem(Long skuId);
 }

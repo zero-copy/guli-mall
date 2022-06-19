@@ -45,4 +45,23 @@ public class CartController {
         }
         return "success";
     }
+
+
+    @GetMapping("/checkItem")
+    public String checkItem(@RequestParam Long skuId, @RequestParam Integer check) {
+        cartService.checkItem(skuId, check);
+        return "redirect:http://cart.gulimall.com/cart.html";
+    }
+
+    @GetMapping("/countItem")
+    public String countItem(@RequestParam Long skuId, Integer num) {
+        cartService.changeItemCount(skuId, num);
+        return "redirect:http://cart.gulimall.com/cart.html";
+    }
+
+    @GetMapping("/deleteItem")
+    public String deleteItem(@RequestParam Long skuId) {
+        cartService.delItem(skuId);
+        return "redirect:http://cart.gulimall.com/cart.html";
+    }
 }
