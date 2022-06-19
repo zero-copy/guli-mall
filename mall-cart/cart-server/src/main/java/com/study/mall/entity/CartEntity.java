@@ -26,7 +26,7 @@ public class CartEntity implements Serializable {
     public BigDecimal getTotalAmount() {
         if (Objects.nonNull(items) && !items.isEmpty()) {
             items.forEach(item -> {
-                if (item.getChecked()) {
+                if (Boolean.TRUE.equals(item.getChecked())) {
                     totalAmount = totalAmount.add(item.getTotalPrice());
                 }
             });
@@ -38,7 +38,7 @@ public class CartEntity implements Serializable {
     public Integer getCountType() {
         if (Objects.nonNull(items) && !items.isEmpty()) {
             items.forEach(item -> {
-                if (item.getChecked()) {
+                if (Boolean.TRUE.equals(item.getChecked())) {
                     countType += 1;
                 }
             });
@@ -49,7 +49,7 @@ public class CartEntity implements Serializable {
     public Integer getCountNum() {
         if (Objects.nonNull(items) && !items.isEmpty()) {
             items.forEach(item -> {
-                if (item.getChecked()) {
+                if (Boolean.TRUE.equals(item.getChecked())) {
                     countNum += item.getCount();
                 }
             });

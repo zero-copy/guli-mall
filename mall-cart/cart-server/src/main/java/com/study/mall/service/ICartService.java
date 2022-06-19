@@ -1,5 +1,6 @@
 package com.study.mall.service;
 
+import com.study.mall.entity.CartEntity;
 import com.study.mall.entity.CartItemEntity;
 
 import java.util.concurrent.ExecutionException;
@@ -24,4 +25,10 @@ public interface ICartService {
      * @return 购物项
      */
     CartItemEntity getCartItem(Long skuId);
+
+    /**
+     * 获取购物车
+     * @return 购物车信息
+     */
+    CartEntity getCart();
 }

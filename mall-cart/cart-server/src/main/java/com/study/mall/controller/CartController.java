@@ -1,9 +1,7 @@
 package com.study.mall.controller;
 
-import com.study.mall.common.constant.AuthServerConstant;
-import com.study.mall.common.dto.TempUserInfo;
+import com.study.mall.entity.CartEntity;
 import com.study.mall.entity.CartItemEntity;
-import com.study.mall.interceptor.CartInterceptor;
 import com.study.mall.service.ICartService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
@@ -27,14 +24,9 @@ public class CartController {
     private ICartService cartService;
 
     @GetMapping("/cart.html")
-    public String cartPage(HttpSession session) {
-        Object attribute = session.getAttribute(AuthServerConstant.LOGIN_USER);
-        TempUserInfo tempUserInfo = CartInterceptor.THREAD_LOCAL.get();
-        if (Objects.isNull(attribute)) {
-            //临时购物车
-        } else {
-            //登陆购物车
-        }
+    public String cartPage(Model model) {
+        CartEntity cartEntity = cartService.getCart();
+        model.addAttribute("cart", cartEntity);
         return "cartList";
     }
 

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.study.mall.common.dto.TempUserInfo;
 import com.study.mall.common.lang.R;
 import com.study.mall.common.lang.dto.SkuInfoDto;
+import com.study.mall.entity.CartEntity;
 import com.study.mall.entity.CartItemEntity;
 import com.study.mall.feign.ISkuInfoFeignService;
 import com.study.mall.feign.ISkuSaleAttrValueFeignService;
@@ -19,9 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 /**
  * @author Harlan
@@ -85,6 +88,25 @@ public class CartServiceImpl implements ICartService {
         return JSON.parseObject((String) getCartOps().get(skuId.toString()), CartItemEntity.class);
     }
 
+    @Override
+    public CartEntity getCart() {
+        TempUserInfo tempUserInfo = CartInterceptor.THREAD_LOCAL.get();
+        CartEntity cartEntity = new CartEntity();
+        if (Objects.nonNull(tempUserInfo.getUserId())) {
+            String cartKey = CART_PREFIX + tempUserInfo.getUserId();
+            String tempCartKey = CART_PREFIX + tempUserInfo.getUserKey();
+            List<CartItemEntity> tempCartItems = getCartItems(tempCartKey);
+            List<CartItemEntity> cartItems = getCartItems(cartKey);
+            cartItems = mergeCartItems(cartItems, tempCartItems);
+            delCartItems(tempCartKey);
+            cartEntity.setItems(cartItems);
+        } else {
+            String cartKey = CART_PREFIX + tempUserInfo.getUserKey();
+            cartEntity.setItems(getCartItems(cartKey));
+        }
+        return cartEntity;
+    }
+
     private BoundHashOperations<String, Object, Object> getCartOps() {
         TempUserInfo tempUserInfo = CartInterceptor.THREAD_LOCAL.get();
         String cartKey;
@@ -94,5 +116,44 @@ public class CartServiceImpl implements ICartService {
             cartKey = CART_PREFIX + tempUserInfo.getUserKey();
         }
         return redisTemplate.boundHashOps(cartKey);
+    }
+
+    private List<CartItemEntity> getCartItems(String cartKey) {
+        BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(cartKey);
+        List<Object> values = hashOps.values();
+        if (Objects.nonNull(values) && !values.isEmpty()) {
+            return values.stream().map(value ->
+                    JSON.parseObject((String) value, CartItemEntity.class)
+            ).collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    private void delCartItems(String cartKey) {
+        BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(cartKey);
+        hashOps.delete(cartKey);
+    }
+
+    private List<CartItemEntity> mergeCartItems(List<CartItemEntity> cartItems, List<CartItemEntity> tempCartItems) {
+        if (Objects.nonNull(tempCartItems) && !tempCartItems.isEmpty()) {
+            if (Objects.nonNull(cartItems) && !cartItems.isEmpty()) {
+                cartItems.addAll(tempCartItems);
+                for (int i = 0; i < cartItems.size() - 1; i++) {
+                    CartItemEntity currItem = cartItems.get(i);
+                    for (int j = i + 1; j < cartItems.size(); j++) {
+                        CartItemEntity loopItem = cartItems.get(j);
+                        if (currItem.getSkuId().equals(loopItem.getSkuId())) {
+                            currItem.setCount(currItem.getCount() + loopItem.getCount());
+                            cartItems.remove(loopItem);
+                            break;
+                        }
+                    }
+                }
+                return cartItems;
+            }
+            return tempCartItems;
+        } else {
+            return cartItems;
+        }
     }
 }

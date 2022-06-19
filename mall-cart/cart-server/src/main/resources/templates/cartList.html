@@ -14,13 +14,10 @@
 <header>
     <a name="mao1">
         <div class="header">
-
             <ul class="header-left">
                 <li>
-
                     <a href="http://gulimall.com">首页</a>
                 </li>
-
             </ul>
             <ul class="header-right">
                 <li>
@@ -34,17 +31,12 @@
                 <li class="spacer"></li>
                 <li><a href="http://order.gulimall.com/list.html">我的订单</a></li>
                 <li class="spacer"></li>
-
             </ul>
             <div style="clear: both;"></div>
         </div>
-
     </a>
 </header>
-
-
 <div class="one_search">
-
     <div class="one_sousuo">
         <div class="one_search_top">
             <div class="one_top_left">
@@ -69,9 +61,7 @@
         <div class="One_tabTop">
             <div class="One_Topleft">
                 <span>全部商品 </span>
-
             </div>
-
         </div>
         <div class="One_ShopTop">
             <ul>
@@ -83,7 +73,6 @@
                 <li>操作</li>
             </ul>
         </div>
-
         <div class="One_ShopCon">
             <h1 th:if="${cart.items == null}">
                 购物车还没有商品，<a href="http://gulimall.com/">去购物</a>
@@ -94,20 +83,19 @@
                     </div>
                     <div>
                         <ol>
-                            <li><input type="checkbox" th:attr="skuId=${item.skuId}" class="itemChecked" th:checked="${item.check}"></li>
+                            <li><input type="checkbox" th:attr="skuId=${item.skuId}" class="itemChecked" th:checked="${item.checked}"></li>
                             <li>
                                 <dt><img th:src="${item.image}" alt=""></dt>
                                 <dd style="width: 300px;">
                                     <p>
                                         <span th:text="${item.title}">TCL 55A950C 55英寸32核</span>
                                         <br/>
-                                        <span th:each="attr:${item.skuAttrValues}" th:text="${attr}">尺码: 55时 超薄曲面 人工智能</span>
+                                        <span th:each="attr:${item.skuAttr}" th:text="${attr}">尺码: 55时 超薄曲面 人工智能</span>
                                     </p>
                                 </dd>
                             </li>
                             <li>
                                 <p class="dj" th:text="'￥' + ${#numbers.formatDecimal(item.price,3,2)}">￥4599.00</p>
-
                             </li>
                             <li>
                                 <p th:attr="skuId=${item.skuId}">
@@ -115,7 +103,6 @@
                                     <span class="countOpsNum" th:text="${item.count}">5</span>
                                     <span class="countOpsBtn">+</span>
                                 </p>
-
                             </li>
                             <li style="font-weight:bold"><p class="zj">￥[[${#numbers.formatDecimal(item.totalPrice,3,2)}]]</p></li>
                             <li>
@@ -124,7 +111,6 @@
                         </ol>
                     </div>
                 </li>
-
             </ul >
         </div>
         <div class="One_ShopFootBuy fix1">
@@ -137,8 +123,8 @@
                 </ul>
             </div>
             <div>
-                <font style="color:#e64346;font-weight:bold;" class="sumNum"> </font>&nbsp;
-
+                <font style="color:#e64346;font-weight:bold;" class="sumNum">
+                </font>&nbsp;
                 <ul>
                     <li><img src="/static/cart/img/buyNumleft.png" alt=""></li>
                     <li><img src="/static/cart/img/buyNumright.png" alt=""></li>
@@ -156,7 +142,6 @@
         </div>
     </div>
 </div>
-
 <div class="One_isDel">
     <p>
         <span>删除</span><span><img src="/static/cart/img/错误.png" alt=""></span>
@@ -212,9 +197,7 @@
     </dl>
 </div>
 <!--底部-->
-
 <div class="one_footer">
-
 </div>
 </body>
 <script src="/static/cart/js/index.js" charset="utf-8"></script>
