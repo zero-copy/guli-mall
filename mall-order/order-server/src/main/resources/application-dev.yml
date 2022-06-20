@@ -24,6 +24,10 @@ spring:
       simple:
         acknowledge-mode: manual
 
+  session:
+    store-type: redis
+    timeout: 6000000
+
   thymeleaf:
     cache: false
 
@@ -35,6 +39,11 @@ mybatis-plus:
       id-type: auto
   configuration:
     log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+
+thread:
+  core-size: 20
+  max-size: 200
+  keep-alive: 10
 
 config:
   version: v0.1
