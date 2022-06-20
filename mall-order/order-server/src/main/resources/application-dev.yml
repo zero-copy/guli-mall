@@ -11,6 +11,19 @@ spring:
     port: 6379
     database: 0
 
+  rabbitmq:
+    host: rabbitmq-server
+    virtual-host: /
+    username: mqAdmin
+    password: lb82ndLF@mq
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
+    listener:
+      simple:
+        acknowledge-mode: manual
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   # 主键生成规则

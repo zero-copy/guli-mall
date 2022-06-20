@@ -57,6 +57,11 @@ spring:
           uri: lb://mall-cart
           predicates:
             - Host=cart.gulimall.com
+        # cart
+        - id: order_route
+          uri: lb://mall-order
+          predicates:
+            - Host=order.gulimall.com
         # icu
         - id: icu_route
           uri: https://996.icu/#/zh_CN
