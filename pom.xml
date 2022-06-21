@@ -34,7 +34,7 @@
         <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
         <spring-boot.version>2.4.2</spring-boot.version>
         <mybatis-plus-boot-stater.version>3.4.3.4</mybatis-plus-boot-stater.version>
-        <mysql-connector-java.version>8.0.26</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
         <elasticsearch.version>7.4.2</elasticsearch.version>
         <p6spy.version>3.9.1</p6spy.version>
         <swagger2.version>3.0.0</swagger2.version>
