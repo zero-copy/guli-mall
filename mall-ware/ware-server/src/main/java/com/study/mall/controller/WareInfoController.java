@@ -1,10 +1,12 @@
 package com.study.mall.controller;
 
-import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.lang.R;
+import com.study.mall.common.utils.PageUtils;
 import com.study.mall.entity.WareInfoEntity;
 import com.study.mall.service.IWareInfoService;
+import com.study.mall.vo.FareVo;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Map;
@@ -73,6 +75,12 @@ public class WareInfoController {
     public R delete(@RequestBody Long[] ids) {
         wareInfoService.removeByIds(Arrays.asList(ids));
         return R.ok();
+    }
+
+    @GetMapping("/fare")
+    public R<FareVo> getFare(@RequestParam Long addrId) {
+        FareVo fare = wareInfoService.getFare(addrId);
+        return R.ok(fare);
     }
 
 }

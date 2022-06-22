@@ -29,6 +29,8 @@ public class CartItemEntityDto implements Serializable {
 
     private BigDecimal totalPrice;
 
+    private BigDecimal weight;
+
     public BigDecimal getTotalPrice() {
         return price.multiply(BigDecimal.valueOf(count));
     }

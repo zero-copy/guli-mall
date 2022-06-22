@@ -42,9 +42,9 @@ public class MemberReceiveAddressController {
      */
     @RequestMapping("/info/{id}")
     //member:memberreceiveaddress:info
-    public R info(@PathVariable("id") Long id) {
+    public R<MemberReceiveAddressEntity> info(@PathVariable("id") Long id) {
         MemberReceiveAddressEntity memberReceiveAddress = memberReceiveAddressService.getById(id);
-        return R.ok().put("memberReceiveAddress", memberReceiveAddress);
+        return R.ok("memberReceiveAddress", memberReceiveAddress);
     }
 
     /**

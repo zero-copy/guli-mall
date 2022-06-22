@@ -51,6 +51,8 @@ public class OrderConfirmVo implements Serializable {
 
     private Map<Long, Boolean> stocks;
 
+    private BigDecimal weight;
+
     public BigDecimal getTotal() {
         BigDecimal tempTotal = new BigDecimal(0);
         if (Objects.nonNull(items)) {
