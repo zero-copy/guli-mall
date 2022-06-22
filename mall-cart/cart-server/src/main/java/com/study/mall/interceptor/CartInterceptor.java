@@ -28,6 +28,7 @@ public class CartInterceptor implements HandlerInterceptor {
         MemberEntityDto memberDto = (MemberEntityDto) session.getAttribute(AuthServerConstant.LOGIN_USER);
         if (Objects.nonNull(memberDto)) {
             tempUserInfo.setUserId(memberDto.getId());
+            tempUserInfo.setIntegration(memberDto.getIntegration());
         }
         Cookie[] cookies = request.getCookies();
         if (Objects.nonNull(cookies) && cookies.length > 0) {

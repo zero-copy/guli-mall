@@ -1,5 +1,6 @@
 package com.study.mall.controller;
 
+import com.study.mall.common.lang.R;
 import com.study.mall.entity.CartEntity;
 import com.study.mall.entity.CartItemEntity;
 import com.study.mall.service.ICartService;
@@ -7,9 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
@@ -63,5 +66,12 @@ public class CartController {
     public String deleteItem(@RequestParam Long skuId) {
         cartService.delItem(skuId);
         return "redirect:http://cart.gulimall.com/cart.html";
+    }
+
+    @GetMapping("/currentUserCartItems")
+    @ResponseBody
+    public R<List<CartItemEntity>> getCurrentUserCartItems() {
+        List<CartItemEntity> cartItemEntities = cartService.getUserCartItems();
+        return R.ok(cartItemEntities);
     }
 }

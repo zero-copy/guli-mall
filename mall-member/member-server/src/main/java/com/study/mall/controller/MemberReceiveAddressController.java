@@ -1,18 +1,15 @@
 package com.study.mall.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-import javax.annotation.Resource;
-
+import com.study.mall.common.lang.R;
+import com.study.mall.common.utils.PageUtils;
 import com.study.mall.entity.MemberReceiveAddressEntity;
 import com.study.mall.service.IMemberReceiveAddressService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import com.study.mall.common.utils.PageUtils;
-import com.study.mall.common.lang.R;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -46,7 +43,7 @@ public class MemberReceiveAddressController {
     @RequestMapping("/info/{id}")
     //member:memberreceiveaddress:info
     public R info(@PathVariable("id") Long id) {
-            MemberReceiveAddressEntity memberReceiveAddress = memberReceiveAddressService.getById(id);
+        MemberReceiveAddressEntity memberReceiveAddress = memberReceiveAddressService.getById(id);
         return R.ok().put("memberReceiveAddress", memberReceiveAddress);
     }
 
@@ -56,7 +53,7 @@ public class MemberReceiveAddressController {
     @RequestMapping("/save")
     //member:memberreceiveaddress:save
     public R save(@RequestBody MemberReceiveAddressEntity memberReceiveAddress) {
-            memberReceiveAddressService.save(memberReceiveAddress);
+        memberReceiveAddressService.save(memberReceiveAddress);
         return R.ok();
     }
 
@@ -66,7 +63,7 @@ public class MemberReceiveAddressController {
     @RequestMapping("/update")
     //member:memberreceiveaddress:update
     public R update(@RequestBody MemberReceiveAddressEntity memberReceiveAddress) {
-            memberReceiveAddressService.updateById(memberReceiveAddress);
+        memberReceiveAddressService.updateById(memberReceiveAddress);
         return R.ok();
     }
 
@@ -76,8 +73,14 @@ public class MemberReceiveAddressController {
     @RequestMapping("/delete")
     //@RequiresPermissions("member:memberreceiveaddress:delete")
     public R delete(@RequestBody Long[] ids) {
-            memberReceiveAddressService.removeByIds(Arrays.asList(ids));
+        memberReceiveAddressService.removeByIds(Arrays.asList(ids));
         return R.ok();
+    }
+
+    @GetMapping("/{memberId}/address")
+    public R<List<MemberReceiveAddressEntity>> getAddress(@PathVariable Long memberId) {
+        List<MemberReceiveAddressEntity> address = memberReceiveAddressService.getAddress(memberId);
+        return R.ok(address);
     }
 
 }

@@ -15,5 +15,7 @@ public class TempUserInfo implements Serializable {
 
     private String userKey;
 
+    private Integer integration;
+
     private boolean expired = true;
 }

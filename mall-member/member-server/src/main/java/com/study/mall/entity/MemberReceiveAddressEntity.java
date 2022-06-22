@@ -2,10 +2,9 @@ package com.study.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
 import lombok.Data;
+
+import java.io.Serializable;
     
 /**
  * 会员收货地址
@@ -77,27 +76,27 @@ public class MemberReceiveAddressEntity implements Serializable {
     private Integer defaultStatus;
 
     
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String MEMBER_ID = "member_id";
+    public static final String MEMBER_ID = "member_id";
 
-    private static final String NAME = "name";
+    public static final String NAME = "name";
 
-    private static final String PHONE = "phone";
+    public static final String PHONE = "phone";
 
-    private static final String POST_CODE = "post_code";
+    public static final String POST_CODE = "post_code";
 
-    private static final String PROVINCE = "province";
+    public static final String PROVINCE = "province";
 
-    private static final String CITY = "city";
+    public static final String CITY = "city";
 
-    private static final String REGION = "region";
+    public static final String REGION = "region";
 
-    private static final String DETAIL_ADDRESS = "detail_address";
+    public static final String DETAIL_ADDRESS = "detail_address";
 
-    private static final String AREACODE = "areacode";
+    public static final String AREACODE = "areacode";
 
-    private static final String DEFAULT_STATUS = "default_status";
+    public static final String DEFAULT_STATUS = "default_status";
 
     
 }

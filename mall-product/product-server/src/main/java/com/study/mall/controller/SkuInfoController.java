@@ -9,6 +9,7 @@ import com.study.mall.service.ISkuInfoService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -77,6 +78,12 @@ public class SkuInfoController {
     public R delete(@RequestBody Long[] skuIds) {
         skuInfoService.removeByIds(Arrays.asList(skuIds));
         return R.ok();
+    }
+
+    @GetMapping("/{skuId}/price")
+    public R<BigDecimal> getPrice(@PathVariable Long skuId) {
+        BigDecimal price = skuInfoService.getById(skuId).getPrice();
+        return R.ok(price);
     }
 
 }

@@ -23,6 +23,21 @@
         </dependency>
 
         <dependency>
+            <groupId>com.study.mall</groupId>
+            <artifactId>member-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.study.mall</groupId>
+            <artifactId>cart-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.study.mall</groupId>
+            <artifactId>ware-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>

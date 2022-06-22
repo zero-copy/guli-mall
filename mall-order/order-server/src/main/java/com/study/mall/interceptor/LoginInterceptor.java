@@ -1,7 +1,7 @@
 package com.study.mall.interceptor;
 
 import com.study.mall.common.constant.AuthServerConstant;
-import com.study.mall.common.dto.TempUserInfo;
+import com.study.mall.common.dto.MemberEntityDto;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class LoginInterceptor implements HandlerInterceptor {
 
-    private static final ThreadLocal<TempUserInfo> THREAD_LOCAL = new ThreadLocal<>();
+    public static final ThreadLocal<MemberEntityDto> THREAD_LOCAL = new ThreadLocal<>();
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -25,7 +25,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             response.sendRedirect("http://auth.gulimall.com/login/login.html");
             return false;
         } else {
-            THREAD_LOCAL.set((TempUserInfo) user);
+            THREAD_LOCAL.set((MemberEntityDto) user);
             return true;
         }
     }

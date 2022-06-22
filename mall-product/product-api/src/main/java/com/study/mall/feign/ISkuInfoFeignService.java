@@ -3,8 +3,11 @@ package com.study.mall.feign;
 import com.study.mall.common.lang.R;
 import com.study.mall.common.lang.dto.SkuInfoDto;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.math.BigDecimal;
 
 /**
  * @author Harlan
@@ -18,4 +21,7 @@ public interface ISkuInfoFeignService {
      */
     @RequestMapping("/info/{skuId}")
     R<SkuInfoDto> info(@PathVariable("skuId") Long skuId);
+
+    @GetMapping("/{skuId}/price")
+    R<BigDecimal> getPrice(@PathVariable("skuId") Long skuId);
 }

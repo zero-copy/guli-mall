@@ -1,15 +1,17 @@
 package com.study.mall.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
-import com.study.mall.mapper.MemberReceiveAddressMapper;
 import com.study.mall.entity.MemberReceiveAddressEntity;
+import com.study.mall.mapper.MemberReceiveAddressMapper;
 import com.study.mall.service.IMemberReceiveAddressService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 会员收货地址
@@ -28,6 +30,11 @@ public class MemberReceiveAddressServiceImpl extends ServiceImpl<MemberReceiveAd
                 new QueryWrapper<MemberReceiveAddressEntity>()
         );
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<MemberReceiveAddressEntity> getAddress(Long memberId) {
+        return baseMapper.selectList(new QueryWrapper<MemberReceiveAddressEntity>().eq(MemberReceiveAddressEntity.MEMBER_ID, memberId));
     }
 
 }

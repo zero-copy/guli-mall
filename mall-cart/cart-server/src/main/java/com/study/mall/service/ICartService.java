@@ -3,6 +3,7 @@ package com.study.mall.service;
 import com.study.mall.entity.CartEntity;
 import com.study.mall.entity.CartItemEntity;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -57,4 +58,6 @@ public interface ICartService {
      * @param skuId 商品Id
      */
     void delItem(Long skuId);
+
+    List<CartItemEntity> getUserCartItems();
 }

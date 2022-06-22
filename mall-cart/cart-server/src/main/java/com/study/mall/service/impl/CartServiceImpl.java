@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -135,6 +136,25 @@ public class CartServiceImpl implements ICartService {
     public void delItem(Long skuId) {
         BoundHashOperations<String, Object, Object> cartOps = getCartOps();
         cartOps.delete(skuId.toString());
+    }
+
+    @Override
+    public List<CartItemEntity> getUserCartItems() {
+        TempUserInfo userInfo = CartInterceptor.THREAD_LOCAL.get();
+        if (Objects.isNull(userInfo.getUserId())) {
+            return Collections.emptyList();
+        } else {
+            List<CartItemEntity> cartItemEntities = getCartItems(CART_PREFIX + userInfo.getUserId())
+                    .stream().filter(CartItemEntity::getChecked)
+                    .collect(Collectors.toList());
+            cartItemEntities.forEach(item -> {
+                R<BigDecimal> priceRes = skuInfoFeignService.getPrice(item.getSkuId());
+                if (priceRes.getCode() == 0) {
+                    item.setPrice(priceRes.getData());
+                }
+            });
+            return cartItemEntities;
+        }
     }
 
     private BoundHashOperations<String, Object, Object> getCartOps() {
