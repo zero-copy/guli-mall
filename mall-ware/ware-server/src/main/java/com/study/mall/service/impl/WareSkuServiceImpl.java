@@ -4,18 +4,23 @@ import com.alibaba.nacos.common.utils.Objects;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.study.mall.common.lang.R;
 import com.study.mall.common.lang.dto.SkuInfoDto;
+import com.study.mall.common.lang.dto.SkuStockDto;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
-import com.study.mall.common.lang.R;
 import com.study.mall.entity.WareSkuEntity;
 import com.study.mall.feign.ISkuInfoFeignService;
 import com.study.mall.mapper.WareSkuMapper;
 import com.study.mall.service.IWareSkuService;
-import com.study.mall.common.lang.dto.SkuStockDto;
+import com.study.mall.vo.LockStockResultVo;
+import com.study.mall.vo.OrderItemVo;
+import com.study.mall.vo.SkuWareHasStock;
+import com.study.mall.vo.WareSkuLockVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +93,14 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
             }
             return vo;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LockStockResultVo> orderLockStock(WareSkuLockVo vo) {
+        List<OrderItemVo> locks = vo.getLocks();
+        List<Long> skuIds = locks.stream().map(OrderItemVo::getSkuId).collect(Collectors.toList());
+        List<SkuWareHasStock> skuWareHasStocks = wareSkuMapper.selectSkuWare(skuIds);
+        return null;
     }
 
 }

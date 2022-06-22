@@ -1004,7 +1004,7 @@
     //查运费
     function getFare(addrId) {
     	//给表单回填选择的地址
-		$("#addrInput").val(addrId);
+		$("#addrInput").val(1);
         $.get("http://gulimall.com/api/ware/wareinfo/fare?addrId=1", function (resp) {
             console.log(resp);
             $("#fare").text(resp.data.fare);

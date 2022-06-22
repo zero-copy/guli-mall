@@ -1,9 +1,12 @@
 package com.study.mall.mapper;
 
-import com.study.mall.entity.WareSkuEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.study.mall.entity.WareSkuEntity;
+import com.study.mall.vo.SkuWareHasStock;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 商品库存
@@ -17,7 +20,8 @@ public interface WareSkuMapper extends BaseMapper<WareSkuEntity> {
 
     /**
      * 添加库存
-     * @param skuId sku
+     *
+     * @param skuId  sku
      * @param wareId ware
      * @param skuNum 数量
      * @return 影响行数
@@ -26,8 +30,11 @@ public interface WareSkuMapper extends BaseMapper<WareSkuEntity> {
 
     /**
      * 获取当前库存
+     *
      * @param skuId skuId
      * @return 库存量
      */
     Long getStock(Long skuId);
+
+    List<SkuWareHasStock> selectSkuWare(@Param("skuIds") List<Long> skuIds);
 }

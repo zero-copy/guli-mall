@@ -12,11 +12,23 @@
         <result property="stockLocked" column="stock_locked"/>
     </resultMap>
 
+    <resultMap type="com.study.mall.vo.SkuWareHasStock" id="skuWareHasStock">
+        <result property="skuId" column="sku_id"/>
+        <collection property="wareIds" column="ware_id"/>
+    </resultMap>
+
     <update id="addStock">
         UPDATE `mall-wms`.wms_ware_sku SET stock = stock + #{skuNum} WHERE sku_id = #{skuId} AND ware_id = #{wareId}
     </update>
 
     <select id="getStock" resultType="java.lang.Long">
         SELECT SUM(stock_locked) FROM `mall-wms`.wms_ware_sku where sku_id = #{skuId}
+    </select>
+
+    <select id="selectSkuWare" resultMap="skuWareHasStock">
+        select sku_id, ware_id from `mall-wms`.wms_ware_sku where
+            <foreach collection="skuIds" item="skuId" separator="or" open="(" close=")" index="index">
+                sku_id = #{skuId}
+            </foreach>
     </select>
 </mapper>

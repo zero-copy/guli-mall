@@ -5,6 +5,8 @@ import com.study.mall.common.lang.R;
 import com.study.mall.entity.WareSkuEntity;
 import com.study.mall.service.IWareSkuService;
 import com.study.mall.common.lang.dto.SkuStockDto;
+import com.study.mall.vo.LockStockResultVo;
+import com.study.mall.vo.WareSkuLockVo;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -25,6 +27,13 @@ public class WareSkuController {
 
     @Resource
     private IWareSkuService wareSkuService;
+
+
+    @PostMapping("/lock/order")
+    public R<List<LockStockResultVo>> orderLockStock(@RequestBody WareSkuLockVo vo) {
+        List<LockStockResultVo> results = wareSkuService.orderLockStock(vo);
+        return R.ok(results);
+    }
 
     /**
      * 查询是否有库存

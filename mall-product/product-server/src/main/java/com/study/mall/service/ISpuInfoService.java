@@ -38,5 +38,7 @@ public interface ISpuInfoService extends IService<SpuInfoEntity> {
      * @return 是否成功
      */
     boolean up(Long spuId);
+
+    SpuInfoEntity getBySkuId(Long id);
 }
 
