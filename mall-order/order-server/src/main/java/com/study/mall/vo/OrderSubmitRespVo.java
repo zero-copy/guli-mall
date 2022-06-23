@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Data
 public class OrderSubmitRespVo implements Serializable {
 
-    private OrderEntity orderEntity;
+    private OrderEntity order;
 
     private Integer code;
 }

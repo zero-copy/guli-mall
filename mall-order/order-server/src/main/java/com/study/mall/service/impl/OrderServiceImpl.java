@@ -162,11 +162,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
                 WareSkuLockDto lockDto = new WareSkuLockDto();
                 lockDto.setOrderSn(createDto.getOrder().getOrderSn());
                 lockDto.setLocks(createDto.getOrderItems().stream()
-                        .map(item -> BeanUtil.copyProperties(item, OrderItemDto.class))
+                        .map(item -> {
+                            OrderItemDto itemDto = BeanUtil.copyProperties(item, OrderItemDto.class);
+                            itemDto.setCount(item.getSkuQuantity());
+                            return itemDto;
+                        })
                         .collect(Collectors.toList()));
                 R<Object> lockRes = wareSkuFeignService.orderLockStock(lockDto);
                 if (lockRes.getCode() == 0) {
-                    resp.setOrderEntity(createDto.getOrder());
+                    resp.setOrder(createDto.getOrder());
                     resp.setCode(0);
                     return resp;
                 } else {
