@@ -29,7 +29,9 @@ public enum ErrorCodeEnum {
     /**
      * 商品上架异常
      */
-    PRODUCT_UP_EXCEPTION(11000, "商品上架异常");
+    PRODUCT_UP_EXCEPTION(11000, "商品上架异常"),
+
+    NO_STOCK_EXCEPTION(21000, "商品库存不足");
 
     private final int code;
 

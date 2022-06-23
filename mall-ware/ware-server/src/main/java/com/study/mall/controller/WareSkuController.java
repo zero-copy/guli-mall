@@ -1,13 +1,15 @@
 package com.study.mall.controller;
 
-import com.study.mall.common.utils.PageUtils;
+import com.study.mall.common.enums.ErrorCodeEnum;
 import com.study.mall.common.lang.R;
-import com.study.mall.entity.WareSkuEntity;
-import com.study.mall.service.IWareSkuService;
 import com.study.mall.common.lang.dto.SkuStockDto;
-import com.study.mall.vo.LockStockResultVo;
+import com.study.mall.common.utils.PageUtils;
+import com.study.mall.entity.WareSkuEntity;
+import com.study.mall.exception.NoStockException;
+import com.study.mall.service.IWareSkuService;
 import com.study.mall.vo.WareSkuLockVo;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
@@ -30,9 +32,13 @@ public class WareSkuController {
 
 
     @PostMapping("/lock/order")
-    public R<List<LockStockResultVo>> orderLockStock(@RequestBody WareSkuLockVo vo) {
-        List<LockStockResultVo> results = wareSkuService.orderLockStock(vo);
-        return R.ok(results);
+    public R<Object> orderLockStock(@RequestBody WareSkuLockVo vo) {
+        try {
+            wareSkuService.orderLockStock(vo);
+            return R.ok();
+        } catch (NoStockException e) {
+            return R.error(ErrorCodeEnum.NO_STOCK_EXCEPTION.getCode(), ErrorCodeEnum.NO_STOCK_EXCEPTION.getMessage());
+        }
     }
 
     /**

@@ -2,7 +2,6 @@ package com.study.mall.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.study.mall.entity.WareSkuEntity;
-import com.study.mall.vo.SkuWareHasStock;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -36,5 +35,7 @@ public interface WareSkuMapper extends BaseMapper<WareSkuEntity> {
      */
     Long getStock(Long skuId);
 
-    List<SkuWareHasStock> selectSkuWare(@Param("skuIds") List<Long> skuIds);
+    List<Long> listWareIdHasStock(Long skuId);
+
+    Long lockSkuStock(@Param("skuId") Long skuId, @Param("wareId") Long wareId, @Param("num") Integer num);
 }

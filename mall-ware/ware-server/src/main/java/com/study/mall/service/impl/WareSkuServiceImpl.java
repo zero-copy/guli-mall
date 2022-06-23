@@ -10,10 +10,10 @@ import com.study.mall.common.lang.dto.SkuStockDto;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
 import com.study.mall.entity.WareSkuEntity;
+import com.study.mall.exception.NoStockException;
 import com.study.mall.feign.ISkuInfoFeignService;
 import com.study.mall.mapper.WareSkuMapper;
 import com.study.mall.service.IWareSkuService;
-import com.study.mall.vo.LockStockResultVo;
 import com.study.mall.vo.OrderItemVo;
 import com.study.mall.vo.SkuWareHasStock;
 import com.study.mall.vo.WareSkuLockVo;
@@ -96,11 +96,37 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
     }
 
     @Override
-    public List<LockStockResultVo> orderLockStock(WareSkuLockVo vo) {
+    @Transactional(rollbackFor = NoStockException.class)
+    public Boolean orderLockStock(WareSkuLockVo vo) {
         List<OrderItemVo> locks = vo.getLocks();
-        List<Long> skuIds = locks.stream().map(OrderItemVo::getSkuId).collect(Collectors.toList());
-        List<SkuWareHasStock> skuWareHasStocks = wareSkuMapper.selectSkuWare(skuIds);
-        return null;
+        List<SkuWareHasStock> wareHasStocks = locks.stream().map(item -> {
+            SkuWareHasStock wareHasStock = new SkuWareHasStock();
+            List<Long> wareIds = wareSkuMapper.listWareIdHasStock(item.getSkuId());
+            wareHasStock.setSkuId(item.getSkuId());
+            wareHasStock.setNum(item.getCount());
+            wareHasStock.setWareIds(wareIds);
+            return wareHasStock;
+        }).collect(Collectors.toList());
+        for (SkuWareHasStock wareHasStock : wareHasStocks) {
+            boolean skuStock = false;
+            Long skuId = wareHasStock.getSkuId();
+            List<Long> wareIds = wareHasStock.getWareIds();
+            if (wareIds.isEmpty()) {
+                //没有库存
+                throw new NoStockException(skuId);
+            }
+            for (Long wareId : wareIds) {
+                Long count = wareSkuMapper.lockSkuStock(skuId, wareId, wareHasStock.getNum());
+                if (count == 1) {
+                    skuStock = true;
+                    break;
+                }
+            }
+            if (Boolean.FALSE.equals(skuStock)) {
+                throw new NoStockException(skuId);
+            }
+        }
+        return true;
     }
 
 }

@@ -32,10 +32,11 @@ public class OrderWebController {
     }
 
     @PostMapping("/submitOrder")
-    public String submitOrder(OrderSubmitVo submit) {
+    public String submitOrder(OrderSubmitVo submit, Model model) {
         log.info(submit.toString());
         OrderSubmitRespVo vo = orderService.submitOrder(submit);
         if (vo.getCode() == 0) {
+            model.addAttribute("submitOrderResp", vo);
             return "pay";
         } else {
             return "redirect:http://order.gulimall.com/toTrade";

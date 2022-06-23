@@ -38,6 +38,6 @@ public class ConfigCenterController {
         infoMap.put("application-name", applicationName);
         infoMap.put("profiles-active", profilesActive);
         infoMap.put("config-version", configVersion);
-        return R.ok().put("data", infoMap);
+        return R.put("data", infoMap);
     }
 }

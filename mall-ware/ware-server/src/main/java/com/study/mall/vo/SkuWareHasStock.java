@@ -15,5 +15,7 @@ class SkuWareHasStock implements Serializable {
 
     private Long skuId;
 
+    private Integer num;
+
     private List<Long> wareIds;
 }

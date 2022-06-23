@@ -26,8 +26,4 @@ public class OrderItemDto implements Serializable {
     private Integer count;
 
     private BigDecimal totalPrice;
-
-    public BigDecimal getTotalPrice() {
-        return price.multiply(BigDecimal.valueOf(count));
-    }
 }

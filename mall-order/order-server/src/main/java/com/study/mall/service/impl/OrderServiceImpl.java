@@ -19,12 +19,8 @@ import com.study.mall.dto.SpuInfoDto;
 import com.study.mall.entity.OrderEntity;
 import com.study.mall.entity.OrderItemEntity;
 import com.study.mall.enume.OrderStatusEnum;
-import com.study.mall.feign.ICartFeignService;
-import com.study.mall.feign.IMemberAddressFeignService;
-import com.study.mall.feign.ISpuInfoFeignService;
-import com.study.mall.feign.IWareSkuFeignService;
+import com.study.mall.feign.*;
 import com.study.mall.feign.dto.FareDto;
-import com.study.mall.feign.dto.LockStockResultDto;
 import com.study.mall.feign.dto.OrderItemDto;
 import com.study.mall.feign.dto.WareSkuLockDto;
 import com.study.mall.interceptor.LoginInterceptor;
@@ -79,6 +75,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
 
     @Resource
     private IWareSkuFeignService wareSkuFeignService;
+
+    @Resource
+    private IWareInfoFeignService wareInfoFeignService;
 
     @Resource
     private ThreadPoolExecutor threadPool;
@@ -146,7 +145,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
     public OrderSubmitRespVo submitOrder(OrderSubmitVo submit) {
         submitThreadLocal.set(submit);
         OrderSubmitRespVo resp = new OrderSubmitRespVo();
-        String script = "if redis.call('get'， KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
         MemberEntityDto memberDto = LoginInterceptor.THREAD_LOCAL.get();
         String orderToken = submit.getOrderToken();
         Long result = redisTemplate.execute(new DefaultRedisScript<>(script, Long.class),
@@ -165,17 +164,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
                 lockDto.setLocks(createDto.getOrderItems().stream()
                         .map(item -> BeanUtil.copyProperties(item, OrderItemDto.class))
                         .collect(Collectors.toList()));
-                R<List<LockStockResultDto>> lockRes = wareSkuFeignService.orderLockStock(lockDto);
+                R<Object> lockRes = wareSkuFeignService.orderLockStock(lockDto);
                 if (lockRes.getCode() == 0) {
-
+                    resp.setOrderEntity(createDto.getOrder());
+                    resp.setCode(0);
+                    return resp;
                 } else {
-                    resp.setCode();
+                    resp.setCode(3);
                 }
             } else {
                 resp.setCode(2);
             }
         } else {
-            //失败
+            resp.setCode(4);
         }
         return resp;
     }
@@ -213,8 +214,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         for (OrderItemEntity orderItem : orderItemEntities) {
             total = total.add(orderItem.getRealAmount());
             couponAmount = couponAmount.add(orderItem.getCouponAmount());
-            integrationAmount =  integrationAmount.add(orderEntity.getIntegrationAmount());
-            promotionAmount = promotionAmount.add(orderEntity.getPromotionAmount());
+            integrationAmount =  integrationAmount.add(orderItem.getIntegrationAmount());
+            promotionAmount = promotionAmount.add(orderItem.getPromotionAmount());
             giftGrowth += orderItem.getGiftGrowth();
             giftIntegration += orderItem.getGiftIntegration();
         }
@@ -234,7 +235,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setMemberId(LoginInterceptor.THREAD_LOCAL.get().getId());
         orderEntity.setOrderSn(orderSn);
-        R<FareDto> fareRes = wareSkuFeignService.getFare(submitThreadLocal.get().getAddrId());
+        R<FareDto> fareRes = wareInfoFeignService.getFare(submitThreadLocal.get().getAddrId());
         if (fareRes.getCode() == 0) {
             FareDto data = fareRes.getData();
             com.study.mall.feign.dto.MemberAddressDto address = data.getAddress();
