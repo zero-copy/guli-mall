@@ -8,7 +8,7 @@
 
 package io.renren.modules.sys.oauth2;
 
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
 import io.renren.common.utils.HttpContextUtils;
 import io.renren.common.utils.R;
 import org.apache.commons.lang.StringUtils;
@@ -61,7 +61,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
             httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
             httpResponse.setHeader("Access-Control-Allow-Origin", HttpContextUtils.getOrigin());
 
-            String json = new Gson().toJson(R.error(HttpStatus.SC_UNAUTHORIZED, "invalid token"));
+            String json = JSON.toJSONString(R.error(HttpStatus.SC_UNAUTHORIZED, "invalid token"));
 
             httpResponse.getWriter().print(json);
 
@@ -82,7 +82,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
             Throwable throwable = e.getCause() == null ? e : e.getCause();
             R r = R.error(HttpStatus.SC_UNAUTHORIZED, throwable.getMessage());
 
-            String json = new Gson().toJson(r);
+            String json = JSON.toJSONString(r);
             httpResponse.getWriter().print(json);
         } catch (IOException e1) {
 
