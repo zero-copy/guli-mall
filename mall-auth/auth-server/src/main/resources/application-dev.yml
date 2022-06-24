@@ -7,6 +7,10 @@ spring:
     password: lb82ndLF
     port: 6379
     database: 0
+    timeout: 500
+    testOnBorrow: true
+    testWhileIdle: true
+    testOnReturn: true
 
   session:
     store-type: redis
