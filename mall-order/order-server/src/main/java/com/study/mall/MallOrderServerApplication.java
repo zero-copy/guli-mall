@@ -1,5 +1,6 @@
 package com.study.mall;
 
+import io.seata.spring.annotation.datasource.EnableAutoDataSourceProxy;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +17,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableRedisHttpSession
 @EnableFeignClients
 @EnableDiscoveryClient
+@EnableAutoDataSourceProxy
 public class MallOrderServerApplication {
 
     public static void main(String[] args) {

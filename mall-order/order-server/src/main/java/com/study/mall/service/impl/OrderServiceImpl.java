@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.study.mall.common.constant.OrderConstant;
 import com.study.mall.common.dto.MemberEntityDto;
+import com.study.mall.common.exception.MallException;
 import com.study.mall.common.lang.R;
 import com.study.mall.common.lang.dto.SkuStockDto;
 import com.study.mall.common.utils.PageUtils;
@@ -30,6 +31,7 @@ import com.study.mall.service.IOrderService;
 import com.study.mall.vo.OrderConfirmVo;
 import com.study.mall.vo.OrderSubmitRespVo;
 import com.study.mall.vo.OrderSubmitVo;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -140,6 +142,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         return confirmVo;
     }
 
+    @GlobalTransactional
     @Transactional(rollbackFor = Exception.class)
     @Override
     public OrderSubmitRespVo submitOrder(OrderSubmitVo submit) {
@@ -174,15 +177,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
                     resp.setCode(0);
                     return resp;
                 } else {
-                    resp.setCode(3);
+                    throw new MallException("提交订单失败");
                 }
             } else {
-                resp.setCode(2);
+                throw new MallException("提交订单失败");
             }
         } else {
-            resp.setCode(4);
+            throw new MallException("提交订单失败");
         }
-        return resp;
     }
 
     private void saveOrder(OrderCreateDto createDto) {
