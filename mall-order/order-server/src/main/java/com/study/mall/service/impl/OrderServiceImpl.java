@@ -31,7 +31,6 @@ import com.study.mall.service.IOrderService;
 import com.study.mall.vo.OrderConfirmVo;
 import com.study.mall.vo.OrderSubmitRespVo;
 import com.study.mall.vo.OrderSubmitVo;
-import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -142,7 +141,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         return confirmVo;
     }
 
-    @GlobalTransactional
     @Transactional(rollbackFor = Exception.class)
     @Override
     public OrderSubmitRespVo submitOrder(OrderSubmitVo submit) {
@@ -173,6 +171,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
                         .collect(Collectors.toList()));
                 R<Object> lockRes = wareSkuFeignService.orderLockStock(lockDto);
                 if (lockRes.getCode() == 0) {
+                    int i = 10 / 0;
                     resp.setOrder(createDto.getOrder());
                     resp.setCode(0);
                     return resp;

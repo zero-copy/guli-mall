@@ -1,23 +1,31 @@
 package com.study.mall.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.nacos.common.utils.Objects;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.study.mall.common.dto.StockDetailDto;
+import com.study.mall.common.dto.StockLockedDto;
 import com.study.mall.common.lang.R;
 import com.study.mall.common.lang.dto.SkuInfoDto;
 import com.study.mall.common.lang.dto.SkuStockDto;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
+import com.study.mall.entity.WareOrderTaskDetailEntity;
+import com.study.mall.entity.WareOrderTaskEntity;
 import com.study.mall.entity.WareSkuEntity;
 import com.study.mall.exception.NoStockException;
 import com.study.mall.feign.ISkuInfoFeignService;
 import com.study.mall.mapper.WareSkuMapper;
+import com.study.mall.service.IWareOrderTaskDetailService;
+import com.study.mall.service.IWareOrderTaskService;
 import com.study.mall.service.IWareSkuService;
 import com.study.mall.vo.OrderItemVo;
 import com.study.mall.vo.SkuWareHasStock;
 import com.study.mall.vo.WareSkuLockVo;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +50,15 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
 
     @Resource
     private ISkuInfoFeignService skuInfoFeignService;
+
+    @Resource
+    private IWareOrderTaskDetailService wareOrderTaskDetailService;
+
+    @Resource
+    private IWareOrderTaskService wareOrderTaskService;
+
+    @Resource
+    RabbitTemplate rabbitTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -98,6 +115,9 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
     @Override
     @Transactional(rollbackFor = NoStockException.class)
     public Boolean orderLockStock(WareSkuLockVo vo) {
+        WareOrderTaskEntity orderTaskEntity = new WareOrderTaskEntity();
+        orderTaskEntity.setOrderSn(vo.getOrderSn());
+        wareOrderTaskService.save(orderTaskEntity);
         List<OrderItemVo> locks = vo.getLocks();
         List<SkuWareHasStock> wareHasStocks = locks.stream().map(item -> {
             SkuWareHasStock wareHasStock = new SkuWareHasStock();
@@ -119,6 +139,17 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
                 Long count = wareSkuMapper.lockSkuStock(skuId, wareId, wareHasStock.getNum());
                 if (count == 1) {
                     skuStock = true;
+                    WareOrderTaskDetailEntity orderDetailEntity = new WareOrderTaskDetailEntity();
+                    orderDetailEntity.setSkuId(skuId);
+                    orderDetailEntity.setSkuNum(wareHasStock.getNum());
+                    orderDetailEntity.setTaskId(orderTaskEntity.getId());
+                    orderDetailEntity.setWareId(wareId);
+                    orderDetailEntity.setLockStatus(1);
+                    wareOrderTaskDetailService.save(orderDetailEntity);
+                    StockLockedDto lockedDto = new StockLockedDto();
+                    lockedDto.setId(orderTaskEntity.getId());
+                    lockedDto.setDetail(BeanUtil.copyProperties(orderDetailEntity, StockDetailDto.class));
+                    rabbitTemplate.convertAndSend("stock-event-exchange", "stock.locked", lockedDto);
                     break;
                 }
             }

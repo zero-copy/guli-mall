@@ -2,10 +2,9 @@ package com.study.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
 import lombok.Data;
+
+import java.io.Serializable;
     
 /**
  * 库存工作单
@@ -57,19 +56,19 @@ public class WareOrderTaskDetailEntity implements Serializable {
     private Integer lockStatus;
 
     
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String SKU_ID = "sku_id";
+    public static final String SKU_ID = "sku_id";
 
-    private static final String SKU_NAME = "sku_name";
+    public static final String SKU_NAME = "sku_name";
 
-    private static final String SKU_NUM = "sku_num";
+    public static final String SKU_NUM = "sku_num";
 
-    private static final String TASK_ID = "task_id";
+    public static final String TASK_ID = "task_id";
 
-    private static final String WARE_ID = "ware_id";
+    public static final String WARE_ID = "ware_id";
 
-    private static final String LOCK_STATUS = "lock_status";
+    public static final String LOCK_STATUS = "lock_status";
 
     
 }
