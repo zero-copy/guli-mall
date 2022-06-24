@@ -11,6 +11,22 @@ spring:
     port: 6379
     database: 0
 
+seata:
+  application-id: ${spring.application.name}
+  registry:
+    type: nacos
+    nacos:
+      application: mall-seata
+      server-addr: ${spring.cloud.nacos.discovery.server-addr}
+      group : SEATA_GROUP
+      namespace: 4e3012ce-93ab-49cb-8ad3-e93a3860b268
+      username: nacos
+      password: lb82ndLF
+  tx-service-group: default_tx_group
+  service:
+    vgroup-mapping:
+      default_tx_group: default
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   # 主键生成规则
