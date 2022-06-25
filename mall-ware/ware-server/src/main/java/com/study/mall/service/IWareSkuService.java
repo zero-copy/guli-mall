@@ -1,6 +1,7 @@
 package com.study.mall.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.study.mall.common.dto.StockLockedDto;
 import com.study.mall.common.lang.dto.SkuStockDto;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.entity.WareSkuEntity;
@@ -45,11 +46,8 @@ public interface IWareSkuService extends IService<WareSkuEntity> {
 
     /**
      * 解锁库存
-     * @param skuId skuId
-     * @param wareId wareId
-     * @param num 数量
-     * @param orderTaskId 任务单id
+     * @param dto
      */
-    void unLockStock(Long skuId, Long wareId, Integer num, Long orderTaskId);
+    void unLockStock(StockLockedDto dto);
 }
 

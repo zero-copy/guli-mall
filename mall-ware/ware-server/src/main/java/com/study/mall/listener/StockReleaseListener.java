@@ -12,6 +12,7 @@ import com.study.mall.feign.IOrderFeignService;
 import com.study.mall.service.IWareOrderTaskDetailService;
 import com.study.mall.service.IWareOrderTaskService;
 import com.study.mall.service.IWareSkuService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -25,44 +26,22 @@ import java.io.IOException;
  * @email isharlan.hu@gmali.com
  * @date 2022/6/25 09:39
  */
+@Slf4j
 @Component
 @RabbitListener
 public class StockReleaseListener {
-
-    @Resource
-    private IWareOrderTaskDetailService wareOrderTaskDetailService;
-
-    @Resource
-    private IWareOrderTaskService wareOrderTaskService;
-
-    @Resource
-    IOrderFeignService orderFeignService;
 
     @Resource
     IWareSkuService wareSkuService;
 
     @RabbitHandler
     public void stockLockReleaseHandler(StockLockedDto dto, Message message, Channel channel) throws IOException {
-        StockDetailDto detail = dto.getDetail();
-        WareOrderTaskDetailEntity dbDetail = wareOrderTaskDetailService.getById(detail.getId());
-        //库存是否锁定成功
-        if (Objects.nonNull(dbDetail)) {
-            WareOrderTaskEntity orderTask = wareOrderTaskService.getById(dto.getId());
-            //查询订单状态
-            R<OrderEntityDto> orderRes = orderFeignService.getOrderStatus(orderTask.getOrderSn());
-            if (orderRes.getCode() == 0) {
-                OrderEntityDto orderDto = orderRes.getData();
-                //没有订单 or 订单取消
-                if (Objects.isNull(orderDto) || orderDto.getStatus() == 4) {
-                    //解锁库存
-                    wareSkuService.unLockStock(dbDetail.getSkuId(), dbDetail.getWareId(), dbDetail.getSkuNum(), orderTask.getId());
-                    channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-                }
-            } else {
-                channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
-            }
-        } else {
+        try {
+            wareSkuService.unLockStock(dto);
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e.getCause());
+            channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
         }
     }
 }

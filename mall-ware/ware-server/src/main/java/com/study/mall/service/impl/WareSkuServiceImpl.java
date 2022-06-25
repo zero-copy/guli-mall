@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rabbitmq.client.Channel;
 import com.study.mall.common.dto.StockDetailDto;
 import com.study.mall.common.dto.StockLockedDto;
+import com.study.mall.common.exception.MallException;
 import com.study.mall.common.lang.R;
 import com.study.mall.common.lang.dto.SkuInfoDto;
 import com.study.mall.common.lang.dto.SkuStockDto;
@@ -64,6 +65,9 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
 
     @Resource
     private IWareOrderTaskService wareOrderTaskService;
+
+    @Resource
+    IOrderFeignService orderFeignService;
 
     @Resource
     RabbitTemplate rabbitTemplate;
@@ -168,8 +172,30 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
         return true;
     }
 
-    public void unLockStock(Long skuId, Long wareId, Integer num, Long orderTaskId) {
-        wareSkuMapper.unLockStock(skuId, wareId, num, orderTaskId);
+    @Override
+    public void unLockStock(StockLockedDto dto) {
+        StockDetailDto detail = dto.getDetail();
+        WareOrderTaskDetailEntity dbDetail = wareOrderTaskDetailService.getById(detail.getId());
+        //库存是否锁定成功
+        if (Objects.nonNull(dbDetail)) {
+            WareOrderTaskEntity orderTask = wareOrderTaskService.getById(dto.getId());
+            //查询订单状态
+            R<OrderEntityDto> orderRes = orderFeignService.getOrderStatus(orderTask.getOrderSn());
+            if (orderRes.getCode() == 0) {
+                OrderEntityDto orderDto = orderRes.getData();
+                //没有订单 or 订单取消 且 状态已锁定
+                boolean hasStock = (Objects.isNull(orderDto) || orderDto.getStatus() == 4) && dbDetail.getLockStatus() == 1;
+                if (hasStock) {
+                    //解锁库存
+                    wareSkuMapper.unLockStock(dbDetail.getSkuId(), dbDetail.getWareId(), dbDetail.getSkuNum(), orderTask.getId());
+                    //修改详情状态
+                    dbDetail.setLockStatus(2);
+                    wareOrderTaskService.getById(dbDetail);
+                }
+            } else {
+                throw new MallException("查询订单失败");
+            }
+        }
     }
 
 }
