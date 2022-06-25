@@ -233,89 +233,89 @@ public class OrderEntity implements Serializable {
     private LocalDateTime modifyTime;
 
     
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String MEMBER_ID = "member_id";
+    public static final String MEMBER_ID = "member_id";
 
-    private static final String ORDER_SN = "order_sn";
+    public static final String ORDER_SN = "order_sn";
 
-    private static final String COUPON_ID = "coupon_id";
+    public static final String COUPON_ID = "coupon_id";
 
-    private static final String CREATE_TIME = "create_time";
+    public static final String CREATE_TIME = "create_time";
 
-    private static final String MEMBER_USERNAME = "member_username";
+    public static final String MEMBER_USERNAME = "member_username";
 
-    private static final String TOTAL_AMOUNT = "total_amount";
+    public static final String TOTAL_AMOUNT = "total_amount";
 
-    private static final String PAY_AMOUNT = "pay_amount";
+    public static final String PAY_AMOUNT = "pay_amount";
 
-    private static final String FREIGHT_AMOUNT = "freight_amount";
+    public static final String FREIGHT_AMOUNT = "freight_amount";
 
-    private static final String PROMOTION_AMOUNT = "promotion_amount";
+    public static final String PROMOTION_AMOUNT = "promotion_amount";
 
-    private static final String INTEGRATION_AMOUNT = "integration_amount";
+    public static final String INTEGRATION_AMOUNT = "integration_amount";
 
-    private static final String COUPON_AMOUNT = "coupon_amount";
+    public static final String COUPON_AMOUNT = "coupon_amount";
 
-    private static final String DISCOUNT_AMOUNT = "discount_amount";
+    public static final String DISCOUNT_AMOUNT = "discount_amount";
 
-    private static final String PAY_TYPE = "pay_type";
+    public static final String PAY_TYPE = "pay_type";
 
-    private static final String SOURCE_TYPE = "source_type";
+    public static final String SOURCE_TYPE = "source_type";
 
-    private static final String STATUS = "status";
+    public static final String STATUS = "status";
 
-    private static final String DELIVERY_COMPANY = "delivery_company";
+    public static final String DELIVERY_COMPANY = "delivery_company";
 
-    private static final String DELIVERY_SN = "delivery_sn";
+    public static final String DELIVERY_SN = "delivery_sn";
 
-    private static final String AUTO_CONFIRM_DAY = "auto_confirm_day";
+    public static final String AUTO_CONFIRM_DAY = "auto_confirm_day";
 
-    private static final String INTEGRATION = "integration";
+    public static final String INTEGRATION = "integration";
 
-    private static final String GROWTH = "growth";
+    public static final String GROWTH = "growth";
 
-    private static final String BILL_TYPE = "bill_type";
+    public static final String BILL_TYPE = "bill_type";
 
-    private static final String BILL_HEADER = "bill_header";
+    public static final String BILL_HEADER = "bill_header";
 
-    private static final String BILL_CONTENT = "bill_content";
+    public static final String BILL_CONTENT = "bill_content";
 
-    private static final String BILL_RECEIVER_PHONE = "bill_receiver_phone";
+    public static final String BILL_RECEIVER_PHONE = "bill_receiver_phone";
 
-    private static final String BILL_RECEIVER_EMAIL = "bill_receiver_email";
+    public static final String BILL_RECEIVER_EMAIL = "bill_receiver_email";
 
-    private static final String RECEIVER_NAME = "receiver_name";
+    public static final String RECEIVER_NAME = "receiver_name";
 
-    private static final String RECEIVER_PHONE = "receiver_phone";
+    public static final String RECEIVER_PHONE = "receiver_phone";
 
-    private static final String RECEIVER_POST_CODE = "receiver_post_code";
+    public static final String RECEIVER_POST_CODE = "receiver_post_code";
 
-    private static final String RECEIVER_PROVINCE = "receiver_province";
+    public static final String RECEIVER_PROVINCE = "receiver_province";
 
-    private static final String RECEIVER_CITY = "receiver_city";
+    public static final String RECEIVER_CITY = "receiver_city";
 
-    private static final String RECEIVER_REGION = "receiver_region";
+    public static final String RECEIVER_REGION = "receiver_region";
 
-    private static final String RECEIVER_DETAIL_ADDRESS = "receiver_detail_address";
+    public static final String RECEIVER_DETAIL_ADDRESS = "receiver_detail_address";
 
-    private static final String NOTE = "note";
+    public static final String NOTE = "note";
 
-    private static final String CONFIRM_STATUS = "confirm_status";
+    public static final String CONFIRM_STATUS = "confirm_status";
 
-    private static final String DELETE_STATUS = "delete_status";
+    public static final String DELETE_STATUS = "delete_status";
 
-    private static final String USE_INTEGRATION = "use_integration";
+    public static final String USE_INTEGRATION = "use_integration";
 
-    private static final String PAYMENT_TIME = "payment_time";
+    public static final String PAYMENT_TIME = "payment_time";
 
-    private static final String DELIVERY_TIME = "delivery_time";
+    public static final String DELIVERY_TIME = "delivery_time";
 
-    private static final String RECEIVE_TIME = "receive_time";
+    public static final String RECEIVE_TIME = "receive_time";
 
-    private static final String COMMENT_TIME = "comment_time";
+    public static final String COMMENT_TIME = "comment_time";
 
-    private static final String MODIFY_TIME = "modify_time";
+    public static final String MODIFY_TIME = "modify_time";
 
     
 }

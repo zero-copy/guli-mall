@@ -186,6 +186,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         }
     }
 
+    @Override
+    public OrderEntity getByOrderSn(String orderSn) {
+        return baseMapper.selectOne(new QueryWrapper<OrderEntity>().eq(OrderEntity.ORDER_SN, orderSn));
+    }
+
     private void saveOrder(OrderCreateDto createDto) {
         OrderEntity orderEntity = createDto.getOrder();
         orderEntity.setModifyTime(LocalDateTime.now());

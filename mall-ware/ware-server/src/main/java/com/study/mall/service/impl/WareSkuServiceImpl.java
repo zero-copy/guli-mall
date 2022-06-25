@@ -5,6 +5,7 @@ import com.alibaba.nacos.common.utils.Objects;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.rabbitmq.client.Channel;
 import com.study.mall.common.dto.StockDetailDto;
 import com.study.mall.common.dto.StockLockedDto;
 import com.study.mall.common.lang.R;
@@ -12,10 +13,12 @@ import com.study.mall.common.lang.dto.SkuInfoDto;
 import com.study.mall.common.lang.dto.SkuStockDto;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
+import com.study.mall.dto.OrderEntityDto;
 import com.study.mall.entity.WareOrderTaskDetailEntity;
 import com.study.mall.entity.WareOrderTaskEntity;
 import com.study.mall.entity.WareSkuEntity;
 import com.study.mall.exception.NoStockException;
+import com.study.mall.feign.IOrderFeignService;
 import com.study.mall.feign.ISkuInfoFeignService;
 import com.study.mall.mapper.WareSkuMapper;
 import com.study.mall.service.IWareOrderTaskDetailService;
@@ -25,11 +28,15 @@ import com.study.mall.vo.OrderItemVo;
 import com.study.mall.vo.SkuWareHasStock;
 import com.study.mall.vo.WareSkuLockVo;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,6 +49,7 @@ import java.util.stream.Collectors;
  * @date 2021-10-10 16:34:19
  */
 @Service("wareSkuService")
+@RabbitListener(queues = {"stock.release.stock.queue"})
 @Transactional(rollbackFor = Exception.class)
 public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity> implements IWareSkuService {
 
@@ -158,6 +166,10 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
             }
         }
         return true;
+    }
+
+    public void unLockStock(Long skuId, Long wareId, Integer num, Long orderTaskId) {
+        wareSkuMapper.unLockStock(skuId, wareId, num, orderTaskId);
     }
 
 }

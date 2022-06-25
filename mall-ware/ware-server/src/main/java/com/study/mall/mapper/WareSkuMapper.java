@@ -38,4 +38,6 @@ public interface WareSkuMapper extends BaseMapper<WareSkuEntity> {
     List<Long> listWareIdHasStock(Long skuId);
 
     Long lockSkuStock(@Param("skuId") Long skuId, @Param("wareId") Long wareId, @Param("num") Integer num);
+
+    void unLockStock(@Param("skuId") Long skuId, @Param("wareId") Long wareId, @Param("num") Integer num, @Param("orderTaskId") Long orderTaskId);
 }

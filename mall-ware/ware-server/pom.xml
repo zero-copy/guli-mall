@@ -34,6 +34,11 @@
             <groupId>com.study.mall</groupId>
             <artifactId>member-api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.study.mall</groupId>
+            <artifactId>order-api</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
