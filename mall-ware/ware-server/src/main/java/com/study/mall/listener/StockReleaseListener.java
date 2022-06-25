@@ -6,7 +6,6 @@ import com.study.mall.dto.OrderEntityDto;
 import com.study.mall.service.IWareSkuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -25,11 +24,11 @@ public class StockReleaseListener {
     @Resource
     IWareSkuService wareSkuService;
 
+
     @RabbitListener(queues = {"stock.release.stock.queue"})
-    @RabbitHandler
     public void handleStockLockRelease(StockLockedDto dto, Message message, Channel channel) throws IOException {
-        log.info("解锁库存检查 detail-id: {}", dto.getDetail().getId());
         try {
+            log.info("解锁库存检查 detail-id: {}", dto.getDetail().getId());
             wareSkuService.unLockStock(dto);
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (Exception e) {
@@ -39,10 +38,9 @@ public class StockReleaseListener {
     }
 
     @RabbitListener(queues = {"stock.release.stock.queue"})
-    @RabbitHandler
     public void handleOrderCloseRelease(OrderEntityDto orderDto, Message message, Channel channel) throws IOException {
-        log.info("订单主动关闭-解锁库存检查 order-id: {}", orderDto.getId());
         try {
+            log.info("订单主动关闭-解锁库存检查 order-id: {}", orderDto.getId());
             wareSkuService.unLockStock(orderDto);
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (Exception e) {
