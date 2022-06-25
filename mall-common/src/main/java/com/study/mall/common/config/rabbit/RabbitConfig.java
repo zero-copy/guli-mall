@@ -40,7 +40,7 @@ public class RabbitConfig {
                             correlationData.getReturned().getMessage().getMessageProperties().getDeliveryTag(),
                             correlationData.getReturned().getMessage().getBody(), cause);
                 } else {
-                    log.warn("========消息投递失败========\n" +
+                    log.info("========消息投递失败========\n" +
                             "消息丢失\n" +
                             "case: {}" +
                             "===========================", cause);
