@@ -1,7 +1,5 @@
 package com.study.mall.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -11,7 +9,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-    
+
 /**
  * 订单
  *
@@ -20,7 +18,6 @@ import java.time.LocalDateTime;
  * @date 2021-10-10 14:41:49
  */
 @Data
-@TableName("oms_order")
 public class OrderEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,7 +25,6 @@ public class OrderEntity implements Serializable {
     /**
     * id
     */
-    @TableId
     private Long id;
 
     /**

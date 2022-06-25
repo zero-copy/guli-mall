@@ -2,10 +2,10 @@ package com.study.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.LocalDate;
-import lombok.Data;
     
 /**
  * 库存工作单
@@ -92,33 +92,33 @@ public class WareOrderTaskEntity implements Serializable {
     private String taskComment;
 
     
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String ORDER_ID = "order_id";
+    public static final String ORDER_ID = "order_id";
 
-    private static final String ORDER_SN = "order_sn";
+    public static final String ORDER_SN = "order_sn";
 
-    private static final String CONSIGNEE = "consignee";
+    public static final String CONSIGNEE = "consignee";
 
-    private static final String CONSIGNEE_TEL = "consignee_tel";
+    public static final String CONSIGNEE_TEL = "consignee_tel";
 
-    private static final String DELIVERY_ADDRESS = "delivery_address";
+    public static final String DELIVERY_ADDRESS = "delivery_address";
 
-    private static final String ORDER_COMMENT = "order_comment";
+    public static final String ORDER_COMMENT = "order_comment";
 
-    private static final String PAYMENT_WAY = "payment_way";
+    public static final String PAYMENT_WAY = "payment_way";
 
-    private static final String TASK_STATUS = "task_status";
+    public static final String TASK_STATUS = "task_status";
 
-    private static final String ORDER_BODY = "order_body";
+    public static final String ORDER_BODY = "order_body";
 
-    private static final String TRACKING_NO = "tracking_no";
+    public static final String TRACKING_NO = "tracking_no";
 
-    private static final String CREATE_TIME = "create_time";
+    public static final String CREATE_TIME = "create_time";
 
-    private static final String WARE_ID = "ware_id";
+    public static final String WARE_ID = "ware_id";
 
-    private static final String TASK_COMMENT = "task_comment";
+    public static final String TASK_COMMENT = "task_comment";
 
     
 }

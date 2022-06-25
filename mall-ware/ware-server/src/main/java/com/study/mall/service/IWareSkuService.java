@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.study.mall.common.dto.StockLockedDto;
 import com.study.mall.common.lang.dto.SkuStockDto;
 import com.study.mall.common.utils.PageUtils;
+import com.study.mall.dto.OrderEntityDto;
 import com.study.mall.entity.WareSkuEntity;
 import com.study.mall.vo.WareSkuLockVo;
 
@@ -49,5 +50,7 @@ public interface IWareSkuService extends IService<WareSkuEntity> {
      * @param dto
      */
     void unLockStock(StockLockedDto dto);
+
+    void unLockStock(OrderEntityDto orderDto);
 }
 

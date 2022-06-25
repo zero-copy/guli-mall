@@ -14,5 +14,7 @@ public class WareSkuLockDto implements Serializable {
 
     private String orderSn;
 
+    private Long orderId;
+
     private List<OrderItemDto> locks;
 }

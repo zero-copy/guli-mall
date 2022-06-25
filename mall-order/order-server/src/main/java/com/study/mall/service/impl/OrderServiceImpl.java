@@ -13,10 +13,7 @@ import com.study.mall.common.lang.R;
 import com.study.mall.common.lang.dto.SkuStockDto;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.utils.Query;
-import com.study.mall.dto.CartItemEntityDto;
-import com.study.mall.dto.MemberAddressDto;
-import com.study.mall.dto.OrderCreateDto;
-import com.study.mall.dto.SpuInfoDto;
+import com.study.mall.dto.*;
 import com.study.mall.entity.OrderEntity;
 import com.study.mall.entity.OrderItemEntity;
 import com.study.mall.enume.OrderStatusEnum;
@@ -32,6 +29,7 @@ import com.study.mall.vo.OrderConfirmVo;
 import com.study.mall.vo.OrderSubmitRespVo;
 import com.study.mall.vo.OrderSubmitVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -91,6 +89,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
 
     @Autowired
     private StringRedisTemplate redisTemplate;
+
+    @Resource
+    private RabbitTemplate rabbitTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -169,11 +170,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
                             return itemDto;
                         })
                         .collect(Collectors.toList()));
+                lockDto.setOrderId(createDto.getOrder().getId());
                 R<Object> lockRes = wareSkuFeignService.orderLockStock(lockDto);
                 if (lockRes.getCode() == 0) {
-                    int i = 10 / 0;
                     resp.setOrder(createDto.getOrder());
                     resp.setCode(0);
+                    rabbitTemplate.convertAndSend("order-event-exchange",
+                            "order.create.order",
+                            createDto.getOrder());
                     return resp;
                 } else {
                     throw new MallException("提交订单失败");
@@ -189,6 +193,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
     @Override
     public OrderEntity getByOrderSn(String orderSn) {
         return baseMapper.selectOne(new QueryWrapper<OrderEntity>().eq(OrderEntity.ORDER_SN, orderSn));
+    }
+
+    @Override
+    public void closeOrder(OrderEntity order) {
+        OrderEntity dbOrder = baseMapper.selectById(order.getId());
+        if (dbOrder.getStatus().equals(OrderStatusEnum.CREATE_NEW.getCode())) {
+            dbOrder.setStatus(OrderStatusEnum.CANCLED.getCode());
+            baseMapper.updateById(dbOrder);
+            rabbitTemplate.convertAndSend("order-event-exchange", "order.release.other", dbOrder);
+        }
     }
 
     private void saveOrder(OrderCreateDto createDto) {

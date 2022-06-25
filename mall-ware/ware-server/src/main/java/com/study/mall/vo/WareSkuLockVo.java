@@ -14,5 +14,7 @@ public class WareSkuLockVo implements Serializable {
 
     private String orderSn;
 
+    private Long orderId;
+
     private List<OrderItemVo> locks;
 }

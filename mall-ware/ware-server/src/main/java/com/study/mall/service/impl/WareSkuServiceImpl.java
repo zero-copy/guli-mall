@@ -5,7 +5,6 @@ import com.alibaba.nacos.common.utils.Objects;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.rabbitmq.client.Channel;
 import com.study.mall.common.dto.StockDetailDto;
 import com.study.mall.common.dto.StockLockedDto;
 import com.study.mall.common.exception.MallException;
@@ -29,15 +28,12 @@ import com.study.mall.vo.OrderItemVo;
 import com.study.mall.vo.SkuWareHasStock;
 import com.study.mall.vo.WareSkuLockVo;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -129,6 +125,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
     public Boolean orderLockStock(WareSkuLockVo vo) {
         WareOrderTaskEntity orderTaskEntity = new WareOrderTaskEntity();
         orderTaskEntity.setOrderSn(vo.getOrderSn());
+        orderTaskEntity.setOrderId(vo.getOrderId());
         wareOrderTaskService.save(orderTaskEntity);
         List<OrderItemVo> locks = vo.getLocks();
         List<SkuWareHasStock> wareHasStocks = locks.stream().map(item -> {
@@ -196,6 +193,19 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
                 throw new MallException("查询订单失败");
             }
         }
+    }
+
+    @Override
+    public void unLockStock(OrderEntityDto orderDto) {
+        WareOrderTaskEntity taskEntity = wareOrderTaskService.getByOrderSn(orderDto.getOrderSn());
+        List<WareOrderTaskDetailEntity> details = wareOrderTaskDetailService.list(new QueryWrapper<WareOrderTaskDetailEntity>()
+                .eq(WareOrderTaskDetailEntity.TASK_ID, taskEntity.getId())
+                .eq(WareOrderTaskDetailEntity.LOCK_STATUS, 1));
+        for (WareOrderTaskDetailEntity detail : details) {
+            detail.setLockStatus(2);
+            baseMapper.unLockStock(detail.getSkuId(), detail.getWareId(), detail.getSkuNum(), taskEntity.getId());
+        }
+        wareOrderTaskDetailService.updateBatchById(details);
     }
 
 }
