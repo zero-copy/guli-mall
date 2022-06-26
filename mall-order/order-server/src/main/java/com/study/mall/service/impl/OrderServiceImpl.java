@@ -16,6 +16,7 @@ import com.study.mall.common.utils.Query;
 import com.study.mall.dto.*;
 import com.study.mall.entity.OrderEntity;
 import com.study.mall.entity.OrderItemEntity;
+import com.study.mall.entity.PaymentInfoEntity;
 import com.study.mall.enume.OrderStatusEnum;
 import com.study.mall.feign.*;
 import com.study.mall.feign.dto.FareDto;
@@ -25,10 +26,8 @@ import com.study.mall.interceptor.LoginInterceptor;
 import com.study.mall.mapper.OrderMapper;
 import com.study.mall.service.IOrderItemService;
 import com.study.mall.service.IOrderService;
-import com.study.mall.vo.OrderConfirmVo;
-import com.study.mall.vo.OrderSubmitRespVo;
-import com.study.mall.vo.OrderSubmitVo;
-import com.study.mall.vo.PayVo;
+import com.study.mall.service.IPaymentInfoService;
+import com.study.mall.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +43,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +88,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
 
     @Resource
     private IOrderItemService orderItemService;
+
+    @Resource
+    private IPaymentInfoService paymentInfoService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -239,6 +242,28 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
             order.setItemEntities(itemEntities);
         });
         return new PageUtils<>(page);
+    }
+
+    @Override
+    public String handlePayResult(PayAsyncVo vo) {
+        //保存交易流水
+        PaymentInfoEntity paymentInfo = new PaymentInfoEntity();
+        paymentInfo.setAlipayTradeNo(vo.getTrade_no());
+        paymentInfo.setOrderSn(vo.getOut_trade_no());
+        paymentInfo.setPaymentStatus(vo.getTrade_status());
+        paymentInfo.setCreateTime(LocalDateTime.now());
+        paymentInfo.setCallbackTime(LocalDateTime.parse(vo.getNotify_time(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        paymentInfo.setTotalAmount(new BigDecimal(vo.getTotal_amount()));
+        paymentInfo.setSubject(vo.getSubject());
+        paymentInfoService.save(paymentInfo);
+        //修改订单状态
+        String tradeStatus = vo.getTrade_status();
+        if ("TRADE_SUCCESS".equals(tradeStatus) || "TRADE_FINISHED".equals(tradeStatus)) {
+            //支付成功
+            String orderSn = vo.getOut_trade_no();
+            baseMapper.updateStatus(orderSn, OrderStatusEnum.PAYED.getCode());
+        }
+        return "success";
     }
 
     private void saveOrder(OrderCreateDto createDto) {

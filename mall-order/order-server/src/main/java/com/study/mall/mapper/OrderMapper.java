@@ -3,6 +3,7 @@ package com.study.mall.mapper;
 import com.study.mall.entity.OrderEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 订单
@@ -14,4 +15,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface OrderMapper extends BaseMapper<OrderEntity> {
 
+    void updateStatus(@Param("orderSn") String orderSn, @Param("code") Integer code);
 }

@@ -23,7 +23,8 @@ public class LoginInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
         Object user = session.getAttribute(AuthServerConstant.LOGIN_USER);
         boolean match = new AntPathMatcher().match("/order/order/status/**", request.getRequestURI());
-        if (match) {
+        boolean payMatch = new AntPathMatcher().match("/pay/**", request.getRequestURI());
+        if (match || payMatch) {
             return true;
         }
         if (Objects.isNull(user)) {
