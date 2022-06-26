@@ -30,6 +30,7 @@ public class OrderCloseListener {
         log.info("关单检查 order-id: {}", order.getId());
         try {
             orderService.closeOrder(order);
+            //调用支付宝收单 api (没做)
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (Exception e) {
             log.error(e.getMessage(), e.getCause());
