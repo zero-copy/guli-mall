@@ -1,0 +1,17 @@
+server:
+  port: 22090
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: mall-seckill
+  cloud:
+    nacos:
+      discovery:
+        server-addr: nacos-server:8848
+      config:
+        server-addr: nacos-server:8848
+        namespace: ab464978-b73f-41b0-a5cc-bfb610a87351
+        group: DEFAULT_GROUP
+        file-extension: yml
