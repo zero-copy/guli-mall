@@ -21,6 +21,12 @@
         <dependency>
             <groupId>com.study.mall</groupId>
             <artifactId>mall-common</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-amqp</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

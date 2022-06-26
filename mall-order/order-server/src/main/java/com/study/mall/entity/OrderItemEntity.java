@@ -2,11 +2,10 @@ package com.study.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
 import lombok.Data;
-        import java.math.BigDecimal;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
     
 /**
  * 订单项信息
@@ -123,45 +122,45 @@ public class OrderItemEntity implements Serializable {
     private Integer giftGrowth;
 
     
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String ORDER_ID = "order_id";
+    public static final String ORDER_ID = "order_id";
 
-    private static final String ORDER_SN = "order_sn";
+    public static final String ORDER_SN = "order_sn";
 
-    private static final String SPU_ID = "spu_id";
+    public static final String SPU_ID = "spu_id";
 
-    private static final String SPU_NAME = "spu_name";
+    public static final String SPU_NAME = "spu_name";
 
-    private static final String SPU_PIC = "spu_pic";
+    public static final String SPU_PIC = "spu_pic";
 
-    private static final String SPU_BRAND = "spu_brand";
+    public static final String SPU_BRAND = "spu_brand";
 
-    private static final String CATEGORY_ID = "category_id";
+    public static final String CATEGORY_ID = "category_id";
 
-    private static final String SKU_ID = "sku_id";
+    public static final String SKU_ID = "sku_id";
 
-    private static final String SKU_NAME = "sku_name";
+    public static final String SKU_NAME = "sku_name";
 
-    private static final String SKU_PIC = "sku_pic";
+    public static final String SKU_PIC = "sku_pic";
 
-    private static final String SKU_PRICE = "sku_price";
+    public static final String SKU_PRICE = "sku_price";
 
-    private static final String SKU_QUANTITY = "sku_quantity";
+    public static final String SKU_QUANTITY = "sku_quantity";
 
-    private static final String SKU_ATTRS_VALS = "sku_attrs_vals";
+    public static final String SKU_ATTRS_VALS = "sku_attrs_vals";
 
-    private static final String PROMOTION_AMOUNT = "promotion_amount";
+    public static final String PROMOTION_AMOUNT = "promotion_amount";
 
-    private static final String COUPON_AMOUNT = "coupon_amount";
+    public static final String COUPON_AMOUNT = "coupon_amount";
 
-    private static final String INTEGRATION_AMOUNT = "integration_amount";
+    public static final String INTEGRATION_AMOUNT = "integration_amount";
 
-    private static final String REAL_AMOUNT = "real_amount";
+    public static final String REAL_AMOUNT = "real_amount";
 
-    private static final String GIFT_INTEGRATION = "gift_integration";
+    public static final String GIFT_INTEGRATION = "gift_integration";
 
-    private static final String GIFT_GROWTH = "gift_growth";
+    public static final String GIFT_GROWTH = "gift_growth";
 
     
 }

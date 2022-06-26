@@ -61,6 +61,9 @@ seata:
     vgroup-mapping:
       default_tx_group: default
 
+alipay:
+  app_id: 2021000121608219
+
 thread:
   core-size: 20
   max-size: 200

@@ -28,6 +28,7 @@ import com.study.mall.service.IOrderService;
 import com.study.mall.vo.OrderConfirmVo;
 import com.study.mall.vo.OrderSubmitRespVo;
 import com.study.mall.vo.OrderSubmitVo;
+import com.study.mall.vo.PayVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -203,6 +205,24 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
             baseMapper.updateById(dbOrder);
             rabbitTemplate.convertAndSend("order-event-exchange", "order.release.other", dbOrder);
         }
+    }
+
+    @Override
+    public PayVo getOrderPay(String orderSn) {
+        OrderEntity orderEntity = getByOrderSn(orderSn);
+        List<OrderItemEntity> items = orderItemService.list(new QueryWrapper<OrderItemEntity>().eq(OrderItemEntity.ORDER_SN, orderSn));
+        StringBuilder subjectBuilder = new StringBuilder();
+        StringBuilder bodyBuilder = new StringBuilder();
+        for (OrderItemEntity item : items) {
+            subjectBuilder.append(item.getSkuName()).append(" ");
+            bodyBuilder.append(item.getSkuName()).append(":").append(item.getSkuQuantity());
+        }
+        PayVo payVo = new PayVo();
+        payVo.setTotal_amount(orderEntity.getPayAmount().setScale(2, RoundingMode.UP).toString());
+        payVo.setOut_trade_no(orderEntity.getOrderSn());
+        payVo.setSubject(subjectBuilder.toString());
+        payVo.setBody(bodyBuilder.toString());
+        return payVo;
     }
 
     private void saveOrder(OrderCreateDto createDto) {
