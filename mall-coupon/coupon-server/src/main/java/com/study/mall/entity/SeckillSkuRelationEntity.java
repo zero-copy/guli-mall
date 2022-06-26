@@ -2,11 +2,10 @@ package com.study.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
 import lombok.Data;
-        import java.math.BigDecimal;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
     
 /**
  * 秒杀活动商品关联
@@ -63,21 +62,21 @@ public class SeckillSkuRelationEntity implements Serializable {
     private Integer seckillSort;
 
     
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String PROMOTION_ID = "promotion_id";
+    public static final String PROMOTION_ID = "promotion_id";
 
-    private static final String PROMOTION_SESSION_ID = "promotion_session_id";
+    public static final String PROMOTION_SESSION_ID = "promotion_session_id";
 
-    private static final String SKU_ID = "sku_id";
+    public static final String SKU_ID = "sku_id";
 
-    private static final String SECKILL_PRICE = "seckill_price";
+    public static final String SECKILL_PRICE = "seckill_price";
 
-    private static final String SECKILL_COUNT = "seckill_count";
+    public static final String SECKILL_COUNT = "seckill_count";
 
-    private static final String SECKILL_LIMIT = "seckill_limit";
+    public static final String SECKILL_LIMIT = "seckill_limit";
 
-    private static final String SECKILL_SORT = "seckill_sort";
+    public static final String SECKILL_SORT = "seckill_sort";
 
     
 }
