@@ -225,6 +225,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
         return payVo;
     }
 
+    @Override
+    public PageUtils<OrderEntity> queryPageWithItem(Map<String, Object> params) {
+        MemberEntityDto member = LoginInterceptor.THREAD_LOCAL.get();
+        IPage<OrderEntity> page = this.page(
+                new Query<OrderEntity>().getPage(params),
+                new QueryWrapper<OrderEntity>()
+                        .eq(OrderEntity.MEMBER_ID, member.getId())
+                        .orderByDesc(OrderEntity.ID)
+        );
+        page.getRecords().forEach(order -> {
+            List<OrderItemEntity> itemEntities = orderItemService.list(new QueryWrapper<OrderItemEntity>().eq(OrderItemEntity.ORDER_SN, order.getOrderSn()));
+            order.setItemEntities(itemEntities);
+        });
+        return new PageUtils<>(page);
+    }
+
     private void saveOrder(OrderCreateDto createDto) {
         OrderEntity orderEntity = createDto.getOrder();
         orderEntity.setModifyTime(LocalDateTime.now());

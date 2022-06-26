@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -26,7 +27,8 @@ public class PayController {
     @Resource
     private IOrderService orderService;
 
-    @GetMapping(value = "/payOrder", produces = "text/html")
+    @ResponseBody
+    @GetMapping(value = "/aliPayOrder", produces = "text/html;charset=utf-8 ")
     public String payOrder(@RequestParam String orderSn) throws AlipayApiException {
         PayVo payVo = orderService.getOrderPay(orderSn);
         return alipayTemplate.pay(payVo);

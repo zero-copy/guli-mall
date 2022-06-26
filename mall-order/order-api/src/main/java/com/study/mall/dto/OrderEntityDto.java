@@ -239,4 +239,6 @@ public class OrderEntityDto implements Serializable {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime modifyTime;
+
+    private OrderItemEntityDto itemEntities;
 }

@@ -1,14 +1,14 @@
 package com.study.mall.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-import javax.annotation.Resource;
-
-import org.springframework.web.bind.annotation.*;
+import com.study.mall.common.lang.R;
+import com.study.mall.common.utils.PageUtils;
 import com.study.mall.entity.OrderEntity;
 import com.study.mall.service.IOrderService;
-import com.study.mall.common.utils.PageUtils;
-import com.study.mall.common.lang.R;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.Map;
 
 
 /**
@@ -80,6 +80,12 @@ public class OrderController {
     public R delete(@RequestBody Long[] ids) {
         orderService.removeByIds(Arrays.asList(ids));
         return R.ok();
+    }
+
+    @PostMapping("/listWithItem")
+    public R<PageUtils<OrderEntity>> listWithItem(@RequestBody Map<String, Object> params) {
+        PageUtils<OrderEntity> page = orderService.queryPageWithItem(params);
+        return R.ok(page);
     }
 
 }

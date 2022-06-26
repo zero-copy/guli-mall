@@ -49,5 +49,7 @@ public interface IOrderService extends IService<OrderEntity> {
      * @return 支付信息
      */
     PayVo getOrderPay(String orderSn);
+
+    PageUtils<OrderEntity> queryPageWithItem(Map<String, Object> params);
 }
 

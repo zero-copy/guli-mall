@@ -22,7 +22,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
         Object user = session.getAttribute(AuthServerConstant.LOGIN_USER);
-        boolean match = new AntPathMatcher().match("/member/member/login/**", request.getRequestURI());
+        boolean match = new AntPathMatcher().match("/member/**", request.getRequestURI());
         if (match) {
             return true;
         }
