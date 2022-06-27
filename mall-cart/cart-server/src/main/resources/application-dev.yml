@@ -5,6 +5,14 @@ spring:
     username: dbadmin
     password: lb82ndLF
 
+  zipkin:
+    base-url: http://zipkin-server:9411
+    discovery-client-enabled: false
+    sender:
+      type: web
+    sampler:
+      probability: 1.0
+
   redis:
     host: redis-server
     password: lb82ndLF

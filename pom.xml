@@ -37,6 +37,7 @@
         <mybatis-plus-boot-stater.version>3.4.3.4</mybatis-plus-boot-stater.version>
         <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
         <elasticsearch.version>7.4.2</elasticsearch.version>
+        <zipkin.version>2.2.8.RELEASE</zipkin.version>
         <p6spy.version>3.9.1</p6spy.version>
         <swagger2.version>3.0.0</swagger2.version>
         <fastjson.version>1.2.83</fastjson.version>
@@ -174,6 +175,12 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector-java.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-zipkin</artifactId>
+                <version>${zipkin.version}</version>
             </dependency>
 
             <!-- SQL 分析打印 -->

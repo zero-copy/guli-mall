@@ -22,6 +22,14 @@ spring:
     store-type: redis
     timeout: 6000000
 
+  zipkin:
+    base-url: http://zipkin-server:9411
+    discovery-client-enabled: false
+    sender:
+      type: web
+    sampler:
+      probability: 1.0
+
 management:
   endpoints:
     web:
