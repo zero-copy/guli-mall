@@ -15,4 +15,7 @@ spring:
         namespace: 1e870da5-c625-4a26-bb0a-3e36721aea3e
         group: DEFAULT_GROUP
         file-extension: yml
-
+    sentinel:
+      transport:
+        dashboard: sentinel-server:21010
+        port: 8719

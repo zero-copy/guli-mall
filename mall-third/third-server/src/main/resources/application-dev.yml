@@ -17,3 +17,9 @@ spring:
     testOnBorrow: true
     testWhileIdle: true
     testOnReturn: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

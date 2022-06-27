@@ -43,9 +43,18 @@ spring:
     nacos:
       discovery:
         server-addr: nacos-server:8848
+    sentinel:
+      transport:
+        dashboard: sentinel-server:21010
+        port: 8719
 #  resources:
 #    add-mappings: false
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
 #mybatis
 mybatis-plus:

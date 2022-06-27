@@ -43,6 +43,12 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
 seata:
   application-id: ${spring.application.name}
   registry:

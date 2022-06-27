@@ -95,5 +95,11 @@ spring:
     port: 6379
     database: 0
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
 config:
   version: v0.1

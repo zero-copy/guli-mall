@@ -31,6 +31,12 @@ spring:
       simple:
         acknowledge-mode: manual
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
 seata:
   application-id: ${spring.application.name}
   registry:

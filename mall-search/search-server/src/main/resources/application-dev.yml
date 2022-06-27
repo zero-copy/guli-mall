@@ -16,5 +16,11 @@ logging:
   level:
     com.study.mall: debug
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
 config:
   version: v0.1

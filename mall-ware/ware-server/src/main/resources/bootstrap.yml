@@ -15,6 +15,10 @@ spring:
         namespace: d382b59c-e115-4ca1-ab69-fc479aafcad1
         group: DEFAULT_GROUP
         file-extension: yml
+    sentinel:
+      transport:
+        dashboard: sentinel-server:21010
+        port: 8719
 
 seata:
   application-id: ${spring.application.name}

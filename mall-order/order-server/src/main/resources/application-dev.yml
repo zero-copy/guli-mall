@@ -61,6 +61,12 @@ seata:
     vgroup-mapping:
       default_tx_group: default
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
 alipay:
   app_id: 2021000121608219
 
