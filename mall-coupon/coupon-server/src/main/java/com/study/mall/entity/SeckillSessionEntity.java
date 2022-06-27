@@ -1,12 +1,14 @@
 package com.study.mall.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.LocalDate;
-import lombok.Data;
-    
+import java.util.List;
+
 /**
  * 秒杀活动场次
  *
@@ -51,18 +53,21 @@ public class SeckillSessionEntity implements Serializable {
     */
     private LocalDateTime createTime;
 
+    @TableField(exist = false)
+    private List<SeckillSkuRelationEntity> relationSkus;
+
     
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String NAME = "name";
+    public static final String NAME = "name";
 
-    private static final String START_TIME = "start_time";
+    public static final String START_TIME = "start_time";
 
-    private static final String END_TIME = "end_time";
+    public static final String END_TIME = "end_time";
 
-    private static final String STATUS = "status";
+    public static final String STATUS = "status";
 
-    private static final String CREATE_TIME = "create_time";
+    public static final String CREATE_TIME = "create_time";
 
     
 }

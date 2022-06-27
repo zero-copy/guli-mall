@@ -1,18 +1,15 @@
 package com.study.mall.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-import javax.annotation.Resource;
-
-import com.study.mall.entity.SeckillSessionEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import com.study.mall.service.ISeckillSessionService;
-import com.study.mall.common.utils.PageUtils;
 import com.study.mall.common.lang.R;
+import com.study.mall.common.utils.PageUtils;
+import com.study.mall.entity.SeckillSessionEntity;
+import com.study.mall.service.ISeckillSessionService;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -28,6 +25,12 @@ public class SeckillSessionController {
 
     @Resource
     private ISeckillSessionService seckillSessionService;
+
+    @GetMapping("/lastSession")
+    public R<List<SeckillSessionEntity>> getLastThreeDaySession() {
+        List<SeckillSessionEntity> sessionEntities = seckillSessionService.getLastThreeDaySession();
+        return R.ok(sessionEntities);
+    }
 
     /**
      * 列表

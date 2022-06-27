@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.study.mall.common.utils.PageUtils;
 import com.study.mall.entity.SeckillSessionEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface ISeckillSessionService extends IService<SeckillSessionEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    List<SeckillSessionEntity> getLastThreeDaySession();
 }
 

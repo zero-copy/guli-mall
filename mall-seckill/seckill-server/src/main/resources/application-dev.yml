@@ -22,9 +22,11 @@ spring:
       simple:
         acknowledge-mode: manual
 
-#  session:
-#    store-type: redis
-#    timeout: 6000000
+  task:
+    execution:
+      pool:
+        core-size: 5
+        max-size: 50
 
   thymeleaf:
     cache: false
