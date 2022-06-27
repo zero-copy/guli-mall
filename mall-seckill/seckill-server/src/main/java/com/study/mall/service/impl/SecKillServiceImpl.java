@@ -18,9 +18,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -34,7 +34,7 @@ public class SecKillServiceImpl implements ISecKillService {
 
     private static final String SEC_SESSION_CACHE_PREFIX = "seckill:session:";
 
-    private static final String SKU_KILL_CACHE_PREFIX = "seckill:skus:";
+    private static final String SKU_KILL_CACHE_PREFIX = "seckill:skus";
 
     private static final String SKU_STOCK_SEMAPHORE = "seckill:stock:";
 
@@ -49,7 +49,7 @@ public class SecKillServiceImpl implements ISecKillService {
 
     @Autowired
     StringRedisTemplate redisTemplate;
-    
+
     @Override
     public void uploadSecKillSku() {
         R<List<SeckillSessionDto>> sessionRes = secKillSessionFeignService.getLastThreeDaySession();
@@ -62,6 +62,29 @@ public class SecKillServiceImpl implements ISecKillService {
             });
         }
     }
+
+    @Override
+    public List<SecKillSkuRedisDto> getCurrentSecKillSkus() {
+        long now = LocalDateTime.now().toInstant(ZoneOffset.of("+8")).getEpochSecond();
+        Set<String> sessionKeys = redisTemplate.keys(SEC_SESSION_CACHE_PREFIX + "*");
+        for (String key : sessionKeys) {
+            String timesStr = key.replace(SEC_SESSION_CACHE_PREFIX, "");
+            String[] times = timesStr.split("_");
+            long startTime = Long.parseLong(times[0]);
+            long endTime = Long.parseLong(times[1]);
+            if (now >= startTime && now <= endTime) {
+                List<String> range = redisTemplate.opsForList().range(key, -100, 100);
+                BoundHashOperations<String, String, String> ops = redisTemplate.boundHashOps(SKU_KILL_CACHE_PREFIX);
+                List<String> list = ops.multiGet(range);
+                if (Objects.nonNull(list)) {
+                    return list.stream()
+                            .map(item -> JSON.parseObject(item, SecKillSkuRedisDto.class))
+                            .collect(Collectors.toList());
+                }
+            }
+        }
+        return Collections.emptyList();
+}
 
     private void saveSession(SeckillSessionDto session) {
         long startTime = session.getStartTime().toInstant(ZoneOffset.of("+8")).getEpochSecond();

@@ -1,4 +1,4 @@
-package com.study.mall;
+package com.study.mall.controller;
 
 import com.study.mall.common.lang.R;
 import com.study.mall.scheduled.SecKillSkuSchedule;
