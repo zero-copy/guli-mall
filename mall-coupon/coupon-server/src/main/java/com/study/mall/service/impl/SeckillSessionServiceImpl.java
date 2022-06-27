@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -49,7 +48,7 @@ public class SeckillSessionServiceImpl extends ServiceImpl<SeckillSessionMapper,
     @Override
     public List<SeckillSessionEntity> getLastThreeDaySession() {
         LocalDate startDate = LocalDate.now();
-        LocalDate endDate = startDate.plus(Duration.ofDays(2));
+        LocalDate endDate = startDate.plusDays(2L);
         LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
         LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
         List<SeckillSessionEntity> sessionEntities = baseMapper.selectList(new QueryWrapper<SeckillSessionEntity>().between(SeckillSessionEntity.START_TIME, startDateTime, endDateTime));

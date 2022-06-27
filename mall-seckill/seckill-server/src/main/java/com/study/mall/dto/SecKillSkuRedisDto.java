@@ -55,4 +55,10 @@ public class SecKillSkuRedisDto implements Serializable {
     private Integer seckillSort;
 
     private SkuInfoDto skuInfo;
+
+    private Long startTime;
+
+    private Long endTime;
+
+    private String randomCode;
 }
