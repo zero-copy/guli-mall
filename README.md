@@ -10,6 +10,7 @@ docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300
 -v /usr/local/app/elasticsearch/plugins:/usr/share/elasticsearch/plugins 
 elasticsearch:7.4.2
 ```
+---
 ```shell
 docker run -d --name kibana --link elasticsearch:elasticsearch -p 5601:5601 kibana:7.4.2 
 ```
