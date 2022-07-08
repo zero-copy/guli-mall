@@ -1,5 +1,5 @@
 # gull-mall     
-谷粒商城 对标P8
+谷粒商城 对标P10
 
 ```shell
 docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 
